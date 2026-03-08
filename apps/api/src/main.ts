@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -8,9 +9,19 @@ import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const adapter = new FastifyAdapter();
+  adapter.getInstance().addHook('onRequest', (request, _reply, done) => {
+    // Fastify trust proxy — extract real IP from X-Forwarded-For (behind Traefik)
+    const forwarded = request.headers['x-forwarded-for'];
+    if (typeof forwarded === 'string') {
+      (request as any).ips = forwarded.split(',').map((ip) => ip.trim());
+    }
+    done();
+  });
+
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
-    new FastifyAdapter(),
+    adapter,
     { bufferLogs: true },
   );
 

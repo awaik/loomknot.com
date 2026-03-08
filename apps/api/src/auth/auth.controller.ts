@@ -9,6 +9,7 @@ import {
   Res,
   UnauthorizedException,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
@@ -37,6 +38,7 @@ export class AuthController {
 
   @Public()
   @Post('send-magic-link')
+  @Throttle({ short: { ttl: 60_000, limit: 3 }, long: { ttl: 600_000, limit: 5 } })
   @HttpCode(HttpStatus.OK)
   async sendMagicLink(
     @Body(new ZodValidationPipe(sendMagicLinkSchema)) dto: SendMagicLinkDto,
@@ -47,6 +49,7 @@ export class AuthController {
 
   @Public()
   @Post('verify')
+  @Throttle({ short: { ttl: 60_000, limit: 5 }, long: { ttl: 600_000, limit: 10 } })
   @HttpCode(HttpStatus.OK)
   async verify(
     @Body(new ZodValidationPipe(verifySchema)) dto: VerifyDto,
