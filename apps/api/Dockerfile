@@ -23,18 +23,23 @@ COPY . .
 
 RUN corepack enable pnpm && pnpm --filter @loomknot/shared build && pnpm --filter @loomknot/api build
 
-# --- Production (pnpm deploy for self-contained output) ---
+# --- Production ---
 FROM base AS runner
 ENV NODE_ENV=production
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nestjs
 
-COPY --from=builder --chown=nestjs:nodejs /app/apps/api/dist ./dist
-COPY --from=builder --chown=nestjs:nodejs /app/apps/api/node_modules ./node_modules
-COPY --from=builder --chown=nestjs:nodejs /app/apps/api/package.json ./
+# Preserve monorepo structure (pnpm hoists deps to root node_modules)
+COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nestjs:nodejs /app/apps/api/node_modules ./apps/api/node_modules
+COPY --from=builder --chown=nestjs:nodejs /app/apps/api/dist ./apps/api/dist
+COPY --from=builder --chown=nestjs:nodejs /app/apps/api/package.json ./apps/api/
+COPY --from=builder --chown=nestjs:nodejs /app/packages/shared/dist ./packages/shared/dist
+COPY --from=builder --chown=nestjs:nodejs /app/packages/shared/package.json ./packages/shared/
 
 USER nestjs
+WORKDIR /app/apps/api
 EXPOSE 4000
 ENV PORT=4000
 

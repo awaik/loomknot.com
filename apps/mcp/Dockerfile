@@ -30,15 +30,20 @@ ENV NODE_ENV=production
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 mcpuser
 
-COPY --from=builder --chown=mcpuser:nodejs /app/apps/mcp/dist ./dist
-COPY --from=builder --chown=mcpuser:nodejs /app/apps/mcp/node_modules ./node_modules
-COPY --from=builder --chown=mcpuser:nodejs /app/apps/mcp/package.json ./
+# Preserve monorepo structure (pnpm hoists deps to root node_modules)
+COPY --from=builder --chown=mcpuser:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=mcpuser:nodejs /app/apps/mcp/node_modules ./apps/mcp/node_modules
+COPY --from=builder --chown=mcpuser:nodejs /app/apps/mcp/dist ./apps/mcp/dist
+COPY --from=builder --chown=mcpuser:nodejs /app/apps/mcp/package.json ./apps/mcp/
+COPY --from=builder --chown=mcpuser:nodejs /app/packages/shared/dist ./packages/shared/dist
+COPY --from=builder --chown=mcpuser:nodejs /app/packages/shared/package.json ./packages/shared/
 
 USER mcpuser
+WORKDIR /app/apps/mcp
 EXPOSE 4100
 ENV PORT=4100
 
-HEALTHCHECK --interval=15s --timeout=5s --retries=3 --start-period=20s \
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 --start_period=20s \
   CMD curl -sf http://localhost:4100/mcp/health || exit 1
 
 CMD ["node", "dist/server.js"]
