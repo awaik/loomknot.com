@@ -728,7 +728,7 @@ export function LandingPage() {
       </section>
 
       {/* ━━━━━━━━━━━━━━━━━━━━ CTA ━━━━━━━━━━━━━━━━━━━━ */}
-      <section className="py-[100px] px-6 text-center relative" id="cta" style={{ background: 'linear-gradient(180deg, var(--color-cream) 0%, var(--color-warm) 100%)' }}>
+      <section className="py-[100px] px-6 text-center relative" id="cta" style={{ background: 'linear-gradient(180deg, var(--lk-surface) 0%, var(--lk-surface-alt) 100%)' }}>
         <div
           className="absolute top-0 left-0 right-0 h-px"
           style={{ background: 'linear-gradient(90deg, transparent, var(--color-thread-light), transparent)' }}
