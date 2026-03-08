@@ -21,7 +21,7 @@ COPY --from=deps /app/apps/mcp/node_modules ./apps/mcp/node_modules
 COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_modules
 COPY . .
 
-RUN corepack enable pnpm && pnpm --filter @loomknot/mcp build
+RUN corepack enable pnpm && pnpm --filter @loomknot/shared build && pnpm --filter @loomknot/mcp build
 
 # --- Production ---
 FROM base AS runner

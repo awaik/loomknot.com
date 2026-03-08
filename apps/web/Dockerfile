@@ -22,7 +22,7 @@ COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_module
 COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
-RUN corepack enable pnpm && pnpm --filter @loomknot/web build
+RUN corepack enable pnpm && pnpm --filter @loomknot/shared build && pnpm --filter @loomknot/web build
 
 # --- Production ---
 FROM base AS runner

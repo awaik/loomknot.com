@@ -21,7 +21,7 @@ COPY --from=deps /app/apps/api/node_modules ./apps/api/node_modules
 COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_modules
 COPY . .
 
-RUN corepack enable pnpm && pnpm --filter @loomknot/api build
+RUN corepack enable pnpm && pnpm --filter @loomknot/shared build && pnpm --filter @loomknot/api build
 
 # --- Production (pnpm deploy for self-contained output) ---
 FROM base AS runner
