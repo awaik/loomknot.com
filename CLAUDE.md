@@ -21,7 +21,7 @@ AI Assistant Instructions for Loomknot — Pages as Memory Platform (Turborepo M
 ## Production Server
 
 **Server:** Hetzner, 88.99.138.18
-**Domain:** loomknot.com
+**Domain:** loomknot.com (Cloudflare DNS, **DNS-only** — no proxy, required for Let's Encrypt HTTP challenge)
 **Security:** UFW (22/80/443), fail2ban, unattended-upgrades
 
 - Ubuntu 24.04.3 LTS
@@ -43,8 +43,10 @@ ssh loomknot
 /opt/
 ├── traefik/                           # Reverse proxy (Swarm stack "traefik")
 │   ├── docker-compose.yml
-│   ├── traefik.yml                    # Static config (swarm + file providers)
-│   ├── dynamic/minio.yml             # MinIO S3 routing (file provider)
+│   ├── traefik.yml                    # Static config (swarm provider + file provider)
+│   ├── dynamic/
+│   │   ├── minio.yml                  # MinIO S3 routing (file provider)
+│   │   └── security-headers.yml       # HSTS, XSS, CSP headers
 │   └── acme.json                      # Let's Encrypt certs (chmod 600)
 ├── apps/
 │   └── loomknot/                      # Main application
@@ -128,9 +130,10 @@ docker stack deploy -c /opt/traefik/docker-compose.yml traefik
 # === Diagnostics ===
 docker network ls
 docker node ls
-curl -sf http://localhost:4000/api/v1/health   # API health
-curl -sf http://localhost:3000/api/health       # Web health
-curl -sf http://localhost:4100/mcp/health       # MCP health
+# NOTE: services are in overlay network, health checks via Traefik (not localhost)
+curl -sf https://loomknot.com/api/v1/health    # API health
+curl -sf https://loomknot.com/api/health        # Web health
+curl -sf https://loomknot.com/mcp/health        # MCP health
 ```
 
 ### PostgreSQL Backups
@@ -151,19 +154,33 @@ curl -sf http://localhost:4100/mcp/health       # MCP health
 
 ```
 push to main
-  ├─ build-web       → ghcr.io/OWNER/loomknot.com/web:latest
-  ├─ build-api       → ghcr.io/OWNER/loomknot.com/api:latest
-  ├─ build-mcp       → ghcr.io/OWNER/loomknot.com/mcp:latest
-  └─ build-migrate   → ghcr.io/OWNER/loomknot.com/migrate:latest
+  ├─ build-web       → ghcr.io/awaik/loomknot.com/web:{latest,sha-<commit>}
+  ├─ build-api       → ghcr.io/awaik/loomknot.com/api:{latest,sha-<commit>}
+  ├─ build-mcp       → ghcr.io/awaik/loomknot.com/mcp:{latest,sha-<commit>}
+  └─ build-migrate   → ghcr.io/awaik/loomknot.com/migrate:{latest,sha-<commit>}
        │
        ▼ deploy (after all builds)
-  1. docker pull (4 images)
-  2. docker run migrate (drizzle-kit push --force)
-  3. docker stack deploy -c docker-compose.swarm.yml loomknot
-  4. Health check: /api/v1/health + /api/health + /mcp/health
+  1. Copy docker-compose.swarm.yml to server
+  2. GHCR login via GITHUB_TOKEN
+  3. docker pull (4 images by SHA tag)
+  4. docker run migrate (drizzle-kit push --force)
+  5. docker stack deploy --resolve-image always --with-registry-auth
+  6. Service convergence loop (wait for all replicas Running)
+  7. Health check warmup with retries (60s per endpoint)
 ```
 
+**Concurrency:** `deploy-production` group, no parallel deploys.
 **Rolling update:** start-first (new container starts before old one stops), failure_action: rollback.
+**Image tags:** `latest` + `sha-<commit>` for traceability and rollback.
+
+### GitHub Secrets
+
+| Secret | Value |
+|--------|-------|
+| `SERVER_HOST` | `88.99.138.18` |
+| `SERVER_USER` | `root` |
+| `SERVER_SSH_KEY` | Private SSH key (`~/.ssh/id_ed25519`) |
+| `DOMAIN` | `loomknot.com` |
 
 ### Deploy Configuration (repo files)
 
@@ -176,14 +193,14 @@ push to main
 | `apps/api/Dockerfile` | NestJS backend image |
 | `apps/mcp/Dockerfile` | MCP server image |
 | `deploy/server-init.sh` | Server initial setup script |
-| `deploy/traefik/` | Traefik configs (copied to server manually) |
+| `deploy/traefik/` | Traefik configs (traefik.yml, dynamic/, docker-compose.yml) |
 | `deploy/env-templates/` | .env file templates |
 
 ---
 
 ## System Architecture
 
-Turborepo monorepo. Production: Traefik v3 + Docker Swarm (stateless) + Docker Compose (stateful).
+Turborepo monorepo. Production: Traefik v3 (swarm provider) + Docker Swarm (stateless) + Docker Compose (stateful).
 
 | Service | Port | Description |
 |---------|------|-------------|
@@ -247,7 +264,7 @@ When participant preferences conflict, agents don't just "see" each other's pref
 
 ### Key Decisions
 
-- **IDs**: `cuid2` (strings ~25 characters)
+- **IDs**: time-sortable custom IDs (9-char base36 timestamp + 16-char hex random, ~25 chars). See `packages/shared/src/db/helpers.ts`
 - **pgvector**: extension for vector embeddings (semantic memory search)
 - **Timestamps**: `createdAt`, `updatedAt` with `defaultNow()`, `.$onUpdate()`
 - **Types**: `$inferSelect` / `$inferInsert` from Drizzle schema (source of truth)
@@ -256,7 +273,7 @@ When participant preferences conflict, agents don't just "see" each other's pref
 ### Drizzle Commands
 
 ```bash
-cd apps/web
+cd packages/shared
 npx drizzle-kit push        # Apply schema to DB
 npx drizzle-kit generate    # Generate migration
 npx drizzle-kit studio      # UI viewer
@@ -418,7 +435,7 @@ npx tsc --noEmit          # Type check
 pnpm dev                  # Watch mode (port 4100)
 pnpm build                # Production build
 
-# Database (cd apps/web)
+# Database (cd packages/shared)
 npx drizzle-kit push      # Apply schema
 npx drizzle-kit generate  # Generate migration
 npx drizzle-kit studio    # UI viewer
@@ -448,7 +465,7 @@ docker compose down               # Stop
 ### 3. Database
 
 - **Schema lives in `packages/shared/src/db/schema/`** — single source of truth
-- **NEVER run drizzle-kit from `apps/api` or `apps/mcp`** — only `apps/web`
+- **NEVER run drizzle-kit from `apps/api` or `apps/mcp`** — only `packages/shared`
 - **ALWAYS filter by projectId** in project-scoped queries
 - **ALWAYS use transactions** for mutations with side effects
 - **ALWAYS check memory level permissions** — private memory visible only to owner
@@ -489,6 +506,10 @@ docker compose down               # Stop
 - **Use pnpm** (not npm/yarn) — monorepo with workspaces
 - **Shared types → `@loomknot/shared`** — don't duplicate between apps
 - **Docker builds**: monorepo-aware multi-stage Dockerfiles
+  - **ALWAYS build `@loomknot/shared` before app** in Dockerfiles (`pnpm --filter @loomknot/shared build && pnpm --filter @loomknot/<app> build`)
+  - **Runner stage must preserve pnpm monorepo structure** — copy root `node_modules`, workspace `node_modules`, and `packages/shared/{dist,node_modules,package.json}`
+  - **Next.js standalone** in monorepo outputs `server.js` at `apps/web/server.js` (not root)
+  - **Migrate container** runs from `packages/shared` (where drizzle config lives)
 
 ---
 
@@ -506,5 +527,5 @@ docker compose down               # Stop
 
 **Version**: 1.0
 **Last updated**: 2026-03-08
-**Architecture**: Turborepo + NestJS 11/Fastify + Next.js 15 + PostgreSQL 16/pgvector + Redis 7 + Drizzle ORM + MCP (@modelcontextprotocol/sdk) + JWT (jose) + Socket.io + Traefik v3 + Docker Swarm
+**Architecture**: Turborepo + NestJS 11/Fastify + Next.js 15 + PostgreSQL 16/pgvector + Redis 7 + Drizzle ORM + MCP (@modelcontextprotocol/sdk) + JWT (jose) + Socket.io + Traefik v3 (swarm provider) + Docker Swarm
 **Local port**: 8026
