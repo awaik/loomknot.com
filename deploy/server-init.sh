@@ -26,7 +26,7 @@ systemctl start fail2ban
 
 # --- Unattended upgrades ---
 apt-get install -y unattended-upgrades
-dpkg-reconfigure -plow unattended-upgrades
+printf 'APT::Periodic::Update-Package-Lists "1";\nAPT::Periodic::Unattended-Upgrade "1";\n' > /etc/apt/apt.conf.d/20auto-upgrades
 
 # --- Docker ---
 curl -fsSL https://get.docker.com | sh

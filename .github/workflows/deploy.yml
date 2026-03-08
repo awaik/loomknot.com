@@ -4,9 +4,14 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 env:
   REGISTRY: ghcr.io
   REPO: ${{ github.repository }}
+  SHA_TAG: sha-${{ github.sha }}
 
 jobs:
   # --- Build all images in parallel ---
@@ -17,6 +22,7 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -27,9 +33,11 @@ jobs:
           context: .
           file: apps/web/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.REPO }}/web:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.REPO }}/web:latest
+            ${{ env.REGISTRY }}/${{ env.REPO }}/web:${{ env.SHA_TAG }}
+          cache-from: type=gha,scope=web
+          cache-to: type=gha,scope=web,mode=max
 
   build-api:
     runs-on: ubuntu-latest
@@ -38,6 +46,7 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -48,9 +57,11 @@ jobs:
           context: .
           file: apps/api/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.REPO }}/api:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.REPO }}/api:latest
+            ${{ env.REGISTRY }}/${{ env.REPO }}/api:${{ env.SHA_TAG }}
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,scope=api,mode=max
 
   build-mcp:
     runs-on: ubuntu-latest
@@ -59,6 +70,7 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -69,9 +81,11 @@ jobs:
           context: .
           file: apps/mcp/Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.REPO }}/mcp:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.REPO }}/mcp:latest
+            ${{ env.REGISTRY }}/${{ env.REPO }}/mcp:${{ env.SHA_TAG }}
+          cache-from: type=gha,scope=mcp
+          cache-to: type=gha,scope=mcp,mode=max
 
   build-migrate:
     runs-on: ubuntu-latest
@@ -80,6 +94,7 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
       - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
@@ -90,58 +105,23 @@ jobs:
           context: .
           file: Dockerfile.migrate
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.REPO }}/migrate:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.REPO }}/migrate:latest
+            ${{ env.REGISTRY }}/${{ env.REPO }}/migrate:${{ env.SHA_TAG }}
+          cache-from: type=gha,scope=migrate
+          cache-to: type=gha,scope=migrate,mode=max
 
   # --- Deploy after all builds succeed ---
   deploy:
     needs: [build-web, build-api, build-mcp, build-migrate]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy to server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          script: |
-            set -e
-            APP_DIR=/opt/apps/loomknot
-            REGISTRY=${{ env.REGISTRY }}
-            REPO=${{ env.REPO }}
-
-            # Pull latest images
-            docker pull ${REGISTRY}/${REPO}/web:latest
-            docker pull ${REGISTRY}/${REPO}/api:latest
-            docker pull ${REGISTRY}/${REPO}/mcp:latest
-            docker pull ${REGISTRY}/${REPO}/migrate:latest
-
-            # Run migrations
-            docker run --rm \
-              --network loomknot-internal \
-              --env-file ${APP_DIR}/.env.backend \
-              ${REGISTRY}/${REPO}/migrate:latest
-
-            # Deploy Swarm stack (rolling update)
-            GITHUB_REPO=${{ github.repository }} \
-            DOMAIN=${{ secrets.DOMAIN }} \
-            docker stack deploy \
-              -c ${APP_DIR}/docker-compose.swarm.yml \
-              loomknot
-
-            # Wait for services to stabilize
-            sleep 15
-
-            # Health checks
-            curl -sf https://${{ secrets.DOMAIN }}/api/v1/health || echo "WARNING: API health check failed"
-            curl -sf https://${{ secrets.DOMAIN }}/api/health || echo "WARNING: Web health check failed"
-            curl -sf https://${{ secrets.DOMAIN }}/mcp/health || echo "WARNING: MCP health check failed"
-
-            echo "Deploy complete"
-
+      # 1. Copy swarm compose BEFORE deploying
       - name: Copy swarm compose to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -150,3 +130,121 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           source: "docker-compose.swarm.yml"
           target: "/opt/apps/loomknot/"
+
+      # 2. Pull images, run migrations, deploy with warmup
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        env:
+          SHA_TAG: ${{ env.SHA_TAG }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          envs: SHA_TAG,GHCR_TOKEN,GHCR_USER
+          command_timeout: 10m
+          script: |
+            set -e
+            APP_DIR=/opt/apps/loomknot
+            REGISTRY=${{ env.REGISTRY }}
+            REPO=${{ env.REPO }}
+            DOMAIN=${{ secrets.DOMAIN }}
+
+            echo "=== GHCR Login ==="
+            echo "${GHCR_TOKEN}" | docker login ghcr.io -u "${GHCR_USER}" --password-stdin
+
+            echo "=== Pulling images (${SHA_TAG}) ==="
+            docker pull ${REGISTRY}/${REPO}/web:${SHA_TAG}
+            docker pull ${REGISTRY}/${REPO}/api:${SHA_TAG}
+            docker pull ${REGISTRY}/${REPO}/mcp:${SHA_TAG}
+            docker pull ${REGISTRY}/${REPO}/migrate:${SHA_TAG}
+
+            # Tag as latest locally for compose compatibility
+            docker tag ${REGISTRY}/${REPO}/web:${SHA_TAG} ${REGISTRY}/${REPO}/web:latest
+            docker tag ${REGISTRY}/${REPO}/api:${SHA_TAG} ${REGISTRY}/${REPO}/api:latest
+            docker tag ${REGISTRY}/${REPO}/mcp:${SHA_TAG} ${REGISTRY}/${REPO}/mcp:latest
+
+            echo "=== Running migrations ==="
+            docker run --rm \
+              --network loomknot-internal \
+              --env-file ${APP_DIR}/.env.backend \
+              ${REGISTRY}/${REPO}/migrate:${SHA_TAG}
+
+            echo "=== Deploying Swarm stack (rolling update, start-first) ==="
+            GITHUB_REPO=${{ github.repository }} \
+            DOMAIN=${DOMAIN} \
+            docker stack deploy \
+              --resolve-image always \
+              --with-registry-auth \
+              -c ${APP_DIR}/docker-compose.swarm.yml \
+              loomknot
+
+            echo "=== Waiting for services to converge ==="
+            # Wait for each service to complete rolling update
+            for SVC in loomknot_web loomknot_api loomknot_mcp; do
+              echo "Waiting for ${SVC}..."
+              ATTEMPTS=0
+              MAX_ATTEMPTS=40  # 40 × 5s = 200s max
+              while [ $ATTEMPTS -lt $MAX_ATTEMPTS ]; do
+                # Check if all replicas are running and up to date
+                REPLICAS=$(docker service ls --filter "name=${SVC}" --format "{{.Replicas}}" 2>/dev/null || echo "")
+                if [ -n "$REPLICAS" ]; then
+                  CURRENT=$(echo "$REPLICAS" | cut -d'/' -f1)
+                  DESIRED=$(echo "$REPLICAS" | cut -d'/' -f2)
+                  if [ "$CURRENT" = "$DESIRED" ] && [ "$DESIRED" != "0" ]; then
+                    # Verify no tasks are in pending/preparing/starting state
+                    UPDATING=$(docker service ps "${SVC}" --filter "desired-state=running" --format "{{.CurrentState}}" 2>/dev/null | grep -c -E "^(Pending|Preparing|Starting)" || true)
+                    if [ "$UPDATING" = "0" ]; then
+                      echo "${SVC}: ${CURRENT}/${DESIRED} replicas running ✓"
+                      break
+                    fi
+                  fi
+                fi
+                ATTEMPTS=$((ATTEMPTS + 1))
+                sleep 5
+              done
+              if [ $ATTEMPTS -eq $MAX_ATTEMPTS ]; then
+                echo "WARNING: ${SVC} did not converge in time"
+                docker service ps "${SVC}" --no-trunc
+              fi
+            done
+
+            echo "=== Health check warmup (waiting for Traefik to route) ==="
+            # Give Traefik a moment to pick up new containers
+            sleep 5
+
+            # Health checks with retries
+            check_health() {
+              local URL=$1
+              local NAME=$2
+              local ATTEMPTS=0
+              local MAX=12  # 12 × 5s = 60s
+              while [ $ATTEMPTS -lt $MAX ]; do
+                if curl -sf --max-time 5 "$URL" > /dev/null 2>&1; then
+                  echo "${NAME}: healthy ✓"
+                  return 0
+                fi
+                ATTEMPTS=$((ATTEMPTS + 1))
+                sleep 5
+              done
+              echo "ERROR: ${NAME} health check failed after 60s"
+              return 1
+            }
+
+            HEALTH_OK=true
+            check_health "https://${DOMAIN}/api/v1/health" "API" || HEALTH_OK=false
+            check_health "https://${DOMAIN}/api/health" "Web" || HEALTH_OK=false
+            check_health "https://${DOMAIN}/mcp/health" "MCP" || HEALTH_OK=false
+
+            if [ "$HEALTH_OK" = "false" ]; then
+              echo "=== Some health checks failed. Service status: ==="
+              docker stack services loomknot
+              docker service ps loomknot_web --no-trunc 2>/dev/null | head -10
+              docker service ps loomknot_api --no-trunc 2>/dev/null | head -10
+              docker service ps loomknot_mcp --no-trunc 2>/dev/null | head -10
+              exit 1
+            fi
+
+            echo "=== Deploy complete (${SHA_TAG}) ==="
+            docker stack services loomknot
