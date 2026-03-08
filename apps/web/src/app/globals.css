@@ -1,0 +1,317 @@
+@import "tailwindcss";
+
+/*
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *  Loomknot Design System v2.0
+ * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ *
+ *  Architecture:
+ *    @theme           → Design tokens → Tailwind utilities
+ *    :root / .dark    → Theme values (CSS custom properties)
+ *    @layer base      → Global interactive styles
+ *
+ *  Token map:
+ *    bg-surface        → theme-aware background
+ *    bg-thread         → brand primary (golden amber)
+ *    text-thread-glow  → interactive highlight (hover dopamine)
+ *    shadow-float      → elevated card
+ *    duration-fast     → micro-interaction timing
+ *    ease-spring       → spring-physics easing
+ *    glass             → @utility — backdrop-blur overlay
+ *
+ *  Fonts:
+ *    font-sans   → DM Sans (UI, body)
+ *    font-serif  → Instrument Serif (display, headings)
+ *    font-mono   → JetBrains Mono (code)
+ */
+
+@theme {
+  /* ── Brand: Core ────────────────────────────────────────────── */
+  --color-cream: #FAF7F3;
+  --color-warm: #EDE4D9;
+  --color-ink: #1C1410;
+  --color-deep: #2A1F16;
+
+  /* ── Brand: Thread (primary — golden amber) ─────────────────── */
+  --color-thread: #C78C2A;
+  --color-thread-light: #F2DDB0;
+  --color-thread-dark: #8B5E15;
+  --color-thread-glow: #FFB830;
+
+  /* ── Brand: Accent (warm coral — CTAs, energy) ──────────────── */
+  --color-accent: #E35B42;
+  --color-accent-soft: #FDE0D8;
+
+  /* ── Brand: Sage (success, positive) ────────────────────────── */
+  --color-sage: #4D9956;
+  --color-sage-light: #D8F0D4;
+
+  /* ── Brand: Info ────────────────────────────────────────────── */
+  --color-info: #5B8DEF;
+  --color-info-soft: #E0EBFD;
+
+  /* ── Neutral ────────────────────────────────────────────────── */
+  --color-muted: #8A7E74;
+  --color-subtle: #B8ADA4;
+
+  /* ── Agent identity (fixed across themes) ───────────────────── */
+  --color-claude: #D4A574;
+  --color-chatgpt: #74AA9C;
+  --color-gemini: #8B9CF7;
+
+  /* ── Semantic: Surfaces ─────────────────────────────────────── */
+  --color-surface: var(--lk-surface);
+  --color-surface-alt: var(--lk-surface-alt);
+  --color-surface-elevated: var(--lk-surface-elevated);
+  --color-surface-sunken: var(--lk-surface-sunken);
+  --color-surface-inverse: var(--lk-surface-inverse);
+
+  /* ── Semantic: Content ──────────────────────────────────────── */
+  --color-content: var(--lk-content);
+  --color-content-secondary: var(--lk-content-secondary);
+  --color-content-tertiary: var(--lk-content-tertiary);
+  --color-content-inverse: var(--lk-content-inverse);
+
+  /* ── Semantic: Border ───────────────────────────────────────── */
+  --color-border: var(--lk-border);
+  --color-border-strong: var(--lk-border-strong);
+  --color-border-focus: var(--lk-border-focus);
+
+  /* ── Semantic: Overlay & Glass ──────────────────────────────── */
+  --color-overlay: var(--lk-overlay);
+  --color-glass: var(--lk-glass);
+
+  /* ── Semantic: State ────────────────────────────────────────── */
+  --color-success: var(--lk-success);
+  --color-success-soft: var(--lk-success-soft);
+  --color-warning: var(--lk-warning);
+  --color-warning-soft: var(--lk-warning-soft);
+  --color-error: var(--lk-error);
+  --color-error-soft: var(--lk-error-soft);
+
+  /* ── Radius (rounded-* utilities) ───────────────────────────── */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 9999px;
+
+  /* ── Typography ─────────────────────────────────────────────── */
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+
+  /* ── Shadows ────────────────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px var(--lk-shadow);
+  --shadow-sm: 0 2px 8px var(--lk-shadow), 0 1px 2px var(--lk-shadow-subtle);
+  --shadow-md: 0 4px 24px var(--lk-shadow);
+  --shadow-lg: 0 8px 40px var(--lk-shadow);
+  --shadow-float: 0 20px 60px var(--lk-shadow), 0 4px 12px var(--lk-shadow-subtle);
+  --shadow-glow: 0 0 20px var(--lk-glow);
+
+  /* ── Motion ─────────────────────────────────────────────────── */
+  --duration-instant: 50ms;
+  --duration-micro: 100ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --duration-enter: 600ms;
+
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.8, 0.64, 1);
+
+  /* ── Animations ─────────────────────────────────────────────── */
+  --animate-fade-in: fade-in var(--duration-normal) var(--ease-out);
+  --animate-slide-up: slide-up var(--duration-normal) var(--ease-out);
+  --animate-scale-in: scale-in var(--duration-fast) var(--ease-spring);
+  --animate-glow-pulse: glow-pulse 2s var(--ease-in-out) infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 12px var(--lk-glow); }
+  50% { box-shadow: 0 0 24px var(--lk-glow); }
+}
+
+/* ── Light theme (default) ────────────────────────────────────── */
+:root {
+  color-scheme: light;
+
+  /* Surface */
+  --lk-surface: #FAF7F3;
+  --lk-surface-alt: #F2EAE0;
+  --lk-surface-elevated: #FFFFFF;
+  --lk-surface-sunken: #EDE4D9;
+  --lk-surface-inverse: #1C1410;
+
+  /* Content */
+  --lk-content: #1C1410;
+  --lk-content-secondary: #6B5F55;
+  --lk-content-tertiary: #A89B90;
+  --lk-content-inverse: #FAF7F3;
+
+  /* Border */
+  --lk-border: rgba(199, 140, 42, 0.10);
+  --lk-border-strong: rgba(199, 140, 42, 0.25);
+  --lk-border-focus: #C78C2A;
+
+  /* Overlay & Glass */
+  --lk-overlay: rgba(28, 20, 16, 0.4);
+  --lk-glass: rgba(250, 247, 243, 0.72);
+
+  /* State */
+  --lk-success: #4D9956;
+  --lk-success-soft: rgba(77, 153, 86, 0.08);
+  --lk-warning: #C78C2A;
+  --lk-warning-soft: rgba(199, 140, 42, 0.08);
+  --lk-error: #E35B42;
+  --lk-error-soft: rgba(227, 91, 66, 0.08);
+
+  /* Shadow & Glow */
+  --lk-shadow: rgba(28, 20, 16, 0.07);
+  --lk-shadow-subtle: rgba(28, 20, 16, 0.03);
+  --lk-glow: rgba(199, 140, 42, 0.15);
+}
+
+/* ── Dark theme ───────────────────────────────────────────────── */
+.dark {
+  color-scheme: dark;
+
+  /* Surface */
+  --lk-surface: #141110;
+  --lk-surface-alt: #1C1814;
+  --lk-surface-elevated: #262018;
+  --lk-surface-sunken: #0E0C0A;
+  --lk-surface-inverse: #FAF7F3;
+
+  /* Content */
+  --lk-content: #F0E8DE;
+  --lk-content-secondary: #A89B90;
+  --lk-content-tertiary: #5C524A;
+  --lk-content-inverse: #1C1410;
+
+  /* Border */
+  --lk-border: rgba(199, 140, 42, 0.12);
+  --lk-border-strong: rgba(199, 140, 42, 0.28);
+  --lk-border-focus: #FFB830;
+
+  /* Overlay & Glass */
+  --lk-overlay: rgba(0, 0, 0, 0.6);
+  --lk-glass: rgba(20, 17, 16, 0.72);
+
+  /* State */
+  --lk-success: #6BBF74;
+  --lk-success-soft: rgba(107, 191, 116, 0.10);
+  --lk-warning: #E8A840;
+  --lk-warning-soft: rgba(232, 168, 64, 0.10);
+  --lk-error: #F07A65;
+  --lk-error-soft: rgba(240, 122, 101, 0.10);
+
+  /* Shadow & Glow */
+  --lk-shadow: rgba(0, 0, 0, 0.35);
+  --lk-shadow-subtle: rgba(0, 0, 0, 0.18);
+  --lk-glow: rgba(255, 184, 48, 0.20);
+}
+
+/* ── Base styles ──────────────────────────────────────────────── */
+body {
+  background: var(--lk-surface);
+  color: var(--lk-content);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus ring — accessible + on-brand */
+*:focus-visible {
+  outline: 2px solid var(--lk-border-focus);
+  outline-offset: 2px;
+}
+
+/* Selection — warm amber tint */
+::selection {
+  background: rgba(199, 140, 42, 0.20);
+  color: inherit;
+}
+
+/* Scrollbar — thin, warm, minimal */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--lk-border-strong);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-thread);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--lk-border-strong) transparent;
+}
+
+/* ── Utility: Glass surface ───────────────────────────────────── */
+@utility glass {
+  background: var(--lk-glass);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+/* ── Landing: Keyframes ───────────────────────────────────────── */
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes thread-flow {
+  0%, 100% { opacity: 0; transform: translateX(-20px); }
+  30%, 70% { opacity: 1; transform: translateX(20px); }
+}
+
+@keyframes msg-appear {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Landing: Scroll reveal ───────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}

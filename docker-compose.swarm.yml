@@ -1,0 +1,148 @@
+# =============================================================================
+# PRODUCTION SWARM STACK — stateless services (zero-downtime rolling updates)
+# Deploy: docker stack deploy -c docker-compose.swarm.yml loomknot
+# =============================================================================
+version: "3.8"
+
+services:
+  # --- Frontend (Next.js 15) ---
+  web:
+    image: ghcr.io/${GITHUB_REPO}/web:latest
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.frontend
+    networks:
+      - traefik-public
+      - loomknot-internal
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.loomknot-web.rule=Host(`${DOMAIN}`)"
+        - "traefik.http.routers.loomknot-web.entrypoints=websecure"
+        - "traefik.http.routers.loomknot-web.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.loomknot-web.priority=10"
+        - "traefik.http.services.loomknot-web.loadbalancer.server.port=3000"
+        - "traefik.http.services.loomknot-web.loadbalancer.healthcheck.path=/api/health"
+        - "traefik.http.services.loomknot-web.loadbalancer.healthcheck.interval=10s"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:3000/api/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # --- Backend API (NestJS + Fastify) ---
+  api:
+    image: ghcr.io/${GITHUB_REPO}/api:latest
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.backend
+    networks:
+      - traefik-public
+      - loomknot-internal
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      labels:
+        - "traefik.enable=true"
+        # API routes
+        - "traefik.http.routers.loomknot-api.rule=Host(`${DOMAIN}`) && PathPrefix(`/api/v1`)"
+        - "traefik.http.routers.loomknot-api.entrypoints=websecure"
+        - "traefik.http.routers.loomknot-api.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.loomknot-api.priority=20"
+        - "traefik.http.services.loomknot-api.loadbalancer.server.port=4000"
+        - "traefik.http.services.loomknot-api.loadbalancer.healthcheck.path=/api/v1/health"
+        - "traefik.http.services.loomknot-api.loadbalancer.healthcheck.interval=10s"
+        # Socket.io
+        - "traefik.http.routers.loomknot-ws.rule=Host(`${DOMAIN}`) && PathPrefix(`/socket.io`)"
+        - "traefik.http.routers.loomknot-ws.entrypoints=websecure"
+        - "traefik.http.routers.loomknot-ws.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.loomknot-ws.priority=25"
+        - "traefik.http.services.loomknot-ws.loadbalancer.server.port=4000"
+        - "traefik.http.services.loomknot-ws.loadbalancer.sticky.cookie=true"
+        - "traefik.http.services.loomknot-ws.loadbalancer.sticky.cookie.name=loomknot_ws"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:4000/api/v1/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  # --- MCP Server (Agent Gateway) ---
+  mcp:
+    image: ghcr.io/${GITHUB_REPO}/mcp:latest
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.mcp
+    networks:
+      - traefik-public
+      - loomknot-internal
+    deploy:
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        order: start-first
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+      labels:
+        - "traefik.enable=true"
+        # MCP SSE endpoint
+        - "traefik.http.routers.loomknot-mcp.rule=Host(`${DOMAIN}`) && PathPrefix(`/mcp`)"
+        - "traefik.http.routers.loomknot-mcp.entrypoints=websecure"
+        - "traefik.http.routers.loomknot-mcp.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.loomknot-mcp.priority=30"
+        - "traefik.http.services.loomknot-mcp.loadbalancer.server.port=4100"
+        - "traefik.http.services.loomknot-mcp.loadbalancer.healthcheck.path=/mcp/health"
+        - "traefik.http.services.loomknot-mcp.loadbalancer.healthcheck.interval=10s"
+        # SSE needs long timeouts
+        - "traefik.http.middlewares.mcp-timeout.headers.customresponseheaders.Cache-Control=no-cache"
+        - "traefik.http.routers.loomknot-mcp.middlewares=mcp-timeout"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:4100/mcp/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+networks:
+  traefik-public:
+    external: true
+  loomknot-internal:
+    external: true

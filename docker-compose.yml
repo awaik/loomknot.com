@@ -1,0 +1,70 @@
+# =============================================================================
+# LOCAL DEVELOPMENT — all services in one compose
+# Usage: docker compose up -d
+# =============================================================================
+services:
+  # --- Databases ---
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: loomknot-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-loomknot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-loomknot_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-loomknot}
+    ports:
+      - "43010:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-loomknot}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: loomknot-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "43011:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: loomknot-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-loomknot}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-loomknot_dev}
+    ports:
+      - "43012:9000"
+      - "43013:9001"
+    volumes:
+      - minio_data:/data
+
+  # --- Reverse Proxy (local dev) ---
+  caddy:
+    image: caddy:2-alpine
+    container_name: loomknot-caddy
+    restart: unless-stopped
+    ports:
+      - "43000:43000"
+    volumes:
+      - ./Caddyfile.dev:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:

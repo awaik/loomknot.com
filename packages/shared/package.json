@@ -1,0 +1,47 @@
+{
+  "name": "@loomknot/shared",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./db": {
+      "types": "./dist/db/index.d.ts",
+      "default": "./dist/db/index.js"
+    },
+    "./db/schema": {
+      "types": "./dist/db/schema/index.d.ts",
+      "default": "./dist/db/schema/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
+    },
+    "./constants": {
+      "types": "./dist/constants/index.d.ts",
+      "default": "./dist/constants/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch --preserveWatchOutput",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "db:push": "drizzle-kit push",
+    "db:generate": "drizzle-kit generate",
+    "db:studio": "drizzle-kit studio"
+  },
+  "devDependencies": {
+    "@loomknot/tsconfig": "workspace:*",
+    "drizzle-kit": "^0.30.0",
+    "postgres": "^3.4.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.39.0"
+  }
+}

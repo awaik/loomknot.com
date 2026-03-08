@@ -1,0 +1,25 @@
+# MinIO S3 routing (file provider — not in Swarm, routed via static config)
+http:
+  routers:
+    loomknot-s3:
+      rule: "Host(`loomknot.com`) && PathPrefix(`/s3`)"
+      entryPoints:
+        - websecure
+      service: loomknot-s3
+      priority: 35
+      tls:
+        certResolver: letsencrypt
+      middlewares:
+        - s3-strip
+
+  middlewares:
+    s3-strip:
+      stripPrefix:
+        prefixes:
+          - "/s3"
+
+  services:
+    loomknot-s3:
+      loadBalancer:
+        servers:
+          - url: "http://loomknot-minio:9000"

@@ -1,0 +1,22 @@
+{
+  "name": "loomknot",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "type-check": "turbo type-check",
+    "lint": "turbo lint",
+    "clean": "turbo clean",
+    "db:push": "turbo db:push --filter=@loomknot/shared",
+    "db:generate": "turbo db:generate --filter=@loomknot/shared",
+    "db:studio": "turbo db:studio --filter=@loomknot/shared"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.7.0"
+  }
+}

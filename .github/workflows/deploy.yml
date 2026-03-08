@@ -1,0 +1,152 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  REPO: ${{ github.repository }}
+
+jobs:
+  # --- Build all images in parallel ---
+  build-web:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/web/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.REPO }}/web:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  build-api:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.REPO }}/api:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  build-mcp:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/mcp/Dockerfile
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.REPO }}/mcp:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  build-migrate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile.migrate
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.REPO }}/migrate:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # --- Deploy after all builds succeed ---
+  deploy:
+    needs: [build-web, build-api, build-mcp, build-migrate]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            set -e
+            APP_DIR=/opt/apps/loomknot
+            REGISTRY=${{ env.REGISTRY }}
+            REPO=${{ env.REPO }}
+
+            # Pull latest images
+            docker pull ${REGISTRY}/${REPO}/web:latest
+            docker pull ${REGISTRY}/${REPO}/api:latest
+            docker pull ${REGISTRY}/${REPO}/mcp:latest
+            docker pull ${REGISTRY}/${REPO}/migrate:latest
+
+            # Run migrations
+            docker run --rm \
+              --network loomknot-internal \
+              --env-file ${APP_DIR}/.env.backend \
+              ${REGISTRY}/${REPO}/migrate:latest
+
+            # Deploy Swarm stack (rolling update)
+            GITHUB_REPO=${{ github.repository }} \
+            DOMAIN=${{ secrets.DOMAIN }} \
+            docker stack deploy \
+              -c ${APP_DIR}/docker-compose.swarm.yml \
+              loomknot
+
+            # Wait for services to stabilize
+            sleep 15
+
+            # Health checks
+            curl -sf https://${{ secrets.DOMAIN }}/api/v1/health || echo "WARNING: API health check failed"
+            curl -sf https://${{ secrets.DOMAIN }}/api/health || echo "WARNING: Web health check failed"
+            curl -sf https://${{ secrets.DOMAIN }}/mcp/health || echo "WARNING: MCP health check failed"
+
+            echo "Deploy complete"
+
+      - name: Copy swarm compose to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "docker-compose.swarm.yml"
+          target: "/opt/apps/loomknot/"

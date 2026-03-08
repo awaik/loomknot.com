@@ -1,0 +1,93 @@
+# =============================================================================
+# PRODUCTION INFRASTRUCTURE — stateful services (Docker Compose, NOT Swarm)
+# Reason: stateful data services must NOT do rolling restarts
+# Usage: docker compose -f docker-compose.infra.yml --env-file .env.infra up -d
+# =============================================================================
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: loomknot-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - loomknot-internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  redis:
+    image: redis:7-alpine
+    container_name: loomknot-redis
+    restart: always
+    command: >
+      redis-server
+        --appendonly yes
+        --maxmemory 512mb
+        --maxmemory-policy allkeys-lru
+        --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - loomknot-internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: loomknot-minio
+    restart: always
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio_data:/data
+    networks:
+      - loomknot-internal
+      - traefik-public
+
+  pg-backup:
+    image: prodrigestivill/postgres-backup-local:16
+    container_name: loomknot-pg-backup
+    restart: always
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SCHEDULE: "@daily"
+      BACKUP_KEEP_DAYS: 14
+      BACKUP_KEEP_WEEKS: 4
+      BACKUP_KEEP_MONTHS: 6
+      HEALTHCHECK_PORT: 8080
+    volumes:
+      - /opt/backups/postgres:/backups
+    networks:
+      - loomknot-internal
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+networks:
+  loomknot-internal:
+    external: true
+  traefik-public:
+    external: true

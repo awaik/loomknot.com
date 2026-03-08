@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoomKnot — The Web That Knows You</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --warm: #F5EDE3;
+    --cream: #FBF8F4;
+    --ink: #1A1612;
+    --thread: #C4956A;
+    --thread-light: #E8D5C0;
+    --thread-dark: #8B6843;
+    --accent: #D4634B;
+    --accent-soft: #F0AEA0;
+    --sage: #7A9E7E;
+    --sage-light: #B8D4BA;
+    --deep: #2C2520;
+    --muted: #8C8279;
+    --claude: #D4A574;
+    --chatgpt: #74AA9C;
+    --gemini: #8B9CF7;
+    --glass: rgba(255,255,255,0.7);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: 'Instrument Serif', serif; }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(251,248,244,0.88);
+    backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(196,149,106,0.12);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.45rem; color: var(--ink);
+    text-decoration: none;
+  }
+  .nav-logo svg { width: 30px; height: 30px; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.88rem; font-weight: 500;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    background: var(--ink) !important; color: var(--cream) !important;
+    padding: 10px 22px !important; border-radius: 100px;
+    font-weight: 500 !important; transition: all 0.3s !important;
+  }
+  .nav-cta:hover { transform: scale(1.03); }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%, rgba(196,149,106,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 80% 30%, rgba(212,99,75,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 50% 80%, rgba(122,158,126,0.05) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-threads {
+    position: absolute; inset: 0; pointer-events: none; opacity: 0.1;
+  }
+  .hero-threads .tl {
+    position: absolute; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--thread), transparent);
+    animation: threadFlow 8s ease-in-out infinite;
+  }
+  .hero-threads .tl:nth-child(1) { top: 18%; left: -10%; width: 55%; animation-delay: 0s; }
+  .hero-threads .tl:nth-child(2) { top: 33%; right: -10%; width: 48%; animation-delay: 2s; }
+  .hero-threads .tl:nth-child(3) { top: 52%; left: 5%; width: 65%; animation-delay: 4s; }
+  .hero-threads .tl:nth-child(4) { top: 72%; right: 0; width: 42%; animation-delay: 1s; }
+  .hero-threads .tl:nth-child(5) { top: 86%; left: -5%; width: 50%; animation-delay: 3s; }
+  @keyframes threadFlow {
+    0%, 100% { opacity: 0; transform: translateX(-20px); }
+    30%, 70% { opacity: 1; transform: translateX(20px); }
+  }
+
+  .hero-eyebrow {
+    font-size: clamp(0.95rem, 1.6vw, 1.12rem);
+    font-weight: 500;
+    color: var(--thread-dark);
+    margin-bottom: 14px;
+    letter-spacing: 0.01em;
+    animation: fadeUp 0.7s ease-out;
+  }
+
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2.8rem, 7vw, 5.2rem);
+    line-height: 1.04;
+    font-weight: 400;
+    max-width: 820px;
+    animation: fadeUp 0.8s ease-out 0.08s both;
+    letter-spacing: -0.025em;
+  }
+  .hero h1 em {
+    font-style: italic; color: var(--accent); position: relative;
+  }
+  .hero h1 em::after {
+    content: ''; position: absolute; bottom: 2px; left: 0; right: 0;
+    height: 3px; background: var(--accent-soft); border-radius: 2px;
+  }
+  .hero h1 .h1-small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0;
+    line-height: 1.5;
+    margin-top: 18px;
+  }
+
+  /* Hero live demo card */
+  .hero-demo {
+    margin-top: 44px;
+    width: 100%; max-width: 660px;
+    animation: fadeUp 0.9s ease-out 0.25s both;
+  }
+  .hero-demo-card {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(196,149,106,0.15);
+    box-shadow: 0 12px 60px rgba(26,22,18,0.07), 0 2px 8px rgba(26,22,18,0.03);
+    overflow: hidden;
+  }
+  .hd-bar {
+    padding: 10px 16px;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(196,149,106,0.1);
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.78rem; color: var(--muted);
+  }
+  .hd-bar-dots { display: flex; gap: 5px; }
+  .hd-bar-dots span { width: 9px; height: 9px; border-radius: 50%; }
+  .hd-bar-dots span:nth-child(1) { background: #F5C6C0; }
+  .hd-bar-dots span:nth-child(2) { background: #F5DFC0; }
+  .hd-bar-dots span:nth-child(3) { background: #C0E0C8; }
+  .hd-bar .hd-url { flex: 1; text-align: center; font-family: 'DM Sans', monospace; }
+  .hd-bar .hd-url b { color: var(--accent); font-weight: 600; }
+  .hd-body { padding: 20px 22px; }
+
+  .hd-msgs { display: flex; flex-direction: column; gap: 12px; }
+
+  .hd-msg {
+    max-width: 86%; padding: 11px 15px;
+    border-radius: 14px; font-size: 0.84rem; line-height: 1.5;
+    opacity: 0; transform: translateY(12px);
+    animation: msgAppear 0.5s ease-out forwards;
+  }
+  .hd-msg:nth-child(1) { animation-delay: 0.8s; }
+  .hd-msg:nth-child(2) { animation-delay: 2.2s; }
+  .hd-msg:nth-child(3) { animation-delay: 4.0s; }
+  .hd-msg:nth-child(4) { animation-delay: 5.4s; }
+  @keyframes msgAppear { to { opacity: 1; transform: translateY(0); } }
+
+  .hd-msg.user {
+    align-self: flex-end;
+    background: var(--ink); color: var(--cream);
+    border-bottom-right-radius: 5px;
+  }
+  .hd-msg.ai {
+    align-self: flex-start;
+    background: var(--cream); color: var(--ink);
+    border-bottom-left-radius: 5px;
+    border: 1px solid rgba(196,149,106,0.1);
+  }
+  .hd-msg .aitag {
+    font-size: 0.66rem; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    margin-bottom: 5px; display: block;
+  }
+  .hd-msg .action-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 7px; padding: 3px 9px; border-radius: 7px;
+    font-size: 0.7rem; font-weight: 600;
+  }
+  .mem-tag { background: rgba(122,158,126,0.1); color: var(--sage); }
+  .page-tag { background: rgba(212,99,75,0.08); color: var(--accent); }
+
+  .hero-agents {
+    display: flex; gap: 10px; align-items: center;
+    margin-top: 32px; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.8s ease-out 0.45s both;
+  }
+  .hero-agents > span { font-size: 0.82rem; color: var(--muted); margin-right: 4px; }
+  .ag-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 100px;
+    font-size: 0.8rem; font-weight: 500;
+    border: 1.5px solid; cursor: default;
+  }
+  .ag-pill.claude { border-color: rgba(212,165,116,0.35); color: var(--thread-dark); background: rgba(212,165,116,0.06); }
+  .ag-pill.chatgpt { border-color: rgba(116,170,156,0.35); color: #4E8A7C; background: rgba(116,170,156,0.06); }
+  .ag-pill.gemini { border-color: rgba(139,156,247,0.35); color: #6B7DE0; background: rgba(139,156,247,0.06); }
+  .ag-pill .ag-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .ag-pill.claude .ag-dot { background: var(--claude); }
+  .ag-pill.chatgpt .ag-dot { background: var(--chatgpt); }
+  .ag-pill.gemini .ag-dot { background: var(--gemini); }
+
+  .hero-cta-row {
+    display: flex; gap: 14px; align-items: center;
+    margin-top: 32px;
+    animation: fadeUp 0.8s ease-out 0.5s both;
+  }
+  .btn-primary {
+    background: var(--ink); color: var(--cream);
+    padding: 15px 34px; border-radius: 100px;
+    font-size: 0.98rem; font-weight: 600;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: all 0.3s; font-family: inherit;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(26,22,18,0.15); }
+  .btn-ghost {
+    color: var(--muted); padding: 15px 20px;
+    font-size: 0.95rem; font-weight: 500;
+    text-decoration: none; border: none; cursor: pointer;
+    background: none; font-family: inherit;
+    transition: color 0.3s;
+  }
+  .btn-ghost:hover { color: var(--ink); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ============ SECTION COMMON ============ */
+  .section-label {
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 14px; text-align: center;
+  }
+  .section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(1.8rem, 4vw, 2.7rem);
+    line-height: 1.15; text-align: center;
+    margin-bottom: 12px;
+  }
+  .section-sub {
+    text-align: center; color: var(--muted);
+    font-size: 1.02rem; max-width: 540px;
+    margin: 0 auto 48px; line-height: 1.5;
+  }
+
+  /* ============ EXAMPLES SECTION ============ */
+  .examples { padding: 60px 24px 100px; max-width: 1100px; margin: 0 auto; }
+
+  .example-block {
+    margin-bottom: 80px;
+  }
+  .example-block:last-child { margin-bottom: 0; }
+
+  .ex-type {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .ex-type.personal { background: rgba(196,149,106,0.12); color: var(--thread-dark); }
+  .ex-type.group { background: rgba(122,158,126,0.12); color: #5B8660; }
+
+  .ex-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 6px;
+  }
+  .ex-subtitle {
+    color: var(--muted); font-size: 0.95rem;
+    margin-bottom: 24px; line-height: 1.5;
+    max-width: 600px;
+  }
+
+  /* Chat + Page side by side */
+  .ex-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* Chat panel */
+  .chat-panel {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(196,149,106,0.12);
+    overflow: hidden;
+    box-shadow: 0 4px 40px rgba(26,22,18,0.04);
+  }
+  .chat-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(196,149,106,0.1);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.85rem; font-weight: 600;
+  }
+  .chat-header .ch-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .chat-header .ch-label { color: var(--muted); font-weight: 400; font-size: 0.78rem; margin-left: auto; }
+  .chat-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+  .msg {
+    max-width: 88%;
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: var(--ink);
+    color: var(--cream);
+    border-bottom-right-radius: 6px;
+  }
+  .msg.ai {
+    align-self: flex-start;
+    background: var(--cream);
+    color: var(--ink);
+    border-bottom-left-radius: 6px;
+    border: 1px solid rgba(196,149,106,0.12);
+  }
+  .msg .ai-tag {
+    font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    margin-bottom: 6px; display: block;
+  }
+  .msg .mem-saved {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 8px; padding: 4px 10px; border-radius: 8px;
+    font-size: 0.72rem; font-weight: 600;
+    background: rgba(122,158,126,0.1);
+    color: var(--sage);
+  }
+  .msg .page-created {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-top: 8px; padding: 4px 10px; border-radius: 8px;
+    font-size: 0.72rem; font-weight: 600;
+    background: rgba(212,99,75,0.08);
+    color: var(--accent);
+  }
+
+  /* Page preview panel */
+  .page-panel {
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(196,149,106,0.12);
+    overflow: hidden;
+    box-shadow: 0 4px 40px rgba(26,22,18,0.04);
+  }
+  .page-bar {
+    padding: 10px 16px;
+    background: var(--cream);
+    border-bottom: 1px solid rgba(196,149,106,0.1);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .page-bar-dots { display: flex; gap: 5px; }
+  .page-bar-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(196,149,106,0.2); }
+  .page-url {
+    flex: 1; text-align: center;
+    font-size: 0.75rem; color: var(--muted);
+    font-family: 'DM Sans', monospace;
+  }
+  .page-url b { color: var(--accent); font-weight: 600; }
+  .page-body { padding: 24px; }
+
+  .page-title-bar {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.3rem; margin-bottom: 4px;
+  }
+  .page-updated {
+    font-size: 0.72rem; color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  /* Mini content blocks inside page preview */
+  .pg-block {
+    padding: 14px 16px; border-radius: 12px;
+    background: var(--cream); margin-bottom: 10px;
+  }
+  .pg-block:last-child { margin-bottom: 0; }
+  .pg-block-label {
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--thread-dark); margin-bottom: 8px;
+  }
+  .pg-block-content { font-size: 0.84rem; line-height: 1.55; }
+  .pg-block-content strong { font-weight: 600; }
+
+  .pg-tag {
+    display: inline-block; padding: 3px 10px; border-radius: 6px;
+    font-size: 0.72rem; font-weight: 500;
+    margin: 2px 2px;
+  }
+
+  /* Itinerary inside page */
+  .pg-itin {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(196,149,106,0.08);
+  }
+  .pg-itin:last-child { border-bottom: none; }
+  .pg-itin-time { font-size: 0.75rem; font-weight: 600; color: var(--thread-dark); min-width: 42px; }
+  .pg-itin-icon { font-size: 1.15rem; min-width: 24px; }
+  .pg-itin-name { font-weight: 600; font-size: 0.84rem; }
+  .pg-itin-note { font-size: 0.76rem; color: var(--muted); }
+
+  /* Two-user page split */
+  .page-split {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .page-split .split-col {
+    background: var(--cream); border-radius: 12px; padding: 14px 16px;
+  }
+  .split-user {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 10px;
+  }
+  .split-avatar {
+    width: 28px; height: 28px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; color: white; font-weight: 700;
+  }
+  .split-name { font-size: 0.8rem; font-weight: 600; }
+  .split-ai { font-size: 0.68rem; color: var(--muted); }
+
+  /* Compromise block */
+  .compromise-block {
+    background: linear-gradient(135deg, rgba(122,158,126,0.08), rgba(212,99,75,0.06));
+    border: 1.5px solid rgba(122,158,126,0.2);
+    border-radius: 14px; padding: 16px 18px;
+    margin-top: 14px;
+  }
+  .compromise-label {
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--sage); margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .compromise-content { font-size: 0.84rem; line-height: 1.55; }
+
+  /* ============ HOW SECTION (dark) ============ */
+  .how-section {
+    padding: 100px 24px;
+    background: var(--ink); color: var(--cream);
+    position: relative; overflow: hidden;
+  }
+  .how-section::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 50% 40% at 30% 60%, rgba(196,149,106,0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 80% 30%, rgba(122,158,126,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .how-inner { max-width: 1000px; margin: 0 auto; position: relative; }
+  .how-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .how-step {
+    text-align: center; padding: 32px 18px;
+    border-radius: 20px;
+    border: 1px solid rgba(196,149,106,0.1);
+    background: rgba(255,255,255,0.02);
+    transition: all 0.4s;
+  }
+  .how-step:hover { background: rgba(255,255,255,0.04); border-color: rgba(196,149,106,0.2); transform: translateY(-4px); }
+  .step-num {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(196,149,106,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.15rem; color: var(--thread);
+    margin: 0 auto 16px;
+  }
+  .step-icon { font-size: 2rem; margin-bottom: 14px; display: block; }
+  .step-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.15rem; margin-bottom: 8px;
+  }
+  .step-desc { font-size: 0.84rem; color: rgba(245,237,227,0.55); line-height: 1.5; }
+
+  /* ============ REVOLUTION SECTION ============ */
+  .revolution {
+    padding: 80px 24px;
+    max-width: 900px; margin: 0 auto;
+  }
+  .rev-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .rev-card {
+    padding: 28px 24px; border-radius: 18px;
+    border: 1px solid rgba(196,149,106,0.12);
+    background: white; transition: all 0.4s;
+  }
+  .rev-card:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(26,22,18,0.06); }
+  .rev-icon { font-size: 1.8rem; margin-bottom: 12px; display: block; }
+  .rev-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.15rem; margin-bottom: 6px;
+  }
+  .rev-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.5; }
+
+  /* ============ URL STRUCTURE ============ */
+  .structure { padding: 60px 24px 80px; max-width: 700px; margin: 0 auto; text-align: center; }
+  .url-rows { display: flex; flex-direction: column; gap: 10px; }
+  .url-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 20px; border-radius: 14px;
+    border: 1px solid rgba(196,149,106,0.12);
+    background: white; text-align: left; transition: all 0.3s;
+  }
+  .url-row:hover { border-color: var(--thread); }
+  .url-emoji { font-size: 1.2rem; min-width: 28px; text-align: center; }
+  .url-path { font-family: 'DM Sans', monospace; font-weight: 600; font-size: 0.86rem; min-width: 260px; }
+  .url-path span { color: var(--accent); }
+  .url-desc { font-size: 0.84rem; color: var(--muted); }
+
+  /* ============ CTA ============ */
+  .cta-section {
+    padding: 100px 24px;
+    text-align: center;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--warm) 100%);
+    position: relative;
+  }
+  .cta-section::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--thread-light), transparent);
+  }
+  .cta-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.1; margin-bottom: 18px;
+    max-width: 580px; margin-left: auto; margin-right: auto;
+  }
+  .cta-sub { font-size: 1rem; color: var(--muted); margin-bottom: 32px; line-height: 1.5; }
+  .cta-input-row { display: flex; gap: 10px; max-width: 440px; margin: 0 auto; }
+  .cta-input {
+    flex: 1; padding: 15px 18px;
+    border: 1.5px solid var(--thread-light);
+    border-radius: 14px; font-size: 0.95rem;
+    font-family: inherit; background: white;
+    color: var(--ink); outline: none;
+    transition: border-color 0.3s;
+  }
+  .cta-input::placeholder { color: var(--muted); }
+  .cta-input:focus { border-color: var(--thread); }
+  .cta-btn {
+    padding: 15px 28px; background: var(--accent);
+    color: white; border: none; border-radius: 14px;
+    font-size: 0.95rem; font-weight: 600;
+    font-family: inherit; cursor: pointer;
+    transition: all 0.3s; white-space: nowrap;
+  }
+  .cta-btn:hover { background: #C4543D; transform: translateY(-2px); }
+  .cta-note { margin-top: 14px; font-size: 0.78rem; color: var(--muted); }
+
+  footer { padding: 36px 24px; text-align: center; border-top: 1px solid rgba(196,149,106,0.12); }
+  footer p { font-size: 0.8rem; color: var(--muted); }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    nav { padding: 14px 18px; }
+    .nav-links { display: none; }
+    .ex-layout { grid-template-columns: 1fr; }
+    .how-steps { grid-template-columns: 1fr 1fr; }
+    .rev-grid { grid-template-columns: 1fr; }
+    .hero-cta-row { flex-direction: column; }
+    .hero-demo { max-width: 100%; }
+    .hd-msg { max-width: 94%; }
+    .cta-input-row { flex-direction: column; }
+    .page-split { grid-template-columns: 1fr; }
+    .url-row { flex-direction: column; gap: 6px; text-align: center; }
+    .url-path { min-width: auto; }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(28px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 32 32" fill="none">
+      <circle cx="10" cy="16" r="7" stroke="#C4956A" stroke-width="2.2" fill="none"/>
+      <circle cx="22" cy="16" r="7" stroke="#D4634B" stroke-width="2.2" fill="none"/>
+      <path d="M14.5 11.5C15.8 13.5 15.8 18.5 14.5 20.5" stroke="#7A9E7E" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    LoomKnot
+  </a>
+  <div class="nav-links">
+    <a href="#examples">Examples</a>
+    <a href="#how">How It Works</a>
+    <a href="#revolution">Values</a>
+    <a href="#cta" class="nav-cta">Early Access</a>
+  </div>
+</nav>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero">
+  <div class="hero-threads">
+    <div class="tl"></div><div class="tl"></div><div class="tl"></div><div class="tl"></div><div class="tl"></div>
+  </div>
+
+  <p class="hero-eyebrow">Your AI can do more. Much more.</p>
+
+  <h1>
+    Your <em>internet</em>.<br>Your AI inside.
+    <span class="h1-small">We built a space where your ChatGPT, Claude, or Gemini<br>creates pages, remembers everything, and works for&nbsp;you&nbsp;&mdash;&nbsp;not&nbsp;the&nbsp;platform.</span>
+  </h1>
+
+  <!-- Live demo right in hero -->
+  <div class="hero-demo">
+    <div class="hero-demo-card">
+      <div class="hd-bar">
+        <div class="hd-bar-dots"><span></span><span></span><span></span></div>
+        <div class="hd-url">loomknot.com/app/<b>my-lisbon</b></div>
+      </div>
+      <div class="hd-body">
+        <div class="hd-msgs">
+          <div class="hd-msg user">
+            I'm moving to Lisbon. Remote work, budget 1200€, I want to run by the water and need decent WiFi.
+          </div>
+          <div class="hd-msg ai">
+            <span class="aitag" style="color:var(--claude);">Claude → your project</span>
+            Saved. Santos is the best fit for you — waterfront, quiet, coworking nearby. Creating an apartment page filtered <strong>by WiFi and distance to running routes</strong>.
+            <span class="action-tag mem-tag">💾 remembered: remote work, running, 1200€</span>
+          </div>
+          <div class="hd-msg user">
+            I also need a document checklist for a residence permit.
+          </div>
+          <div class="hd-msg ai">
+            <span class="aitag" style="color:var(--claude);">Claude → your project</span>
+            Done. "Documents" page — NIF, NISS, bank account, insurance. I know you're a freelancer — <strong>added steps for self-employed</strong>, not salaried workers.
+            <span class="action-tag page-tag">📄 created: /documents, /apartments</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-agents">
+    <span>Works with your AI:</span>
+    <div class="ag-pill claude"><span class="ag-dot"></span> Claude</div>
+    <div class="ag-pill chatgpt"><span class="ag-dot"></span> ChatGPT</div>
+    <div class="ag-pill gemini"><span class="ag-dot"></span> Gemini</div>
+  </div>
+
+  <div class="hero-cta-row">
+    <a href="#cta" class="btn-primary">Reserve your space ↗</a>
+    <a href="#examples" class="btn-ghost">See examples ↓</a>
+  </div>
+</section>
+
+<!-- ==================== EXAMPLES ==================== -->
+<section class="examples" id="examples">
+  <div class="section-label reveal" style="color: var(--thread-dark);">Examples — from personal to group</div>
+  <h2 class="section-title reveal">Not just a site. Your <span class="serif" style="color:var(--accent);"><em>space</em></span> with&nbsp;AI.</h2>
+  <p class="section-sub reveal">The same LoomKnot. For yourself, for two, for a team. Here's what it looks like:</p>
+
+  <!-- ======= EXAMPLE 1: PERSONAL — Relocation ======= -->
+  <div class="example-block reveal">
+    <span class="ex-type personal">👤 Personal project</span>
+    <div class="ex-title">Moving to Lisbon</div>
+    <div class="ex-subtitle">You're relocating to a new city. Instead of dozens of tabs — one project where AI gathers everything for you and remembers every decision.</div>
+
+    <div class="ex-layout">
+      <!-- Chat -->
+      <div class="chat-panel">
+        <div class="chat-header">
+          <span class="ch-dot" style="background: var(--claude)"></span>
+          <span>Claude</span>
+          <span class="ch-label">MCP → lisbon-move</span>
+        </div>
+        <div class="chat-body">
+          <div class="msg user">I'm moving to Lisbon in May. I work remotely, rent budget up to 1200€, need good WiFi and somewhere near the sea or a park for running.</div>
+          <div class="msg ai">
+            <span class="ai-tag" style="color: var(--claude);">Claude</span>
+            Great! I'll save your criteria to the project. For Lisbon, your best options are 3 neighborhoods: <strong>Principe Real</strong> (park + coworkings), <strong>Santos</strong> (waterfront + quiet), and <strong>Graça</strong> (views + cheaper). Creating a comparison page.
+            <span class="mem-saved">💾 Saved to project memory</span>
+            <span class="page-created">📄 Created: /neighborhoods</span>
+          </div>
+          <div class="msg user">Santos — that's exactly what I need. Find apartments on Idealista under 1100€ with a balcony.</div>
+          <div class="msg ai">
+            <span class="ai-tag" style="color: var(--claude);">Claude</span>
+            Santos selected as primary neighborhood. Found 8 apartments, filtered by WiFi reviews and balcony availability. Top 3 — on the new page. I also added <strong>distance to the nearest running track</strong> — I remember that's important to you.
+            <span class="page-created">📄 Created: /apartments</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Preview -->
+      <div class="page-panel">
+        <div class="page-bar">
+          <div class="page-bar-dots"><span></span><span></span><span></span></div>
+          <div class="page-url">loomknot.com/app/<b>lisbon-move</b>/apartments</div>
+        </div>
+        <div class="page-body">
+          <div class="page-title-bar">🏠 Apartments in Santos</div>
+          <div class="page-updated">Updated 5 minutes ago · Claude</div>
+
+          <div class="pg-block">
+            <div class="pg-block-label">Your filters (remembered)</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <span class="pg-tag" style="background:rgba(196,149,106,0.1);color:var(--thread-dark);">under 1100€</span>
+              <span class="pg-tag" style="background:rgba(122,158,126,0.1);color:var(--sage);">balcony</span>
+              <span class="pg-tag" style="background:rgba(139,156,247,0.1);color:#6B7DE0;">WiFi 100+ Mbps</span>
+              <span class="pg-tag" style="background:rgba(212,99,75,0.08);color:var(--accent);">running nearby</span>
+            </div>
+          </div>
+
+          <div class="pg-block">
+            <div class="pg-block-label">⭐ Best option</div>
+            <div class="pg-block-content">
+              <strong>Rua de Santos, T2 · 1050€/mo</strong><br>
+              Sunset-facing balcony. WiFi 220 Mbps (verified).<br>
+              🏃 600m to Jardim da Estrela (1.2 km dirt trail)<br>
+              🛒 Pingo Doce — 3 min walk
+            </div>
+          </div>
+
+          <div class="pg-block">
+            <div class="pg-block-label">📋 Auto-checklist for the move</div>
+            <div class="pg-block-content">
+              ☑️ NIF (tax number) — <a href="#" style="color:var(--accent)">guide →</a><br>
+              ☐ Rental contract<br>
+              ☐ NISS (social security)<br>
+              ☐ Conta bancária (bank account) — <em>NIF required</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= EXAMPLE 2: GROUP — Travel ======= -->
+  <div class="example-block reveal">
+    <span class="ex-type group">👥 Group project</span>
+    <div class="ex-title">Barcelona for four</div>
+    <div class="ex-subtitle">Four friends. Two AIs. Everyone has their own preferences — AI agents see them all and build an itinerary that works for everyone.</div>
+
+    <div class="ex-layout">
+      <!-- Chat -->
+      <div class="chat-panel">
+        <div class="chat-header">
+          <span class="ch-dot" style="background: var(--chatgpt)"></span>
+          <span>ChatGPT</span>
+          <span class="ch-label">MCP → bcn-march</span>
+        </div>
+        <div class="chat-body">
+          <div class="msg user">Connect to our Barcelona project. I'm Petya, I love nightlife and street food, budget is tight.</div>
+          <div class="msg ai">
+            <span class="ai-tag" style="color: var(--chatgpt);">ChatGPT</span>
+            Connected! I see a project with 3 members. Masha (via Claude) prefers walking and vegan food, Anya — museums and cafes. Saving your preferences.
+            <span class="mem-saved">💾 Petya's profile saved</span>
+          </div>
+          <div class="msg user">Make a plan for Saturday that works for everyone.</div>
+          <div class="msg ai">
+            <span class="ai-tag" style="color: var(--chatgpt);">ChatGPT</span>
+            Done! Morning — a group walk through the Gothic Quarter (everyone loves it). Brunch — I found <strong>Flax & Kale</strong>: vegan menu for Masha, regular food for the rest, budget-friendly. Afternoon — Masha and Anya at MACBA, and you get the nearby street food market <strong>La Boqueria</strong>. Evening — together at Barceloneta, then you and whoever's up for it — Razzmatazz.
+            <span class="page-created">📄 Updated: /saturday</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Preview -->
+      <div class="page-panel">
+        <div class="page-bar">
+          <div class="page-bar-dots"><span></span><span></span><span></span></div>
+          <div class="page-url">loomknot.com/app/<b>bcn-march</b>/saturday</div>
+        </div>
+        <div class="page-body">
+          <div class="page-title-bar">📍 Saturday, March 21</div>
+          <div class="page-updated">4 members · 2 AI agents</div>
+
+          <div class="page-split" style="margin-top:16px;">
+            <div class="split-col">
+              <div class="split-user">
+                <div class="split-avatar" style="background:linear-gradient(135deg,var(--sage),#5B8660);">M</div>
+                <div><div class="split-name">Masha</div><div class="split-ai">Claude · 🚶 🌱</div></div>
+              </div>
+              <div style="font-size:0.8rem;line-height:1.5;">
+                <div style="margin-bottom:4px;">09:00 — Park Güell (on foot!)</div>
+                <div style="margin-bottom:4px;">11:00 — Flax & Kale <span style="color:var(--sage);font-weight:600;">vegan ✓</span></div>
+                <div>14:00 — MACBA</div>
+              </div>
+            </div>
+            <div class="split-col">
+              <div class="split-user">
+                <div class="split-avatar" style="background:linear-gradient(135deg,#8B9CF7,#6B7DE0);">P</div>
+                <div><div class="split-name">Petya</div><div class="split-ai">ChatGPT · 🎉 💰</div></div>
+              </div>
+              <div style="font-size:0.8rem;line-height:1.5;">
+                <div style="margin-bottom:4px;">09:00 — Park Güell (together)</div>
+                <div style="margin-bottom:4px;">11:00 — Flax & Kale <span style="color:var(--thread-dark);font-weight:600;">menu 12€</span></div>
+                <div>14:00 — La Boqueria 🌮</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="compromise-block">
+            <div class="compromise-label">⚡ AI compromise</div>
+            <div class="compromise-content">
+              <strong>18:00 — Barceloneta</strong> together (free, by the water).<br>
+              <strong>22:00 — split up:</strong> Masha + Anya → wine bar in El Born. Petya + Dima → Razzmatazz (entry 15€ before midnight).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= EXAMPLE 3: GROUP — Renovation ======= -->
+  <div class="example-block reveal">
+    <span class="ex-type group">👥 Work project</span>
+    <div class="ex-title">Kitchen renovation</div>
+    <div class="ex-subtitle">The client, designer, and contractor — each with their own AI. All decisions, materials, and budget — on one page that updates in real time.</div>
+
+    <div class="ex-layout">
+      <!-- Chat -->
+      <div class="chat-panel">
+        <div class="chat-header">
+          <span class="ch-dot" style="background: var(--gemini)"></span>
+          <span>Gemini</span>
+          <span class="ch-label">MCP → kitchen-reno</span>
+        </div>
+        <div class="chat-body">
+          <div class="msg user">I'm the contractor, joining the renovation project. What's the status on the kitchen?</div>
+          <div class="msg ai">
+            <span class="ai-tag" style="color: var(--gemini);">Gemini</span>
+            I see the project: client Lena (Claude) chose Scandinavian style, budget 800,000₽, designer Oleg (ChatGPT) approved the L-shaped kitchen layout, 12m². Saving you as contractor. You have access to: <strong>budget</strong>, <strong>materials</strong>, <strong>timeline</strong>.
+            <span class="mem-saved">💾 Role: contractor</span>
+          </div>
+          <div class="msg user">A quartz countertop won't fit in the budget. Any alternatives?</div>
+          <div class="msg ai">
+            <span class="ai-tag" style="color: var(--gemini);">Gemini</span>
+            I see that Lena wrote "want a light countertop, stain-resistant." Quartz — 85,000₽. Alternatives: <strong>HPL Egger</strong> (18,000₽, similar look, less durable) or <strong>12mm porcelain stoneware</strong> (45,000₽, looks premium). Creating a comparison and pinging Lena and Oleg.
+            <span class="page-created">📄 Created: /countertop-options</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Preview -->
+      <div class="page-panel">
+        <div class="page-bar">
+          <div class="page-bar-dots"><span></span><span></span><span></span></div>
+          <div class="page-url">loomknot.com/app/<b>kitchen-reno</b>/budget</div>
+        </div>
+        <div class="page-body">
+          <div class="page-title-bar">💰 Kitchen budget</div>
+          <div class="page-updated">3 members · 3 AI agents · Updated 2h ago</div>
+
+          <div class="pg-block" style="margin-top:16px;">
+            <div class="pg-block-label">Total budget</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-size:1.3rem;font-weight:700;font-family:'Instrument Serif',serif;">672,000₽ <span style="font-size:0.8rem;color:var(--muted);font-weight:400;">of 800,000₽</span></div>
+              <div style="width:100px;height:8px;background:var(--cream);border-radius:4px;overflow:hidden;margin-left:12px;">
+                <div style="width:84%;height:100%;background:linear-gradient(90deg,var(--sage),var(--thread));border-radius:4px;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pg-block">
+            <div class="pg-block-label">⚠️ Decision needed</div>
+            <div class="pg-block-content">
+              <strong>Countertop</strong> — contractor suggests <strong>12mm porcelain stoneware</strong> instead of quartz (saving 40,000₽).<br>
+              <span style="font-size:0.76rem;color:var(--muted);">Oleg (designer): "Looks fine visually, but check the seams"</span><br>
+              <span style="font-size:0.76rem;color:var(--accent);font-weight:600;">Waiting for Lena's decision →</span>
+            </div>
+          </div>
+
+          <div class="pg-block">
+            <div class="pg-block-label">✅ Approved by all</div>
+            <div class="pg-block-content" style="font-size:0.82rem;">
+              IKEA Voxtorp fronts · Bosch appliances · Backsplash — white subway tile · Grohe faucet · Lighting — Maytoni track
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== HOW IT WORKS ==================== -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="section-label reveal" style="color: var(--thread);">How it works</div>
+    <h2 class="section-title reveal" style="color: var(--cream);">Four steps — and your AI&nbsp;is&nbsp;inside</h2>
+    <p class="section-sub reveal" style="color: rgba(245,237,227,0.5); margin-bottom: 56px;">No signing up for new services. You already use AI — now it can do more.</p>
+
+    <div class="how-steps">
+      <div class="how-step reveal">
+        <div class="step-num">1</div>
+        <span class="step-icon">🔗</span>
+        <h3 class="step-title">Connect your AI</h3>
+        <p class="step-desc">Get an API key, add it to your AI's MCP settings. One setup — forever.</p>
+      </div>
+      <div class="how-step reveal delay-1">
+        <div class="step-num">2</div>
+        <span class="step-icon">💬</span>
+        <h3 class="step-title">Talk as usual</h3>
+        <p class="step-desc">Just chat with your AI as you normally would. It saves what matters to the project and builds pages on its own.</p>
+      </div>
+      <div class="how-step reveal delay-1">
+        <div class="step-num">3</div>
+        <span class="step-icon">📄</span>
+        <h3 class="step-title">Pages are alive</h3>
+        <p class="step-desc">Every page updates itself, remembers decisions, and adapts to you. It's not a document — it's memory.</p>
+      </div>
+      <div class="how-step reveal delay-2">
+        <div class="step-num">4</div>
+        <span class="step-icon">👥</span>
+        <h3 class="step-title">Invite people</h3>
+        <p class="step-desc">Friends, colleagues, contractors — each connects their own AI and sees the project through their own lens.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== REVOLUTION ==================== -->
+<section class="revolution" id="revolution">
+  <div class="section-label reveal" style="color: var(--thread-dark);">Why this is a different web</div>
+  <h2 class="section-title reveal">A page is <span class="serif" style="color:var(--accent);"><em>memory</em></span>, not a file</h2>
+  <p class="section-sub reveal">A regular website shows everyone the same thing. LoomKnot knows who you are, what you've decided, and what you specifically need.</p>
+
+  <div class="rev-grid">
+    <div class="rev-card reveal">
+      <span class="rev-icon">🧠</span>
+      <div class="rev-title">Explain once</div>
+      <div class="rev-desc">Tell your AI you're vegan — and on every project page, restaurants, recipes, and stores are already filtered. Forever.</div>
+    </div>
+    <div class="rev-card reveal delay-1">
+      <span class="rev-icon">🔓</span>
+      <div class="rev-title">No lock-in</div>
+      <div class="rev-desc">Using Claude? Great. Switched to ChatGPT? Your project stays, your memory stays. It's your data.</div>
+    </div>
+    <div class="rev-card reveal">
+      <span class="rev-icon">⚡</span>
+      <div class="rev-title">AI negotiates for you</div>
+      <div class="rev-desc">When preferences conflict — "budget" vs "premium" — agents propose a compromise instead of you arguing in a chat.</div>
+    </div>
+    <div class="rev-card reveal delay-1">
+      <span class="rev-icon">🌐</span>
+      <div class="rev-title">One URL — a million versions</div>
+      <div class="rev-desc">The Barcelona link for a student — bars and beaches. For a family — parks and restaurants. Content reshapes for everyone.</div>
+    </div>
+    <div class="rev-card reveal">
+      <span class="rev-icon">🛠</span>
+      <div class="rev-title">Claude Code works too</div>
+      <div class="rev-desc">Developer? Connect the project via CLI. The agent writes to the same pages — from the terminal, through the API, however you like.</div>
+    </div>
+    <div class="rev-card reveal delay-1">
+      <span class="rev-icon">🔒</span>
+      <div class="rev-title">Three levels of privacy</div>
+      <div class="rev-desc">Personal preferences — only for your AI. Project decisions — for the team. Public page — for&nbsp;everyone.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== STRUCTURE ==================== -->
+<section class="structure reveal">
+  <h2 class="section-title" style="margin-bottom:32px;">Simple. One place for&nbsp;everything.</h2>
+  <div class="url-rows">
+    <div class="url-row">
+      <span class="url-emoji">🏠</span>
+      <span class="url-path">loomknot.com</span>
+      <span class="url-desc">Landing page, documentation, info</span>
+    </div>
+    <div class="url-row">
+      <span class="url-emoji">⚙️</span>
+      <span class="url-path">loomknot.com<span>/app/masha</span></span>
+      <span class="url-desc">Your dashboard: projects, AI settings, preferences</span>
+    </div>
+    <div class="url-row">
+      <span class="url-emoji">📄</span>
+      <span class="url-path">loomknot.com<span>/app/masha/bcn-march</span></span>
+      <span class="url-desc">Member's project — all pages, memory, decisions</span>
+    </div>
+    <div class="url-row">
+      <span class="url-emoji">🌐</span>
+      <span class="url-path">loomknot.com<span>/web/masha/bcn-march</span></span>
+      <span class="url-desc">Public version — what you share with friends</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CTA ==================== -->
+<section class="cta-section" id="cta">
+  <h2 class="cta-title reveal">Claim <span class="serif"><em>your spot</em></span> in&nbsp;the&nbsp;new&nbsp;web</h2>
+  <p class="cta-sub reveal">Reserve loomknot.com/web/<strong>your-name</strong> — before it's taken.</p>
+  <div class="cta-input-row reveal">
+    <input type="text" class="cta-input" placeholder="loomknot.com/web/your-name">
+    <button class="cta-btn">Reserve</button>
+  </div>
+  <p class="cta-note reveal">Free. Launching spring 2026.</p>
+</section>
+
+<footer>
+  <p>© 2026 LoomKnot · Weaving AI, people, and&nbsp;pages</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>

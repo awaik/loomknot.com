@@ -1,0 +1,26 @@
+# Local development reverse proxy
+# Frontend: http://localhost:43001 (Next.js dev)
+# Backend:  http://host.docker.internal:43002 (NestJS dev)
+# MCP:      http://host.docker.internal:43003 (MCP server dev)
+
+:43000 {
+	# MCP endpoints
+	handle /mcp/* {
+		reverse_proxy host.docker.internal:43003
+	}
+
+	# API endpoints → Backend
+	handle /api/* {
+		reverse_proxy host.docker.internal:43002
+	}
+
+	# Socket.io → Backend
+	handle /socket.io/* {
+		reverse_proxy host.docker.internal:43002
+	}
+
+	# Everything else → Frontend
+	handle {
+		reverse_proxy host.docker.internal:43001
+	}
+}

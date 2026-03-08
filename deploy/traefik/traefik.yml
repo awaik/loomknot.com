@@ -1,0 +1,61 @@
+# Traefik v3 static configuration
+api:
+  dashboard: false
+
+log:
+  level: WARN
+
+accessLog:
+  bufferingSize: 100
+
+entryPoints:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+          scheme: https
+          permanent: true
+  websecure:
+    address: ":443"
+    http:
+      tls:
+        certResolver: letsencrypt
+    transport:
+      respondingTimeouts:
+        readTimeout: 300s
+        writeTimeout: 300s
+        idleTimeout: 180s
+
+certificatesResolvers:
+  letsencrypt:
+    acme:
+      email: admin@loomknot.com
+      storage: /acme.json
+      httpChallenge:
+        entryPoint: web
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    swarmMode: true
+    exposedByDefault: false
+    network: traefik-public
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
+
+# Global middlewares
+http:
+  middlewares:
+    security-headers:
+      headers:
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        forceSTSHeader: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        referrerPolicy: "strict-origin-when-cross-origin"
+        frameDeny: true
