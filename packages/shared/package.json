@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@loomknot/tsconfig": "workspace:*",
+    "@types/node": "^22.0.0",
     "drizzle-kit": "^0.30.0",
     "postgres": "^3.4.0",
     "typescript": "^5.7.0"

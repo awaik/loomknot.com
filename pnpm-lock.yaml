@@ -225,6 +225,9 @@ importers:
       '@loomknot/tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.15
       drizzle-kit:
         specifier: ^0.30.0
         version: 0.30.6
