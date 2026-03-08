@@ -43,7 +43,7 @@ WORKDIR /app/apps/mcp
 EXPOSE 4100
 ENV PORT=4100
 
-HEALTHCHECK --interval=15s --timeout=5s --retries=3 --start_period=20s \
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 --start-period=20s \
   CMD curl -sf http://localhost:4100/mcp/health || exit 1
 
 CMD ["node", "dist/server.js"]
