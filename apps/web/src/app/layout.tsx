@@ -1,32 +1,18 @@
-import type { Metadata } from 'next';
+import { getLocale } from 'next-intl/server';
 import { AuthInit } from '@/components/auth-init';
+import { RTL_LOCALES, type Locale } from '@/i18n/routing';
 import './globals.css';
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://loomknot.com'),
-  title: {
-    default: 'LoomKnot — The Web That Knows You',
-    template: '%s | LoomKnot',
-  },
-  description:
-    'A platform where your AI creates pages, remembers everything, and works for you — not the platform.',
-  openGraph: {
-    type: 'website',
-    siteName: 'LoomKnot',
-    locale: 'ru_RU',
-  },
-  twitter: {
-    card: 'summary_large_image',
-  },
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = (await getLocale()) as Locale;
+  const dir = RTL_LOCALES.includes(locale) ? 'rtl' : 'ltr';
+
   return (
-    <html lang="ru" suppressHydrationWarning>
+    <html lang={locale} dir={dir} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

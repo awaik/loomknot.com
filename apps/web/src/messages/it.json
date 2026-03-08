@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Il Web Che Ti Conosce",
+    "template": "%s | LoomKnot",
+    "description": "Una piattaforma dove la tua IA crea pagine, ricorda tutto e lavora per te — non per la piattaforma."
+  },
+  "Nav": {
+    "examples": "Esempi",
+    "howItWorks": "Come funziona",
+    "values": "Valori",
+    "signIn": "Accedi"
+  },
+  "Hero": {
+    "eyebrow": "La tua IA può fare di più. Molto di più.",
+    "title": "Il tuo <accent>internet</accent>.<br/>La tua IA dentro.",
+    "subtitle": "Abbiamo creato uno spazio dove il tuo ChatGPT, Claude o Gemini crea pagine, ricorda tutto e lavora per te — non per la piattaforma.",
+    "worksWithAi": "Funziona con la tua IA:",
+    "reserveSpace": "Riserva il tuo spazio ↗",
+    "seeExamples": "Vedi esempi ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Mi trasferisco a Lisbona. Lavoro da remoto, budget 1200€, voglio correre vicino all'acqua e ho bisogno di un WiFi decente.",
+    "agentLabel": "Claude → il tuo progetto",
+    "aiMsg1": "Salvato. Santos è il posto migliore per te — lungomare, tranquillo, coworking vicino. Sto creando una pagina appartamenti filtrata per <strong>velocità WiFi e distanza dai percorsi di corsa</strong>.",
+    "aiMsg1Tag": "💾 ricordato: lavoro remoto, corsa, 1200€",
+    "userMsg2": "Ho bisogno anche di una checklist dei documenti per il permesso di soggiorno.",
+    "aiMsg2": "Fatto. Pagina \"Documenti\" — NIF, NISS, banca, assicurazione. So che sei freelancer — <strong>ho aggiunto i passaggi per lavoratori autonomi</strong>, non dipendenti.",
+    "aiMsg2Tag": "📄 creati: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Esempi — dal personale al gruppo",
+    "title": "Non solo un sito web. Il tuo <accent>spazio</accent> con l'IA.",
+    "subtitle": "Lo stesso LoomKnot. Per te, per due, per un team. Ecco come si presenta:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Progetto personale",
+    "title": "Trasferimento a Lisbona",
+    "description": "Ti trasferisci in una nuova città. Invece di decine di tab — un progetto dove l'IA raccoglie tutto e ricorda ogni decisione.",
+    "userMsg1": "Mi trasferisco a Lisbona a maggio. Lavoro da remoto, budget affitto fino a 1200€, ho bisogno di buon WiFi e mare o parco vicino per correre.",
+    "aiMsg1": "Perfetto! Salvo i tuoi criteri nel progetto. Per Lisbona, i 3 quartieri migliori per te sono: <strong>Principe Real</strong> (parco + coworking), <strong>Santos</strong> (lungomare + tranquillo) e <strong>Graça</strong> (panorama + più economico). Creo una pagina di confronto.",
+    "aiMsg1MemTag": "💾 Salvato nella memoria del progetto",
+    "aiMsg1PageTag": "📄 Creata: /neighborhoods",
+    "userMsg2": "Santos — è esattamente quello che mi serve. Trova appartamenti su Idealista sotto 1100€ con balcone.",
+    "aiMsg2": "Santos selezionato come quartiere principale. Trovati 8 appartamenti, filtrati per recensioni WiFi e disponibilità balcone. I migliori 3 in una nuova pagina. Ho anche aggiunto la <strong>distanza dal percorso di corsa più vicino</strong> — ricordo che è importante per te.",
+    "aiMsg2PageTag": "📄 Creata: /apartments",
+    "pageTitle": "🏠 Appartamenti a Santos",
+    "pageUpdated": "Aggiornato 5 minuti fa · Claude",
+    "filtersLabel": "I tuoi filtri (ricordati)",
+    "filterBudget": "sotto 1100€",
+    "filterBalcony": "balcone",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "corsa nelle vicinanze",
+    "bestOptionLabel": "⭐ Migliore opzione",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/mese",
+    "bestOptionLine1": "Balcone esposto al tramonto. WiFi 220 Mbps (verificato).",
+    "bestOptionLine2": "🏃 600m dal Jardim da Estrela (sentiero sterrato 1,2 km)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 min a piedi",
+    "checklistLabel": "📋 Checklist automatica per il trasloco",
+    "checklistNif": "☑️ NIF (codice fiscale) —",
+    "checklistNifLink": "guida →",
+    "checklistRental": "☐ Contratto d'affitto",
+    "checklistNiss": "☐ NISS (previdenza sociale)",
+    "checklistBank": "☐ Conta bancária (conto bancario) —",
+    "checklistBankNote": "NIF richiesto"
+  },
+  "ExGroup": {
+    "badge": "👥 Progetto di gruppo",
+    "title": "Barcellona in quattro",
+    "description": "Quattro amici. Due IA. Ognuno ha le proprie preferenze — gli agenti IA le vedono tutte e costruiscono un itinerario che funziona per tutti.",
+    "userMsg1": "Connettiti al nostro progetto Barcellona. Sono Petya, amo la vita notturna e lo street food, budget limitato.",
+    "aiMsg1": "Connesso! Vedo un progetto con 3 partecipanti. Masha (via Claude) preferisce tour a piedi e cibo vegano, Anya — musei e caffetterie. Salvo le tue preferenze.",
+    "aiMsg1MemTag": "💾 Profilo di Petya salvato",
+    "userMsg2": "Crea un programma per sabato che piaccia a tutti.",
+    "aiMsg2": "Fatto! Mattina — passeggiata di gruppo nel Quartiere Gotico (piace a tutti). Brunch — ho trovato <strong>Flax & Kale</strong>: menù vegano per Masha, cibo normale per gli altri, economico. Pomeriggio — Masha e Anya al MACBA, tu al mercato di street food <strong>La Boqueria</strong> vicino. Sera — tutti insieme alla Barceloneta, poi tu e chi vuole — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Aggiornata: /saturday",
+    "pageTitle": "📍 Sabato, 21 marzo",
+    "pageParticipants": "4 partecipanti · 2 agenti IA",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (a piedi!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegano ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (insieme)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menù 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ Compromesso IA",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> insieme (gratis, sul mare).",
+    "compromiseLine2": "<strong>22:00 — ci si divide:</strong> Masha + Anya → wine bar a El Born. Petya + Dima → Razzmatazz (ingresso 15€ prima di mezzanotte)."
+  },
+  "ExWork": {
+    "badge": "👥 Progetto di lavoro",
+    "title": "Ristrutturazione cucina",
+    "description": "Un cliente, un designer e un impresario — ognuno con la propria IA. Tutte le decisioni, i materiali e il budget — su una pagina che si aggiorna in tempo reale.",
+    "userMsg1": "Sono l'impresario, mi unisco al progetto di ristrutturazione. A che punto è la cucina?",
+    "aiMsg1": "Vedo il progetto: la cliente Lena (Claude) ha scelto lo stile scandinavo, budget 800.000₽, il designer Oleg (ChatGPT) ha approvato il layout cucina a L, 12m². Ti salvo come impresario. Hai accesso a: <strong>budget</strong>, <strong>materiali</strong>, <strong>tempistiche</strong>.",
+    "aiMsg1MemTag": "💾 Ruolo: impresario",
+    "userMsg2": "Il piano in quarzo composito non rientra nel budget. Alternative?",
+    "aiMsg2": "Vedo che Lena ha scritto \"voglio un piano chiaro, resistente alle macchie.\" Quarzo — 85.000₽. Alternative: <strong>HPL Egger</strong> (18.000₽, aspetto simile, meno durevole) o <strong>gres porcellanato 12mm</strong> (45.000₽, aspetto premium). Creo un confronto e avviso Lena e Oleg.",
+    "aiMsg2PageTag": "📄 Creata: /countertop-options",
+    "pageTitle": "💰 Budget cucina",
+    "pageParticipants": "3 partecipanti · 3 agenti IA · Aggiornato 2 ore fa",
+    "totalBudgetLabel": "Budget totale",
+    "totalBudgetAmount": "672.000₽",
+    "totalBudgetOf": "su 800.000₽",
+    "decisionLabel": "⚠️ Decisione necessaria",
+    "decisionText": "<strong>Piano di lavoro</strong> — l'impresario propone <strong>gres porcellanato 12mm</strong> al posto del quarzo (risparmio 40.000₽).",
+    "decisionDesigner": "Oleg (designer): \"Visivamente va bene, ma controlla le giunture\"",
+    "decisionAwaiting": "In attesa della decisione di Lena →",
+    "approvedLabel": "✅ Approvato da tutti",
+    "approvedItems": "Mobili IKEA Voxtorp · Elettrodomestici Bosch · Paraschizzi — piastrelle subway bianche · Rubinetto Grohe · Illuminazione — binario Maytoni"
+  },
+  "HowItWorks": {
+    "label": "Come funziona",
+    "title": "Quattro passi — e la tua IA è dentro",
+    "subtitle": "Nessuna iscrizione a nuovi servizi. Usi già l'IA — ora può fare di più.",
+    "step1Title": "Connetti la tua IA",
+    "step1Desc": "Durante l'onboarding, aggiungi il tuo ChatGPT, Claude o Gemini tramite MCP. Un clic.",
+    "step2Title": "Parla come al solito",
+    "step2Desc": "Chatta con la tua IA. Salva automaticamente ciò che è importante per il progetto e crea pagine.",
+    "step3Title": "Le pagine sono vive",
+    "step3Desc": "Ogni pagina si aggiorna, ricorda le decisioni e si adatta a te. Non è un documento — è memoria.",
+    "step4Title": "Invita persone",
+    "step4Desc": "Amici, colleghi, impresari — ognuno connette la propria IA e vede il progetto dalla propria prospettiva."
+  },
+  "Revolution": {
+    "label": "Perché questo è un web diverso",
+    "title": "Una pagina è <accent>memoria</accent>, non un file",
+    "subtitle": "Un sito web normale mostra a tutti la stessa cosa. LoomKnot sa chi sei, cosa hai deciso e di cosa hai bisogno specificamente.",
+    "card1Title": "Spiega una volta sola",
+    "card1Desc": "Di' alla tua IA che sei vegano — su ogni pagina del progetto, ristoranti, ricette e negozi sono già filtrati. Per sempre.",
+    "card2Title": "Nessun lock-in",
+    "card2Desc": "Usi Claude? Perfetto. Sei passato a ChatGPT? Il tuo progetto resta, la tua memoria resta. Sono i tuoi dati.",
+    "card3Title": "L'IA negozia per te",
+    "card3Desc": "Quando le preferenze confliggono — \"budget\" vs \"premium\" — gli agenti propongono un compromesso invece di discutere in chat.",
+    "card4Title": "Un URL — un milione di versioni",
+    "card4Desc": "Il link di Barcellona mostra a uno studente bar e spiagge, a una famiglia — parchi e ristoranti. Il contenuto si adatta per ognuno.",
+    "card5Title": "Anche Claude Code funziona",
+    "card5Desc": "Sei sviluppatore? Connetti il tuo progetto via CLI. L'agente scrive sulle stesse pagine — dal terminale, via API, come vuoi.",
+    "card6Title": "Tre livelli di privacy",
+    "card6Desc": "Preferenze personali — solo per la tua IA. Decisioni di progetto — per il team. Pagina pubblica — per tutti."
+  },
+  "Structure": {
+    "title": "Semplice. Tutto in un posto.",
+    "row1Desc": "Landing, documentazione, informazioni",
+    "row2Desc": "La tua dashboard: progetti, impostazioni IA, preferenze",
+    "row3Desc": "Pagina pubblica — ciò che condividi con gli amici"
+  },
+  "Cta": {
+    "title": "Riserva <em>il tuo posto</em> nel nuovo web",
+    "subtitle": "Prenota loomknot.com/web/<strong>your-name</strong> — prima che venga preso.",
+    "placeholder": "loomknot.com/web/  your-project",
+    "button": "Prenota",
+    "note": "Gratis. Lancio primavera 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Intrecciamo IA, persone e pagine"
+  },
+  "Login": {
+    "tagline": "Pages as Memory",
+    "emailLabel": "Email",
+    "getCode": "Ricevi codice",
+    "sending": "Invio in corso...",
+    "errorSend": "Invio del codice fallito. Controlla la tua email.",
+    "codeSentTo": "Codice inviato a <strong>{email}</strong>",
+    "pinLabel": "Codice a 6 cifre",
+    "signIn": "Accedi",
+    "verifying": "Verifica in corso...",
+    "errorVerify": "Codice non valido o scaduto.",
+    "useDifferentEmail": "Usa un'altra email"
+  },
+  "App": {
+    "welcome": "Benvenuto, <strong>{email}</strong>",
+    "logout": "Esci",
+    "loading": "Caricamento..."
+  },
+  "Common": {
+    "darkTheme": "Tema scuro",
+    "lightTheme": "Tema chiaro"
+  },
+  "LanguageSwitcher": {
+    "label": "Lingua"
+  }
+}

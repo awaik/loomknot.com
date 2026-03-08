@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Web yang Mengenal Anda",
+    "template": "%s | LoomKnot",
+    "description": "Platform tempat AI Anda membuat halaman, mengingat segalanya, dan bekerja untuk Anda — bukan untuk platform."
+  },
+  "Nav": {
+    "examples": "Contoh",
+    "howItWorks": "Cara kerja",
+    "values": "Nilai",
+    "signIn": "Masuk"
+  },
+  "Hero": {
+    "eyebrow": "AI Anda bisa melakukan lebih banyak. Jauh lebih banyak.",
+    "title": "<accent>Internet</accent> Anda.<br/>AI Anda di dalamnya.",
+    "subtitle": "Kami membangun ruang tempat ChatGPT, Claude, atau Gemini Anda membuat halaman, mengingat segalanya, dan bekerja untuk Anda — bukan untuk platform.",
+    "worksWithAi": "Bekerja dengan AI Anda:",
+    "reserveSpace": "Pesan tempat Anda ↗",
+    "seeExamples": "Lihat contoh ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Saya pindah ke Lisbon. Kerja remote, anggaran 1200€, saya ingin lari di dekat air dan butuh WiFi yang bagus.",
+    "agentLabel": "Claude → proyek Anda",
+    "aiMsg1": "Tersimpan. Santos paling cocok untuk Anda — tepi air, tenang, coworking terdekat. Membuat halaman apartemen yang difilter berdasarkan <strong>kecepatan WiFi dan jarak ke rute lari</strong>.",
+    "aiMsg1Tag": "💾 diingat: kerja remote, lari, 1200€",
+    "userMsg2": "Saya juga butuh daftar dokumen untuk izin tinggal.",
+    "aiMsg2": "Selesai. Halaman \"Documents\" — NIF, NISS, bank, asuransi. Saya tahu Anda pekerja lepas — <strong>ditambahkan langkah untuk wiraswasta</strong>, bukan karyawan.",
+    "aiMsg2Tag": "📄 dibuat: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Contoh — dari pribadi ke kelompok",
+    "title": "Bukan sekadar situs web. <accent>Ruang</accent> Anda dengan AI.",
+    "subtitle": "LoomKnot yang sama. Untuk Anda sendiri, untuk berdua, untuk tim. Begini tampilannya:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Proyek pribadi",
+    "title": "Pindah ke Lisbon",
+    "description": "Anda pindah ke kota baru. Alih-alih puluhan tab — satu proyek tempat AI mengumpulkan segalanya untuk Anda dan mengingat setiap keputusan.",
+    "userMsg1": "Saya pindah ke Lisbon bulan Mei. Saya kerja remote, anggaran sewa sampai 1200€, saya butuh WiFi bagus dan laut atau taman terdekat untuk lari.",
+    "aiMsg1": "Bagus! Saya akan menyimpan kriteria Anda di proyek. Untuk Lisbon, 3 lingkungan terbaik untuk Anda: <strong>Principe Real</strong> (taman + coworking), <strong>Santos</strong> (tepi air + tenang) dan <strong>Graça</strong> (pemandangan + lebih murah). Membuat halaman perbandingan.",
+    "aiMsg1MemTag": "💾 Disimpan di memori proyek",
+    "aiMsg1PageTag": "📄 Dibuat: /neighborhoods",
+    "userMsg2": "Santos — itu persis yang saya butuhkan. Cari apartemen di Idealista di bawah 1100€ dengan balkon.",
+    "aiMsg2": "Santos dipilih sebagai lingkungan utama. Ditemukan 8 apartemen, difilter berdasarkan ulasan WiFi dan ketersediaan balkon. 3 terbaik ada di halaman baru. Saya juga menambahkan <strong>jarak ke jalur lari terdekat</strong> — saya ingat itu penting bagi Anda.",
+    "aiMsg2PageTag": "📄 Dibuat: /apartments",
+    "pageTitle": "🏠 Apartemen di Santos",
+    "pageUpdated": "Diperbarui 5 menit lalu · Claude",
+    "filtersLabel": "Filter Anda (diingat)",
+    "filterBudget": "di bawah 1100€",
+    "filterBalcony": "balkon",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "lari terdekat",
+    "bestOptionLabel": "⭐ Pilihan terbaik",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/bln",
+    "bestOptionLine1": "Balkon menghadap matahari terbenam. WiFi 220 Mbps (terverifikasi).",
+    "bestOptionLine2": "🏃 600m ke Jardim da Estrela (jalur tanah 1,2 km)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 menit jalan kaki",
+    "checklistLabel": "📋 Daftar otomatis untuk pindahan",
+    "checklistNif": "☑️ NIF (nomor pajak) —",
+    "checklistNifLink": "panduan →",
+    "checklistRental": "☐ Kontrak sewa",
+    "checklistNiss": "☐ NISS (jaminan sosial)",
+    "checklistBank": "☐ Conta bancária (rekening bank) —",
+    "checklistBankNote": "NIF diperlukan"
+  },
+  "ExGroup": {
+    "badge": "👥 Proyek kelompok",
+    "title": "Barcelona untuk berempat",
+    "description": "Empat teman. Dua AI. Setiap orang punya preferensi sendiri — agen AI melihat semuanya dan membangun rute yang cocok untuk semua.",
+    "userMsg1": "Hubungkan ke proyek Barcelona kami. Saya Petya, saya suka kehidupan malam dan makanan jalanan, anggaran terbatas.",
+    "aiMsg1": "Terhubung! Saya melihat proyek dengan 3 peserta. Masha (via Claude) suka tur jalan kaki dan makanan vegan, Anya — museum dan kedai kopi. Saya akan menyimpan preferensi Anda.",
+    "aiMsg1MemTag": "💾 Profil Petya disimpan",
+    "userMsg2": "Buatkan rencana hari Sabtu yang menyenangkan untuk semua.",
+    "aiMsg2": "Selesai! Pagi — jalan-jalan kelompok melalui Kuarter Gotik (semua suka). Brunch — saya menemukan <strong>Flax & Kale</strong>: menu vegan untuk Masha, makanan biasa untuk yang lain, ramah anggaran. Siang — Masha dan Anya di MACBA, Anda ke pasar makanan jalanan terdekat <strong>La Boqueria</strong>. Malam — semua bersama di Barceloneta, lalu Anda dan yang berminat — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Diperbarui: /saturday",
+    "pageTitle": "📍 Sabtu, 21 Maret",
+    "pageParticipants": "4 peserta · 2 agen AI",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (jalan kaki!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegan ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (bersama)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menu 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ Kompromi AI",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> bersama (gratis, di tepi air).",
+    "compromiseLine2": "<strong>22:00 — berpisah:</strong> Masha + Anya → bar anggur di El Born. Petya + Dima → Razzmatazz (masuk 15€ sebelum tengah malam)."
+  },
+  "ExWork": {
+    "badge": "👥 Proyek kerja",
+    "title": "Renovasi dapur",
+    "description": "Klien, desainer, dan kontraktor — masing-masing dengan AI sendiri. Semua keputusan, material, dan anggaran — di satu halaman yang diperbarui secara real time.",
+    "userMsg1": "Saya kontraktor, bergabung di proyek renovasi. Bagaimana status dapurnya?",
+    "aiMsg1": "Saya melihat proyek: klien Lena (Claude) memilih gaya Skandinavia, anggaran 800.000₽, desainer Oleg (ChatGPT) menyetujui tata letak dapur bentuk L, 12m². Menyimpan Anda sebagai kontraktor. Anda punya akses ke: <strong>anggaran</strong>, <strong>material</strong>, <strong>jadwal</strong>.",
+    "aiMsg1MemTag": "💾 Peran: kontraktor",
+    "userMsg2": "Countertop komposit kuarsa tidak masuk anggaran. Ada alternatif?",
+    "aiMsg2": "Saya melihat Lena menulis \"ingin countertop terang, tahan noda.\" Kuarsa — 85.000₽. Alternatif: <strong>HPL Egger</strong> (18.000₽, tampilan serupa, kurang tahan lama) atau <strong>porselen stoneware 12mm</strong> (45.000₽, tampilan premium). Membuat perbandingan dan menghubungi Lena dan Oleg.",
+    "aiMsg2PageTag": "📄 Dibuat: /countertop-options",
+    "pageTitle": "💰 Anggaran dapur",
+    "pageParticipants": "3 peserta · 3 agen AI · Diperbarui 2j lalu",
+    "totalBudgetLabel": "Total anggaran",
+    "totalBudgetAmount": "672.000₽",
+    "totalBudgetOf": "dari 800.000₽",
+    "decisionLabel": "⚠️ Keputusan diperlukan",
+    "decisionText": "<strong>Countertop</strong> — kontraktor menyarankan <strong>porselen stoneware 12mm</strong> menggantikan kuarsa (hemat 40.000₽).",
+    "decisionDesigner": "Oleg (desainer): \"Secara visual bagus, tapi periksa sambungannya\"",
+    "decisionAwaiting": "Menunggu keputusan Lena →",
+    "approvedLabel": "✅ Disetujui semua",
+    "approvedItems": "Kabinet IKEA Voxtorp · Peralatan Bosch · Backsplash — ubin subway putih · Keran Grohe · Pencahayaan — Maytoni track"
+  },
+  "HowItWorks": {
+    "label": "Cara kerja",
+    "title": "Empat langkah — dan AI Anda di dalam",
+    "subtitle": "Tidak perlu mendaftar layanan baru. Anda sudah menggunakan AI — sekarang bisa melakukan lebih banyak.",
+    "step1Title": "Hubungkan AI Anda",
+    "step1Desc": "Saat onboarding, tambahkan ChatGPT, Claude, atau Gemini Anda via MCP. Satu klik.",
+    "step2Title": "Bicara seperti biasa",
+    "step2Desc": "Cukup mengobrol dengan AI Anda. Secara otomatis menyimpan yang penting di proyek dan membangun halaman.",
+    "step3Title": "Halaman hidup",
+    "step3Desc": "Setiap halaman diperbarui, mengingat keputusan, dan beradaptasi dengan Anda. Ini bukan dokumen — ini memori.",
+    "step4Title": "Undang orang",
+    "step4Desc": "Teman, kolega, kontraktor — semua menghubungkan AI sendiri dan melihat proyek dari sudut pandang masing-masing."
+  },
+  "Revolution": {
+    "label": "Mengapa ini web yang berbeda",
+    "title": "Halaman adalah <accent>memori</accent>, bukan file",
+    "subtitle": "Situs web biasa menampilkan hal yang sama ke semua orang. LoomKnot tahu siapa Anda, apa yang Anda putuskan, dan apa yang Anda butuhkan.",
+    "card1Title": "Jelaskan sekali",
+    "card1Desc": "Beritahu AI Anda bahwa Anda vegan — dan di setiap halaman proyek, restoran, resep, dan toko sudah difilter. Selamanya.",
+    "card2Title": "Tidak terkunci",
+    "card2Desc": "Menggunakan Claude? Bagus. Beralih ke ChatGPT? Proyek Anda tetap, memori Anda tetap. Ini data Anda.",
+    "card3Title": "AI bernegosiasi untuk Anda",
+    "card3Desc": "Ketika preferensi bertabrakan — \"anggaran\" vs \"premium\" — agen menyarankan kompromi alih-alih Anda berdebat di chat.",
+    "card4Title": "Satu URL — sejuta versi",
+    "card4Desc": "Link Barcelona untuk mahasiswa menampilkan bar dan pantai, untuk keluarga — taman dan restoran. Konten menyesuaikan untuk setiap orang.",
+    "card5Title": "Claude Code juga bisa",
+    "card5Desc": "Developer? Hubungkan proyek Anda via CLI. Agen menulis ke halaman yang sama — dari terminal, via API, sesuka Anda.",
+    "card6Title": "Tiga tingkat privasi",
+    "card6Desc": "Preferensi pribadi — hanya untuk AI Anda. Keputusan proyek — untuk tim. Halaman publik — untuk semua."
+  },
+  "Structure": {
+    "title": "Sederhana. Satu tempat untuk segalanya.",
+    "row1Desc": "Landing, dokumentasi, informasi",
+    "row2Desc": "Dashboard Anda: proyek, pengaturan AI, preferensi",
+    "row3Desc": "Halaman publik — yang Anda bagikan dengan teman"
+  },
+  "Cta": {
+    "title": "Klaim <em>tempat Anda</em> di web baru",
+    "subtitle": "Pesan loomknot.com/web/<strong>nama-anda</strong> — sebelum diambil.",
+    "placeholder": "loomknot.com/web/  proyek-anda",
+    "button": "Pesan",
+    "note": "Gratis. Diluncurkan musim semi 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Merajut AI, manusia, dan halaman"
+  },
+  "Login": {
+    "tagline": "Halaman sebagai Memori",
+    "emailLabel": "Email",
+    "getCode": "Dapatkan kode",
+    "sending": "Mengirim...",
+    "errorSend": "Gagal mengirim kode. Silakan periksa email Anda.",
+    "codeSentTo": "Kode dikirim ke <strong>{email}</strong>",
+    "pinLabel": "Kode 6 digit",
+    "signIn": "Masuk",
+    "verifying": "Memverifikasi...",
+    "errorVerify": "Kode tidak valid atau sudah kedaluwarsa.",
+    "useDifferentEmail": "Gunakan email lain"
+  },
+  "App": {
+    "welcome": "Selamat datang, <strong>{email}</strong>",
+    "logout": "Keluar",
+    "loading": "Memuat..."
+  },
+  "Common": {
+    "darkTheme": "Tema gelap",
+    "lightTheme": "Tema terang"
+  },
+  "LanguageSwitcher": {
+    "label": "Bahasa"
+  }
+}

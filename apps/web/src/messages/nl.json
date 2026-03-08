@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Het web dat jou kent",
+    "template": "%s | LoomKnot",
+    "description": "Een platform waar jouw AI pagina's maakt, alles onthoudt en voor jou werkt — niet voor het platform."
+  },
+  "Nav": {
+    "examples": "Voorbeelden",
+    "howItWorks": "Hoe het werkt",
+    "values": "Waarden",
+    "signIn": "Inloggen"
+  },
+  "Hero": {
+    "eyebrow": "Jouw AI kan meer. Veel meer.",
+    "title": "Jouw <accent>internet</accent>.<br/>Jouw AI erin.",
+    "subtitle": "We hebben een ruimte gebouwd waar jouw ChatGPT, Claude of Gemini pagina's maakt, alles onthoudt en voor jou werkt — niet voor het platform.",
+    "worksWithAi": "Werkt met jouw AI:",
+    "reserveSpace": "Reserveer jouw plek ↗",
+    "seeExamples": "Bekijk voorbeelden ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Ik verhuis naar Lissabon. Thuiswerker, budget 1200€, ik wil langs het water hardlopen en heb goed WiFi nodig.",
+    "agentLabel": "Claude → jouw project",
+    "aiMsg1": "Opgeslagen. Santos is het beste voor jou — aan het water, rustig, coworking in de buurt. Ik maak een appartementenpagina gefilterd op <strong>WiFi-snelheid en afstand tot hardlooproutes</strong>.",
+    "aiMsg1Tag": "💾 onthouden: thuiswerken, hardlopen, 1200€",
+    "userMsg2": "Ik heb ook een documentenchecklist nodig voor de verblijfsvergunning.",
+    "aiMsg2": "Klaar. Pagina \"Documenten\" — NIF, NISS, bank, verzekering. Ik weet dat je freelancer bent — <strong>stappen voor zelfstandigen toegevoegd</strong>, niet voor werknemers.",
+    "aiMsg2Tag": "📄 aangemaakt: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Voorbeelden — van persoonlijk tot groep",
+    "title": "Niet zomaar een website. Jouw <accent>ruimte</accent> met AI.",
+    "subtitle": "Hetzelfde LoomKnot. Voor jezelf, voor twee, voor een team. Zo ziet het eruit:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Persoonlijk project",
+    "title": "Verhuizen naar Lissabon",
+    "description": "Je verhuist naar een nieuwe stad. In plaats van tientallen tabbladen — één project waar AI alles voor je verzamelt en elke beslissing onthoudt.",
+    "userMsg1": "Ik verhuis in mei naar Lissabon. Ik werk op afstand, huurbudget tot 1200€, ik heb goed WiFi nodig en de zee of een park in de buurt om te hardlopen.",
+    "aiMsg1": "Top! Ik sla je criteria op in het project. Voor Lissabon zijn de 3 beste wijken voor jou: <strong>Principe Real</strong> (park + coworkings), <strong>Santos</strong> (aan het water + rustig) en <strong>Graça</strong> (uitzicht + goedkoper). Ik maak een vergelijkingspagina.",
+    "aiMsg1MemTag": "💾 Opgeslagen in projectgeheugen",
+    "aiMsg1PageTag": "📄 Aangemaakt: /neighborhoods",
+    "userMsg2": "Santos — dat is precies wat ik nodig heb. Zoek appartementen op Idealista onder 1100€ met een balkon.",
+    "aiMsg2": "Santos geselecteerd als hoofdwijk. 8 appartementen gevonden, gefilterd op WiFi-beoordelingen en beschikbaarheid van balkon. De beste 3 staan op een nieuwe pagina. Ik heb ook <strong>afstand tot het dichtstbijzijnde hardlooppad</strong> toegevoegd — ik weet dat dat belangrijk voor je is.",
+    "aiMsg2PageTag": "📄 Aangemaakt: /apartments",
+    "pageTitle": "🏠 Appartementen in Santos",
+    "pageUpdated": "Bijgewerkt 5 minuten geleden · Claude",
+    "filtersLabel": "Jouw filters (onthouden)",
+    "filterBudget": "onder 1100€",
+    "filterBalcony": "balkon",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "hardlopen in de buurt",
+    "bestOptionLabel": "⭐ Beste optie",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/maand",
+    "bestOptionLine1": "Balkon op het westen. WiFi 220 Mbps (geverifieerd).",
+    "bestOptionLine2": "🏃 600m naar Jardim da Estrela (1,2 km onverharde route)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 min lopen",
+    "checklistLabel": "📋 Automatische verhuischecklist",
+    "checklistNif": "☑️ NIF (belastingnummer) —",
+    "checklistNifLink": "handleiding →",
+    "checklistRental": "☐ Huurcontract",
+    "checklistNiss": "☐ NISS (sociale zekerheid)",
+    "checklistBank": "☐ Conta bancária (bankrekening) —",
+    "checklistBankNote": "NIF vereist"
+  },
+  "ExGroup": {
+    "badge": "👥 Groepsproject",
+    "title": "Barcelona met vier",
+    "description": "Vier vrienden. Twee AI's. Iedereen heeft eigen voorkeuren — AI-agents zien ze allemaal en bouwen een route die voor iedereen werkt.",
+    "userMsg1": "Verbind met ons Barcelona-project. Ik ben Petya, ik hou van nachtleven en streetfood, krap budget.",
+    "aiMsg1": "Verbonden! Ik zie een project met 3 deelnemers. Masha (via Claude) geeft de voorkeur aan wandeltours en veganistisch eten, Anya — musea en koffietentjes. Ik sla jouw voorkeuren op.",
+    "aiMsg1MemTag": "💾 Petya's profiel opgeslagen",
+    "userMsg2": "Maak een zaterdagplan dat voor iedereen geweldig is.",
+    "aiMsg2": "Klaar! Ochtend — een groepswandeling door de Gotische Wijk (iedereen vindt het leuk). Brunch — ik vond <strong>Flax & Kale</strong>: veganistisch menu voor Masha, normaal eten voor de rest, budgetvriendelijk. Middag — Masha en Anya in MACBA, terwijl jij naar de nabijgelegen streetfoodmarkt <strong>La Boqueria</strong> gaat. Avond — iedereen samen bij Barceloneta, daarna jij en wie zin heeft — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Bijgewerkt: /saturday",
+    "pageTitle": "📍 Zaterdag 21 maart",
+    "pageParticipants": "4 deelnemers · 2 AI-agents",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (te voet!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegan ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (samen)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menu 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ AI-compromis",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> samen (gratis, aan het water).",
+    "compromiseLine2": "<strong>22:00 — splitsen:</strong> Masha + Anya → wijnbar in El Born. Petya + Dima → Razzmatazz (entree 15€ voor middernacht)."
+  },
+  "ExWork": {
+    "badge": "👥 Werkproject",
+    "title": "Keukenrenovatie",
+    "description": "Een klant, een ontwerper en een aannemer — elk met hun eigen AI. Alle beslissingen, materialen en budget — op één pagina die in realtime wordt bijgewerkt.",
+    "userMsg1": "Ik ben de aannemer en doe mee aan het renovatieproject. Wat is de status van de keuken?",
+    "aiMsg1": "Ik zie het project: klant Lena (Claude) koos Scandinavische stijl, budget 800.000₽, ontwerper Oleg (ChatGPT) keurde de L-vormige keukenindeling goed, 12m². Ik sla je op als aannemer. Je hebt toegang tot: <strong>budget</strong>, <strong>materialen</strong>, <strong>planning</strong>.",
+    "aiMsg1MemTag": "💾 Rol: aannemer",
+    "userMsg2": "Een kwartscomposiet aanrechtblad past niet in het budget. Zijn er alternatieven?",
+    "aiMsg2": "Ik zie dat Lena schreef \"wil een licht aanrechtblad, vlekbestendig\". Kwarts — 85.000₽. Alternatieven: <strong>HPL Egger</strong> (18.000₽, vergelijkbaar uiterlijk, minder duurzaam) of <strong>12mm porseleinen steengoed</strong> (45.000₽, premium uitstraling). Ik maak een vergelijking en stuur een bericht naar Lena en Oleg.",
+    "aiMsg2PageTag": "📄 Aangemaakt: /countertop-options",
+    "pageTitle": "💰 Keukenbudget",
+    "pageParticipants": "3 deelnemers · 3 AI-agents · Bijgewerkt 2 uur geleden",
+    "totalBudgetLabel": "Totaal budget",
+    "totalBudgetAmount": "672.000₽",
+    "totalBudgetOf": "van 800.000₽",
+    "decisionLabel": "⚠️ Beslissing nodig",
+    "decisionText": "<strong>Aanrechtblad</strong> — aannemer stelt <strong>12mm porseleinen steengoed</strong> voor in plaats van kwarts (besparing 40.000₽).",
+    "decisionDesigner": "Oleg (ontwerper): \"Ziet er visueel goed uit, maar controleer de naden\"",
+    "decisionAwaiting": "Wacht op beslissing van Lena →",
+    "approvedLabel": "✅ Goedgekeurd door iedereen",
+    "approvedItems": "IKEA Voxtorp kasten · Bosch apparatuur · Achterwand — witte metrotegel · Grohe kraan · Verlichting — Maytoni railverlichting"
+  },
+  "HowItWorks": {
+    "label": "Hoe het werkt",
+    "title": "Vier stappen — en jouw AI zit erin",
+    "subtitle": "Geen registratie bij nieuwe diensten. Je gebruikt al AI — nu kan het meer.",
+    "step1Title": "Verbind jouw AI",
+    "step1Desc": "Voeg tijdens het onboarden jouw ChatGPT, Claude of Gemini toe via MCP. Eén klik.",
+    "step2Title": "Praat zoals gewoonlijk",
+    "step2Desc": "Chat gewoon met je AI. Het slaat automatisch op wat belangrijk is voor het project en bouwt pagina's.",
+    "step3Title": "Pagina's leven",
+    "step3Desc": "Elke pagina wordt bijgewerkt, onthoudt beslissingen en past zich aan jou aan. Het is geen document — het is geheugen.",
+    "step4Title": "Nodig mensen uit",
+    "step4Desc": "Vrienden, collega's, aannemers — iedereen verbindt zijn eigen AI en ziet het project door zijn eigen lens."
+  },
+  "Revolution": {
+    "label": "Waarom dit een ander web is",
+    "title": "Een pagina is <accent>geheugen</accent>, geen bestand",
+    "subtitle": "Een gewone website toont iedereen hetzelfde. LoomKnot weet wie je bent, wat je besloot en wat jij specifiek nodig hebt.",
+    "card1Title": "Eén keer uitleggen",
+    "card1Desc": "Vertel je AI dat je veganist bent — en op elke projectpagina zijn restaurants, recepten en winkels al gefilterd. Voor altijd.",
+    "card2Title": "Geen vendor lock-in",
+    "card2Desc": "Gebruik je Claude? Prima. Overgestapt naar ChatGPT? Je project blijft, je geheugen blijft. Het zijn jouw gegevens.",
+    "card3Title": "AI onderhandelt voor jou",
+    "card3Desc": "Als voorkeuren botsen — \"budget\" vs \"premium\" — stellen agents een compromis voor in plaats van ruziën in de chat.",
+    "card4Title": "Eén URL — een miljoen versies",
+    "card4Desc": "De Barcelona-link toont een student bars en stranden, een gezin — parken en restaurants. Inhoud past zich aan voor iedereen.",
+    "card5Title": "Claude Code werkt ook",
+    "card5Desc": "Ontwikkelaar? Verbind je project via CLI. De agent schrijft naar dezelfde pagina's — vanuit de terminal, via API, hoe je maar wilt.",
+    "card6Title": "Drie niveaus van privacy",
+    "card6Desc": "Persoonlijke voorkeuren — alleen voor jouw AI. Projectbeslissingen — voor het team. Openbare pagina — voor iedereen."
+  },
+  "Structure": {
+    "title": "Eenvoudig. Alles op één plek.",
+    "row1Desc": "Landingspagina, documentatie, informatie",
+    "row2Desc": "Jouw dashboard: projecten, AI-instellingen, voorkeuren",
+    "row3Desc": "Openbare pagina — wat je deelt met vrienden"
+  },
+  "Cta": {
+    "title": "Claim <em>jouw plek</em> in het nieuwe web",
+    "subtitle": "Reserveer loomknot.com/web/<strong>jouw-naam</strong> — voordat het bezet is.",
+    "placeholder": "loomknot.com/web/  jouw-project",
+    "button": "Reserveer",
+    "note": "Gratis. Lancering voorjaar 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · AI, mensen en pagina's verweven"
+  },
+  "Login": {
+    "tagline": "Pages as Memory",
+    "emailLabel": "E-mail",
+    "getCode": "Code ophalen",
+    "sending": "Verzenden...",
+    "errorSend": "Code versturen mislukt. Controleer je e-mailadres.",
+    "codeSentTo": "Code verzonden naar <strong>{email}</strong>",
+    "pinLabel": "6-cijferige code",
+    "signIn": "Inloggen",
+    "verifying": "Verifiëren...",
+    "errorVerify": "Ongeldige of verlopen code.",
+    "useDifferentEmail": "Ander e-mailadres gebruiken"
+  },
+  "App": {
+    "welcome": "Welkom, <strong>{email}</strong>",
+    "logout": "Uitloggen",
+    "loading": "Laden..."
+  },
+  "Common": {
+    "darkTheme": "Donker thema",
+    "lightTheme": "Licht thema"
+  },
+  "LanguageSwitcher": {
+    "label": "Taal"
+  }
+}

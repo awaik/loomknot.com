@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Web, ktorý vás pozná",
+    "template": "%s | LoomKnot",
+    "description": "Platforma, kde vaša AI vytvára stránky, pamätá si všetko a pracuje pre vás — nie pre platformu."
+  },
+  "Nav": {
+    "examples": "Príklady",
+    "howItWorks": "Ako to funguje",
+    "values": "Hodnoty",
+    "signIn": "Prihlásiť sa"
+  },
+  "Hero": {
+    "eyebrow": "Vaša AI dokáže viac. Oveľa viac.",
+    "title": "Váš <accent>internet</accent>.<br/>Vaša AI vo vnútri.",
+    "subtitle": "Vytvorili sme priestor, kde váš ChatGPT, Claude alebo Gemini vytvára stránky, pamätá si všetko a pracuje pre vás — nie pre platformu.",
+    "worksWithAi": "Funguje s vašou AI:",
+    "reserveSpace": "Rezervujte si miesto ↗",
+    "seeExamples": "Pozrite si príklady ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Sťahujem sa do Lisabonu. Práca na diaľku, rozpočet 1200€, chcem behať pri vode a potrebujem slušné WiFi.",
+    "agentLabel": "Claude → váš projekt",
+    "aiMsg1": "Uložené. Santos je pre vás najlepší — nábrežie, ticho, coworking nablízku. Vytváram stránku s bytmi filtrovanú podľa <strong>rýchlosti WiFi a vzdialenosti k bežeckým trasám</strong>.",
+    "aiMsg1Tag": "💾 zapamätané: práca na diaľku, behanie, 1200€",
+    "userMsg2": "Potrebujem aj zoznam dokumentov na povolenie na pobyt.",
+    "aiMsg2": "Hotovo. Stránka \"Dokumenty\" — NIF, NISS, banka, poistenie. Viem, že ste freelancer — <strong>pridal som kroky pre živnostníkov</strong>, nie pre zamestnancov.",
+    "aiMsg2Tag": "📄 vytvorené: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Príklady — od osobného po skupinové",
+    "title": "Nielen webstránka. Váš <accent>priestor</accent> s AI.",
+    "subtitle": "Rovnaký LoomKnot. Pre vás, pre dvoch, pre tím. Takto to vyzerá:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Osobný projekt",
+    "title": "Sťahovanie do Lisabonu",
+    "description": "Sťahujete sa do nového mesta. Namiesto desiatok záložiek — jeden projekt, kde AI zhromaždí všetko za vás a zapamätá si každé rozhodnutie.",
+    "userMsg1": "Sťahujem sa do Lisabonu v máji. Pracujem na diaľku, rozpočet na nájom do 1200€, potrebujem dobré WiFi a more alebo park nablízku na behanie.",
+    "aiMsg1": "Skvelé! Uložím vaše kritériá do projektu. V Lisabone sú pre vás 3 najlepšie štvrte: <strong>Principe Real</strong> (park + coworkingy), <strong>Santos</strong> (nábrežie + pokoj) a <strong>Graça</strong> (výhľady + lacnejšie). Vytváram porovnávaciu stránku.",
+    "aiMsg1MemTag": "💾 Uložené do pamäte projektu",
+    "aiMsg1PageTag": "📄 Vytvorené: /neighborhoods",
+    "userMsg2": "Santos — presne to potrebujem. Nájdi byty na Idealiste pod 1100€ s balkónom.",
+    "aiMsg2": "Santos vybraný ako hlavná štvrť. Našiel som 8 bytov, filtrovaných podľa recenzií WiFi a dostupnosti balkóna. Najlepšie 3 sú na novej stránke. Pridal som aj <strong>vzdialenosť k najbližšej bežeckej trase</strong> — pamätám si, že je to pre vás dôležité.",
+    "aiMsg2PageTag": "📄 Vytvorené: /apartments",
+    "pageTitle": "🏠 Byty v Santose",
+    "pageUpdated": "Aktualizované pred 5 minútami · Claude",
+    "filtersLabel": "Vaše filtre (zapamätané)",
+    "filterBudget": "pod 1100€",
+    "filterBalcony": "balkón",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "behanie nablízku",
+    "bestOptionLabel": "⭐ Najlepšia možnosť",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/mes.",
+    "bestOptionLine1": "Balkón smerom k západu slnka. WiFi 220 Mbps (overené).",
+    "bestOptionLine2": "🏃 600m do Jardim da Estrela (1,2 km poľná cesta)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 min pešo",
+    "checklistLabel": "📋 Automatický kontrolný zoznam na sťahovanie",
+    "checklistNif": "☑️ NIF (daňové číslo) —",
+    "checklistNifLink": "návod →",
+    "checklistRental": "☐ Nájomná zmluva",
+    "checklistNiss": "☐ NISS (sociálne poistenie)",
+    "checklistBank": "☐ Conta bancária (bankový účet) —",
+    "checklistBankNote": "vyžaduje sa NIF"
+  },
+  "ExGroup": {
+    "badge": "👥 Skupinový projekt",
+    "title": "Barcelona pre štyroch",
+    "description": "Štyria priatelia. Dve AI. Každý má vlastné preferencie — AI agenti ich všetky vidia a vytvoria trasu, ktorá funguje pre všetkých.",
+    "userMsg1": "Pripoj sa k nášmu projektu Barcelona. Som Petya, milujem nočný život a street food, rozpočet je obmedzený.",
+    "aiMsg1": "Pripojený! Vidím projekt s 3 účastníkmi. Masha (cez Claude) preferuje pešie prehliadky a vegánske jedlo, Anya — múzeá a kaviarne. Uložím tvoje preferencie.",
+    "aiMsg1MemTag": "💾 Profil Petyu uložený",
+    "userMsg2": "Urob plán na sobotu, ktorý bude skvelý pre všetkých.",
+    "aiMsg2": "Hotovo! Ráno — spoločná prechádzka Gotickou štvrťou (všetci ju milujú). Brunch — našiel som <strong>Flax & Kale</strong>: vegánske menu pre Mashu, bežné jedlo pre ostatných, cenovo dostupné. Poobede — Masha a Anya v MACBA, zatiaľ čo ty vyrazíš na blízky trh s pouličným jedlom <strong>La Boqueria</strong>. Večer — všetci spolu na Barcelonete, potom ty a kto má chuť — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Aktualizované: /saturday",
+    "pageTitle": "📍 Sobota 21. marca",
+    "pageParticipants": "4 účastníci · 2 AI agenti",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (pešo!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegánske ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (spolu)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menu 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ AI kompromis",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> spolu (zadarmo, pri vode).",
+    "compromiseLine2": "<strong>22:00 — rozdelenie:</strong> Masha + Anya → vínna bar v El Born. Petya + Dima → Razzmatazz (vstup 15€ pred polnocou)."
+  },
+  "ExWork": {
+    "badge": "👥 Pracovný projekt",
+    "title": "Rekonštrukcia kuchyne",
+    "description": "Klient, dizajnér a dodávateľ — každý so svojou AI. Všetky rozhodnutia, materiály a rozpočet — na jednej stránke, ktorá sa aktualizuje v reálnom čase.",
+    "userMsg1": "Som dodávateľ, pridávam sa k projektu rekonštrukcie. Aký je stav kuchyne?",
+    "aiMsg1": "Vidím projekt: klientka Lena (Claude) si vybrala škandinávsky štýl, rozpočet 800 000₽, dizajnér Oleg (ChatGPT) schválil kuchyňu v tvare L, 12m². Ukladám vás ako dodávateľa. Máte prístup k: <strong>rozpočet</strong>, <strong>materiály</strong>, <strong>harmonogram</strong>.",
+    "aiMsg1MemTag": "💾 Rola: dodávateľ",
+    "userMsg2": "Kremenný kompozitný pult sa do rozpočtu nezmestí. Nejaké alternatívy?",
+    "aiMsg2": "Vidím, že Lena napísala \"chcem svetlý pult, odolný voči škvrnám.\" Kremeň — 85 000₽. Alternatívy: <strong>HPL Egger</strong> (18 000₽, podobný vzhľad, menej odolný) alebo <strong>12mm porcelánový kameň</strong> (45 000₽, prémiový vzhľad). Vytváram porovnanie a pingujem Lenu a Olega.",
+    "aiMsg2PageTag": "📄 Vytvorené: /countertop-options",
+    "pageTitle": "💰 Rozpočet kuchyne",
+    "pageParticipants": "3 účastníci · 3 AI agenti · Aktualizované pred 2h",
+    "totalBudgetLabel": "Celkový rozpočet",
+    "totalBudgetAmount": "672 000₽",
+    "totalBudgetOf": "z 800 000₽",
+    "decisionLabel": "⚠️ Potrebné rozhodnutie",
+    "decisionText": "<strong>Pracovná doska</strong> — dodávateľ navrhuje <strong>12mm porcelánový kameň</strong> namiesto kremeňa (úspora 40 000₽).",
+    "decisionDesigner": "Oleg (dizajnér): \"Vizuálne vyzerá dobre, ale skontrolujte spoje\"",
+    "decisionAwaiting": "Čaká sa na rozhodnutie Leny →",
+    "approvedLabel": "✅ Schválené všetkými",
+    "approvedItems": "IKEA Voxtorp skrinky · Bosch spotrebiče · Zástena — biely metro obklad · Grohe batéria · Osvetlenie — Maytoni koľajnicové svietidlo"
+  },
+  "HowItWorks": {
+    "label": "Ako to funguje",
+    "title": "Štyri kroky — a vaša AI je vo vnútri",
+    "subtitle": "Žiadne registrácie do nových služieb. AI už používate — teraz dokáže viac.",
+    "step1Title": "Pripojte svoju AI",
+    "step1Desc": "Počas onboardingu pridajte svoj ChatGPT, Claude alebo Gemini cez MCP. Jedno kliknutie.",
+    "step2Title": "Rozprávajte sa ako zvyčajne",
+    "step2Desc": "Stačí chatovať so svojou AI. Automaticky uloží dôležité veci do projektu a vytvára stránky.",
+    "step3Title": "Stránky žijú",
+    "step3Desc": "Každá stránka sa aktualizuje, pamätá si rozhodnutia a prispôsobuje sa vám. Nie je to dokument — je to pamäť.",
+    "step4Title": "Pozvite ľudí",
+    "step4Desc": "Priatelia, kolegovia, dodávatelia — každý pripojí svoju AI a vidí projekt cez vlastnú optiku."
+  },
+  "Revolution": {
+    "label": "Prečo je to iný web",
+    "title": "Stránka je <accent>pamäť</accent>, nie súbor",
+    "subtitle": "Bežná webstránka ukazuje všetkým to isté. LoomKnot vie, kto ste, čo ste sa rozhodli a čo presne potrebujete.",
+    "card1Title": "Vysvetlite raz",
+    "card1Desc": "Povedzte svojej AI, že ste vegán — a na každej stránke projektu sú reštaurácie, recepty a obchody už filtrované. Navždy.",
+    "card2Title": "Žiadne zamknutie",
+    "card2Desc": "Používate Claude? Skvelé. Prešli ste na ChatGPT? Váš projekt zostáva, vaša pamäť zostáva. Sú to vaše dáta.",
+    "card3Title": "AI vyjednáva za vás",
+    "card3Desc": "Keď sa preferencie zrazia — \"rozpočet\" vs \"prémium\" — agenti navrhnú kompromis namiesto hádania sa v chate.",
+    "card4Title": "Jedna URL — milión verzií",
+    "card4Desc": "Odkaz na Barcelonu pre študenta zobrazí bary a pláže, pre rodinu — parky a reštaurácie. Obsah sa prispôsobí každému.",
+    "card5Title": "Claude Code funguje tiež",
+    "card5Desc": "Vývojár? Pripojte svoj projekt cez CLI. Agent píše na tie isté stránky — z terminálu, cez API, akokoľvek chcete.",
+    "card6Title": "Tri úrovne súkromia",
+    "card6Desc": "Osobné preferencie — len pre vašu AI. Projektové rozhodnutia — pre tím. Verejná stránka — pre všetkých."
+  },
+  "Structure": {
+    "title": "Jednoduché. Jedno miesto na všetko.",
+    "row1Desc": "Landing stránka, dokumentácia, informácie",
+    "row2Desc": "Váš dashboard: projekty, nastavenia AI, preferencie",
+    "row3Desc": "Verejná stránka — to, čo zdieľate s priateľmi"
+  },
+  "Cta": {
+    "title": "Zaberte si <em>svoje miesto</em> v novom webe",
+    "subtitle": "Rezervujte si loomknot.com/web/<strong>vaše-meno</strong> — kým nie je obsadené.",
+    "placeholder": "loomknot.com/web/  váš-projekt",
+    "button": "Rezervovať",
+    "note": "Zadarmo. Spustenie jar 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Prepletáme AI, ľudí a stránky"
+  },
+  "Login": {
+    "tagline": "Stránky ako pamäť",
+    "emailLabel": "E-mail",
+    "getCode": "Získať kód",
+    "sending": "Odosiela sa...",
+    "errorSend": "Nepodarilo sa odoslať kód. Skontrolujte svoj e-mail.",
+    "codeSentTo": "Kód odoslaný na <strong>{email}</strong>",
+    "pinLabel": "6-miestny kód",
+    "signIn": "Prihlásiť sa",
+    "verifying": "Overuje sa...",
+    "errorVerify": "Neplatný alebo vypršaný kód.",
+    "useDifferentEmail": "Použiť iný e-mail"
+  },
+  "App": {
+    "welcome": "Vitajte, <strong>{email}</strong>",
+    "logout": "Odhlásiť sa",
+    "loading": "Načítava sa..."
+  },
+  "Common": {
+    "darkTheme": "Tmavá téma",
+    "lightTheme": "Svetlá téma"
+  },
+  "LanguageSwitcher": {
+    "label": "Jazyk"
+  }
+}

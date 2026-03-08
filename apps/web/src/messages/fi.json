@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Verkko, joka tuntee sinut",
+    "template": "%s | LoomKnot",
+    "description": "Alusta, jossa tekoälysi luo sivuja, muistaa kaiken ja toimii sinun hyväksesi — ei alustan."
+  },
+  "Nav": {
+    "examples": "Esimerkit",
+    "howItWorks": "Näin se toimii",
+    "values": "Arvot",
+    "signIn": "Kirjaudu sisään"
+  },
+  "Hero": {
+    "eyebrow": "Tekoälysi osaa enemmän. Paljon enemmän.",
+    "title": "Sinun <accent>internettisi</accent>.<br/>Sinun tekoälysi sisällä.",
+    "subtitle": "Rakensimme tilan, jossa ChatGPT, Claude tai Gemini luo sivuja, muistaa kaiken ja toimii sinun hyväksesi — ei alustan.",
+    "worksWithAi": "Toimii tekoälysi kanssa:",
+    "reserveSpace": "Varaa paikkasi ↗",
+    "seeExamples": "Katso esimerkit ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Muutan Lissaboniin. Etätyö, budjetti 1200€, haluan juosta veden äärellä ja tarvitsen kunnollisen WiFi-yhteyden.",
+    "agentLabel": "Claude → sinun projektisi",
+    "aiMsg1": "Tallennettu. Santos sopii sinulle parhaiten — rantaviiva, rauhallinen, yhteistyötila lähellä. Luon asuntosivun suodatettuna <strong>WiFi-nopeuden ja juoksureittien etäisyyden mukaan</strong>.",
+    "aiMsg1Tag": "💾 muistettu: etätyö, juoksu, 1200€",
+    "userMsg2": "Tarvitsen myös asiakirjatarkistuslistan oleskelulupaa varten.",
+    "aiMsg2": "Valmis. \"Asiakirjat\"-sivu — NIF, NISS, pankki, vakuutus. Tiedän, että olet freelancer — <strong>lisäsin vaiheet itsenäisille ammatinharjoittajille</strong>, en palkansaajille.",
+    "aiMsg2Tag": "📄 luotu: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Esimerkit — henkilökohtaisesta ryhmään",
+    "title": "Ei vain verkkosivu. Sinun <accent>tilasi</accent> tekoälyn kanssa.",
+    "subtitle": "Sama LoomKnot. Itsellesi, kahdelle, tiimille. Näin se näyttää:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Henkilökohtainen projekti",
+    "title": "Muutto Lissaboniin",
+    "description": "Muutat uuteen kaupunkiin. Kymmenien välilehtien sijaan — yksi projekti, jossa tekoäly kokoaa kaiken puolestasi ja muistaa jokaisen päätöksen.",
+    "userMsg1": "Muutan Lissaboniin toukokuussa. Työskentelen etänä, vuokrabudjetti enintään 1200€, tarvitsen hyvän WiFi-yhteyden sekä meren tai puiston lähelle juoksemista varten.",
+    "aiMsg1": "Hienoa! Tallennan kriteerisi projektiin. Lissabonissa sinulle 3 parasta aluetta ovat: <strong>Principe Real</strong> (puisto + yhteistyötilat), <strong>Santos</strong> (rantaviiva + rauhallinen) ja <strong>Graça</strong> (näkymät + edullisempi). Luon vertailusivun.",
+    "aiMsg1MemTag": "💾 Tallennettu projektin muistiin",
+    "aiMsg1PageTag": "📄 Luotu: /neighborhoods",
+    "userMsg2": "Santos — juuri sitä mitä tarvitsen. Etsi asuntoja Idealistasta alle 1100€, parvekkeella.",
+    "aiMsg2": "Santos valittu pääalueeksi. Löysin 8 asuntoa, suodatettu WiFi-arvioiden ja parvekkeen saatavuuden mukaan. 3 parasta ovat uudella sivulla. Lisäsin myös <strong>etäisyyden lähimpään juoksureitille</strong> — muistan, että se on sinulle tärkeää.",
+    "aiMsg2PageTag": "📄 Luotu: /apartments",
+    "pageTitle": "🏠 Asunnot Santosissa",
+    "pageUpdated": "Päivitetty 5 minuuttia sitten · Claude",
+    "filtersLabel": "Suodattimesi (muistettu)",
+    "filterBudget": "alle 1100€",
+    "filterBalcony": "parveke",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "juoksu lähellä",
+    "bestOptionLabel": "⭐ Paras vaihtoehto",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/kk",
+    "bestOptionLine1": "Auringonlaskuun päin oleva parveke. WiFi 220 Mbps (vahvistettu).",
+    "bestOptionLine2": "🏃 600m Jardim da Estrelaan (1,2 km hiekkapolku)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 min kävellen",
+    "checklistLabel": "📋 Automaattinen muuttotarkistuslista",
+    "checklistNif": "☑️ NIF (veronumero) —",
+    "checklistNifLink": "opas →",
+    "checklistRental": "☐ Vuokrasopimus",
+    "checklistNiss": "☐ NISS (sosiaaliturva)",
+    "checklistBank": "☐ Conta bancária (pankkitili) —",
+    "checklistBankNote": "NIF vaaditaan"
+  },
+  "ExGroup": {
+    "badge": "👥 Ryhmäprojekti",
+    "title": "Barcelona neljälle",
+    "description": "Neljä ystävää. Kaksi tekoälyä. Jokaisella omat mieltymyksensä — tekoälyagentit näkevät ne kaikki ja rakentavat reitin, joka toimii kaikille.",
+    "userMsg1": "Liity Barcelona-projektiimme. Olen Petya, rakastan yöelämää ja katukeittiötä, budjetti on tiukka.",
+    "aiMsg1": "Yhdistetty! Näen projektin, jossa on 3 osallistujaa. Masha (Clauden kautta) pitää kävelykierroksista ja vegaaniruoasta, Anya — museoista ja kahviloista. Tallennan mieltymyksesi.",
+    "aiMsg1MemTag": "💾 Petyan profiili tallennettu",
+    "userMsg2": "Tee lauantaisuunnitelma, joka on loistava kaikille.",
+    "aiMsg2": "Valmis! Aamu — ryhmäkävely Goottilaiskorttelin läpi (kaikki pitävät siitä). Brunssi — löysin <strong>Flax & Kale</strong>: vegaanivalikko Mashalle, tavallista ruokaa muille, budjettiystävällinen. Iltapäivä — Masha ja Anya MACBAssa, kun sinä suuntaat läheiselle katukeittiömarkkinalle <strong>La Boqueria</strong>. Ilta — kaikki yhdessä Barcelonetassa, sitten sinä ja halukkaat — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Päivitetty: /saturday",
+    "pageTitle": "📍 Lauantai, 21. maaliskuuta",
+    "pageParticipants": "4 osallistujaa · 2 tekoälyagenttia",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (kävellen!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegaani ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (yhdessä)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menu 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ Tekoälyn kompromissi",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> yhdessä (ilmainen, veden äärellä).",
+    "compromiseLine2": "<strong>22:00 — jakaudutaan:</strong> Masha + Anya → viinibaari El Bornissa. Petya + Dima → Razzmatazz (sisäänpääsy 15€ ennen keskiyötä)."
+  },
+  "ExWork": {
+    "badge": "👥 Työprojekti",
+    "title": "Keittiöremontti",
+    "description": "Asiakas, suunnittelija ja urakoitsija — jokaisella oma tekoälynsä. Kaikki päätökset, materiaalit ja budjetti — yhdellä sivulla, joka päivittyy reaaliajassa.",
+    "userMsg1": "Olen urakoitsija, liityn remonttiprojektiin. Mikä on keittiön tilanne?",
+    "aiMsg1": "Näen projektin: asiakas Lena (Claude) valitsi skandinaavisen tyylin, budjetti 800 000₽, suunnittelija Oleg (ChatGPT) hyväksyi L-muotoisen keittiöpohjan, 12m². Tallennan sinut urakoitsijaksi. Sinulla on pääsy: <strong>budjetti</strong>, <strong>materiaalit</strong>, <strong>aikataulu</strong>.",
+    "aiMsg1MemTag": "💾 Rooli: urakoitsija",
+    "userMsg2": "Kvartsikomposiittitaso ei mahdu budjettiin. Onko vaihtoehtoja?",
+    "aiMsg2": "Näen, että Lena kirjoitti \"haluan vaalean työtason, tahrankestävän.\" Kvartsi — 85 000₽. Vaihtoehdot: <strong>HPL Egger</strong> (18 000₽, samanlainen ulkonäkö, vähemmän kestävä) tai <strong>12mm posliinilaatta</strong> (45 000₽, premium-ilme). Luon vertailun ja pingataan Lenaa ja Olegia.",
+    "aiMsg2PageTag": "📄 Luotu: /countertop-options",
+    "pageTitle": "💰 Keittiön budjetti",
+    "pageParticipants": "3 osallistujaa · 3 tekoälyagenttia · Päivitetty 2h sitten",
+    "totalBudgetLabel": "Kokonaisbudjetti",
+    "totalBudgetAmount": "672 000₽",
+    "totalBudgetOf": "/ 800 000₽",
+    "decisionLabel": "⚠️ Päätös tarvitaan",
+    "decisionText": "<strong>Työtaso</strong> — urakoitsija ehdottaa <strong>12mm posliinilaattaa</strong> kvartsin sijaan (säästö 40 000₽).",
+    "decisionDesigner": "Oleg (suunnittelija): \"Näyttää visuaalisesti hyvältä, mutta tarkista saumat\"",
+    "decisionAwaiting": "Odotetaan Lenan päätöstä →",
+    "approvedLabel": "✅ Kaikkien hyväksymä",
+    "approvedItems": "IKEA Voxtorp -kaapit · Bosch-kodinkoneet · Välitila — valkoinen metrolaatoitus · Grohe-hana · Valaistus — Maytoni-kiskovalaisin"
+  },
+  "HowItWorks": {
+    "label": "Näin se toimii",
+    "title": "Neljä askelta — ja tekoälysi on sisällä",
+    "subtitle": "Ei uusiin palveluihin rekisteröitymistä. Käytät jo tekoälyä — nyt se osaa enemmän.",
+    "step1Title": "Yhdistä tekoälysi",
+    "step1Desc": "Käyttöönoton aikana lisää ChatGPT, Claude tai Gemini MCP:n kautta. Yksi klikkaus.",
+    "step2Title": "Puhu kuten tavallisesti",
+    "step2Desc": "Keskustele vain tekoälysi kanssa. Se tallentaa automaattisesti tärkeät asiat projektiin ja rakentaa sivuja.",
+    "step3Title": "Sivut elävät",
+    "step3Desc": "Jokainen sivu päivittyy, muistaa päätökset ja mukautuu sinuun. Se ei ole asiakirja — se on muisti.",
+    "step4Title": "Kutsu ihmisiä",
+    "step4Desc": "Ystävät, kollegat, urakoitsijat — jokainen yhdistää oman tekoälynsä ja näkee projektin omasta näkökulmastaan."
+  },
+  "Revolution": {
+    "label": "Miksi tämä on erilainen verkko",
+    "title": "Sivu on <accent>muisti</accent>, ei tiedosto",
+    "subtitle": "Tavallinen verkkosivu näyttää kaikille saman. LoomKnot tietää kuka olet, mitä päätit ja mitä juuri sinä tarvitset.",
+    "card1Title": "Selitä kerran",
+    "card1Desc": "Kerro tekoälyllesi, että olet vegaani — ja jokaisella projektisivulla ravintolat, reseptit ja kaupat ovat jo suodatettuja. Ikuisesti.",
+    "card2Title": "Ei lukittumista",
+    "card2Desc": "Käytät Claudea? Hienoa. Vaihdoit ChatGPT:hen? Projektisi pysyy, muistisi pysyy. Se on sinun dataasi.",
+    "card3Title": "Tekoäly neuvottelee puolestasi",
+    "card3Desc": "Kun mieltymykset törmäävät — \"budjetti\" vs \"premium\" — agentit ehdottavat kompromissia sen sijaan, että väittelisit chatissa.",
+    "card4Title": "Yksi URL — miljoona versiota",
+    "card4Desc": "Barcelona-linkki opiskelijalle näyttää baareja ja rantoja, perheelle — puistoja ja ravintoloita. Sisältö muovautuu jokaiselle.",
+    "card5Title": "Claude Code toimii myös",
+    "card5Desc": "Kehittäjä? Yhdistä projektisi CLI:n kautta. Agentti kirjoittaa samoille sivuille — terminaalista, API:n kautta, miten haluat.",
+    "card6Title": "Kolme yksityisyyden tasoa",
+    "card6Desc": "Henkilökohtaiset mieltymykset — vain tekoälyllesi. Projektipäätökset — tiimille. Julkinen sivu — kaikille."
+  },
+  "Structure": {
+    "title": "Yksinkertaista. Yksi paikka kaikelle.",
+    "row1Desc": "Laskeutumissivu, dokumentaatio, tiedot",
+    "row2Desc": "Hallintapaneelisi: projektit, tekoälyasetukset, mieltymykset",
+    "row3Desc": "Julkinen sivu — mitä jaat ystävillesi"
+  },
+  "Cta": {
+    "title": "Varaa <em>paikkasi</em> uudessa verkossa",
+    "subtitle": "Varaa loomknot.com/web/<strong>sinun-nimesi</strong> — ennen kuin se on varattu.",
+    "placeholder": "loomknot.com/web/  sinun-projektisi",
+    "button": "Varaa",
+    "note": "Ilmainen. Julkaistaan keväällä 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Tekoälyä, ihmisiä ja sivuja yhteen kutoen"
+  },
+  "Login": {
+    "tagline": "Sivut muistina",
+    "emailLabel": "Sähköposti",
+    "getCode": "Hae koodi",
+    "sending": "Lähetetään...",
+    "errorSend": "Koodin lähetys epäonnistui. Tarkista sähköpostiosoitteesi.",
+    "codeSentTo": "Koodi lähetetty osoitteeseen <strong>{email}</strong>",
+    "pinLabel": "6-numeroinen koodi",
+    "signIn": "Kirjaudu sisään",
+    "verifying": "Vahvistetaan...",
+    "errorVerify": "Virheellinen tai vanhentunut koodi.",
+    "useDifferentEmail": "Käytä toista sähköpostia"
+  },
+  "App": {
+    "welcome": "Tervetuloa, <strong>{email}</strong>",
+    "logout": "Kirjaudu ulos",
+    "loading": "Ladataan..."
+  },
+  "Common": {
+    "darkTheme": "Tumma teema",
+    "lightTheme": "Vaalea teema"
+  },
+  "LanguageSwitcher": {
+    "label": "Kieli"
+  }
+}

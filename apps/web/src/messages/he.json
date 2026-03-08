@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — הרשת שמכירה אותך",
+    "template": "%s | LoomKnot",
+    "description": "פלטפורמה שבה ה-AI שלך יוצר דפים, זוכר הכל ועובד בשבילך — לא בשביל הפלטפורמה."
+  },
+  "Nav": {
+    "examples": "דוגמאות",
+    "howItWorks": "איך זה עובד",
+    "values": "ערכים",
+    "signIn": "התחברות"
+  },
+  "Hero": {
+    "eyebrow": "ה-AI שלך יכול יותר. הרבה יותר.",
+    "title": "ה<accent>אינטרנט</accent> שלך.<br/>ה-AI שלך בפנים.",
+    "subtitle": "בנינו מרחב שבו ה-ChatGPT, Claude או Gemini שלך יוצר דפים, זוכר הכל ועובד בשבילך — לא בשביל הפלטפורמה.",
+    "worksWithAi": "עובד עם ה-AI שלך:",
+    "reserveSpace": "שריינו את המקום שלך ↗",
+    "seeExamples": "ראו דוגמאות ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "אני עובר לליסבון. עבודה מרחוק, תקציב 1200€, אני רוצה לרוץ ליד המים ואני צריך WiFi סביר.",
+    "agentLabel": "Claude → הפרויקט שלך",
+    "aiMsg1": "נשמר. Santos הכי מתאים לך — חוף, שקט, coworking בקרבת מקום. יוצר דף דירות מסונן לפי <strong>מהירות WiFi ומרחק ממסלולי ריצה</strong>.",
+    "aiMsg1Tag": "💾 נזכר: עבודה מרחוק, ריצה, 1200€",
+    "userMsg2": "אני גם צריך רשימת תיוג מסמכים לאשרת שהייה.",
+    "aiMsg2": "בוצע. דף \"מסמכים\" — NIF, NISS, בנק, ביטוח. אני יודע שאתה פרילנסר — <strong>הוספתי שלבים לעצמאים</strong>, לא לשכירים.",
+    "aiMsg2Tag": "📄 נוצר: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "דוגמאות — מאישי ועד קבוצתי",
+    "title": "לא סתם אתר. ה<accent>מרחב</accent> שלך עם AI.",
+    "subtitle": "אותו LoomKnot. לעצמך, לשניים, לצוות. ככה זה נראה:"
+  },
+  "ExPersonal": {
+    "badge": "👤 פרויקט אישי",
+    "title": "מעבר לליסבון",
+    "description": "אתה עובר לעיר חדשה. במקום עשרות לשוניות — פרויקט אחד שבו AI אוסף הכל בשבילך וזוכר כל החלטה.",
+    "userMsg1": "אני עובר לליסבון במאי. אני עובד מרחוק, תקציב שכירות עד 1200€, אני צריך WiFi טוב וים או פארק בקרבת מקום לריצה.",
+    "aiMsg1": "מעולה! אני שומר את הקריטריונים שלך בפרויקט. בליסבון, 3 השכונות הטובות ביותר בשבילך הן: <strong>Principe Real</strong> (פארק + coworkings), <strong>Santos</strong> (חוף + שקט) ו-<strong>Graça</strong> (נוף + זול יותר). יוצר דף השוואה.",
+    "aiMsg1MemTag": "💾 נשמר בזיכרון הפרויקט",
+    "aiMsg1PageTag": "📄 נוצר: /neighborhoods",
+    "userMsg2": "Santos — בדיוק מה שאני צריך. מצא דירות ב-Idealista מתחת ל-1100€ עם מרפסת.",
+    "aiMsg2": "Santos נבחרה כשכונה ראשית. נמצאו 8 דירות, מסוננות לפי ביקורות WiFi וזמינות מרפסת. 3 הטובות ביותר בדף חדש. הוספתי גם <strong>מרחק למסלול הריצה הקרוב</strong> — אני זוכר שזה חשוב לך.",
+    "aiMsg2PageTag": "📄 נוצר: /apartments",
+    "pageTitle": "🏠 דירות ב-Santos",
+    "pageUpdated": "עודכן לפני 5 דקות · Claude",
+    "filtersLabel": "הפילטרים שלך (נזכרים)",
+    "filterBudget": "מתחת ל-1100€",
+    "filterBalcony": "מרפסת",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "ריצה בקרבת מקום",
+    "bestOptionLabel": "⭐ האפשרות הטובה ביותר",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/חודש",
+    "bestOptionLine1": "מרפסת לכיוון השקיעה. WiFi 220 Mbps (מאומת).",
+    "bestOptionLine2": "🏃 600 מטר ל-Jardim da Estrela (1.2 ק\"מ שביל עפר)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 דקות הליכה",
+    "checklistLabel": "📋 רשימת תיוג אוטומטית למעבר דירה",
+    "checklistNif": "☑️ NIF (מספר מס) —",
+    "checklistNifLink": "מדריך →",
+    "checklistRental": "☐ חוזה שכירות",
+    "checklistNiss": "☐ NISS (ביטוח לאומי)",
+    "checklistBank": "☐ Conta bancária (חשבון בנק) —",
+    "checklistBankNote": "נדרש NIF"
+  },
+  "ExGroup": {
+    "badge": "👥 פרויקט קבוצתי",
+    "title": "ברצלונה בארבעה",
+    "description": "ארבעה חברים. שני AI. לכל אחד העדפות משלו — סוכני ה-AI רואים את כולן ובונים מסלול שעובד לכולם.",
+    "userMsg1": "התחבר לפרויקט ברצלונה שלנו. אני פטיה, אני אוהב חיי לילה ואוכל רחוב, תקציב מצומצם.",
+    "aiMsg1": "מחובר! אני רואה פרויקט עם 3 משתתפים. מאשה (דרך Claude) מעדיפה סיורים רגליים ואוכל טבעוני, אניה — מוזיאונים ובתי קפה. אני שומר את ההעדפות שלך.",
+    "aiMsg1MemTag": "💾 הפרופיל של פטיה נשמר",
+    "userMsg2": "תכין תוכנית ליום שבת שתהיה מעולה לכולם.",
+    "aiMsg2": "בוצע! בוקר — סיור קבוצתי ברובע הגותי (כולם אוהבים). ברנץ' — מצאתי את <strong>Flax & Kale</strong>: תפריט טבעוני למאשה, אוכל רגיל לכולם, ידידותי לתקציב. אחרי הצהריים — מאשה ואניה ב-MACBA, בזמן שאתה הולך לשוק אוכל הרחוב <strong>La Boqueria</strong>. ערב — כולם ביחד בברצלונטה, אחר כך אתה ומי שרוצה — Razzmatazz.",
+    "aiMsg2PageTag": "📄 עודכן: /saturday",
+    "pageTitle": "📍 שבת, 21 במרץ",
+    "pageParticipants": "4 משתתפים · 2 סוכני AI",
+    "mashaName": "מאשה",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (ברגל!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "טבעוני ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "פטיה",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (ביחד)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "תפריט 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ פשרת AI",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> ביחד (חינם, ליד המים).",
+    "compromiseLine2": "<strong>22:00 — מתפצלים:</strong> מאשה + אניה → בר יין ב-El Born. פטיה + דימה → Razzmatazz (כניסה 15€ לפני חצות)."
+  },
+  "ExWork": {
+    "badge": "👥 פרויקט עבודה",
+    "title": "שיפוץ מטבח",
+    "description": "לקוח, מעצב וקבלן — לכל אחד AI משלו. כל ההחלטות, החומרים והתקציב — בדף אחד שמתעדכן בזמן אמת.",
+    "userMsg1": "אני הקבלן, מצטרף לפרויקט השיפוץ. מה המצב במטבח?",
+    "aiMsg1": "אני רואה את הפרויקט: הלקוחה לנה (Claude) בחרה סגנון סקנדינבי, תקציב 800,000₽, המעצב אולג (ChatGPT) אישר פריסת מטבח בצורת L, 12 מ\"ר. שומר אותך כקבלן. יש לך גישה ל: <strong>תקציב</strong>, <strong>חומרים</strong>, <strong>לוח זמנים</strong>.",
+    "aiMsg1MemTag": "💾 תפקיד: קבלן",
+    "userMsg2": "משטח קוורץ מורכב לא נכנס לתקציב. יש חלופות?",
+    "aiMsg2": "אני רואה שלנה כתבה \"רוצה משטח בהיר, עמיד בפני כתמים\". קוורץ — 85,000₽. חלופות: <strong>HPL Egger</strong> (18,000₽, מראה דומה, פחות עמיד) או <strong>חרסינה 12 מ\"מ</strong> (45,000₽, מראה פרימיום). יוצר השוואה ומעדכן את לנה ואולג.",
+    "aiMsg2PageTag": "📄 נוצר: /countertop-options",
+    "pageTitle": "💰 תקציב מטבח",
+    "pageParticipants": "3 משתתפים · 3 סוכני AI · עודכן לפני שעתיים",
+    "totalBudgetLabel": "תקציב כולל",
+    "totalBudgetAmount": "672,000₽",
+    "totalBudgetOf": "מתוך 800,000₽",
+    "decisionLabel": "⚠️ נדרשת החלטה",
+    "decisionText": "<strong>משטח</strong> — הקבלן מציע <strong>חרסינה 12 מ\"מ</strong> במקום קוורץ (חיסכון 40,000₽).",
+    "decisionDesigner": "אולג (מעצב): \"נראה טוב ויזואלית, אבל תבדוק את התפרים\"",
+    "decisionAwaiting": "ממתין להחלטת לנה →",
+    "approvedLabel": "✅ אושר על ידי כולם",
+    "approvedItems": "ארונות IKEA Voxtorp · מכשירי Bosch · חיפוי — אריח מטרו לבן · ברז Grohe · תאורה — פס Maytoni"
+  },
+  "HowItWorks": {
+    "label": "איך זה עובד",
+    "title": "ארבעה שלבים — וה-AI שלך בפנים",
+    "subtitle": "בלי הרשמה לשירותים חדשים. אתה כבר משתמש ב-AI — עכשיו הוא יכול יותר.",
+    "step1Title": "חבר את ה-AI שלך",
+    "step1Desc": "בתהליך ההצטרפות, הוסף את ה-ChatGPT, Claude או Gemini שלך דרך MCP. לחיצה אחת.",
+    "step2Title": "דבר כרגיל",
+    "step2Desc": "פשוט תשוחח עם ה-AI שלך. הוא שומר אוטומטית מה שחשוב לפרויקט ובונה דפים.",
+    "step3Title": "הדפים חיים",
+    "step3Desc": "כל דף מתעדכן, זוכר החלטות ומתאים את עצמו אליך. זה לא מסמך — זה זיכרון.",
+    "step4Title": "הזמן אנשים",
+    "step4Desc": "חברים, עמיתים, קבלנים — כולם מחברים את ה-AI שלהם ורואים את הפרויקט מהזווית שלהם."
+  },
+  "Revolution": {
+    "label": "למה זה אינטרנט אחר",
+    "title": "דף הוא <accent>זיכרון</accent>, לא קובץ",
+    "subtitle": "אתר רגיל מראה לכולם את אותו דבר. LoomKnot יודע מי אתה, מה החלטת ומה אתה ספציפית צריך.",
+    "card1Title": "תסביר פעם אחת",
+    "card1Desc": "תגיד ל-AI שלך שאתה טבעוני — ובכל דף פרויקט, מסעדות, מתכונים וחנויות כבר מסוננים. לתמיד.",
+    "card2Title": "בלי נעילה",
+    "card2Desc": "משתמש ב-Claude? מעולה. עברת ל-ChatGPT? הפרויקט נשאר, הזיכרון נשאר. זה המידע שלך.",
+    "card3Title": "AI מנהל משא ומתן בשבילך",
+    "card3Desc": "כשההעדפות מתנגשות — \"תקציבי\" מול \"פרימיום\" — הסוכנים מציעים פשרה במקום שתתווכחו בצ'אט.",
+    "card4Title": "כתובת אחת — מיליון גרסאות",
+    "card4Desc": "הקישור לברצלונה מראה לסטודנט ברים וחופים, למשפחה — פארקים ומסעדות. התוכן מתאים את עצמו לכל אחד.",
+    "card5Title": "Claude Code גם עובד",
+    "card5Desc": "מפתח? חבר את הפרויקט שלך דרך CLI. הסוכן כותב לאותם דפים — מהטרמינל, דרך API, איך שתרצה.",
+    "card6Title": "שלוש רמות פרטיות",
+    "card6Desc": "העדפות אישיות — רק ל-AI שלך. החלטות פרויקט — לצוות. דף ציבורי — לכולם."
+  },
+  "Structure": {
+    "title": "פשוט. הכל במקום אחד.",
+    "row1Desc": "דף נחיתה, תיעוד, מידע",
+    "row2Desc": "לוח הבקרה שלך: פרויקטים, הגדרות AI, העדפות",
+    "row3Desc": "דף ציבורי — מה שאתה משתף עם חברים"
+  },
+  "Cta": {
+    "title": "תפוס <em>את המקום שלך</em> באינטרנט החדש",
+    "subtitle": "שריין loomknot.com/web/<strong>השם-שלך</strong> — לפני שייתפס.",
+    "placeholder": "loomknot.com/web/  הפרויקט-שלך",
+    "button": "שריין",
+    "note": "בחינם. השקה באביב 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · שוזרים AI, אנשים ודפים"
+  },
+  "Login": {
+    "tagline": "Pages as Memory",
+    "emailLabel": "אימייל",
+    "getCode": "קבל קוד",
+    "sending": "שולח...",
+    "errorSend": "שליחת הקוד נכשלה. בדוק את כתובת האימייל שלך.",
+    "codeSentTo": "הקוד נשלח ל-<strong>{email}</strong>",
+    "pinLabel": "קוד בן 6 ספרות",
+    "signIn": "התחברות",
+    "verifying": "מאמת...",
+    "errorVerify": "קוד לא תקין או שפג תוקפו.",
+    "useDifferentEmail": "השתמש באימייל אחר"
+  },
+  "App": {
+    "welcome": "ברוך הבא, <strong>{email}</strong>",
+    "logout": "התנתק",
+    "loading": "טוען..."
+  },
+  "Common": {
+    "darkTheme": "ערכת נושא כהה",
+    "lightTheme": "ערכת נושא בהירה"
+  },
+  "LanguageSwitcher": {
+    "label": "שפה"
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Trang Web Hiểu Bạn",
+    "template": "%s | LoomKnot",
+    "description": "Nền tảng nơi AI của bạn tạo trang, ghi nhớ mọi thứ và làm việc cho bạn — không phải cho nền tảng."
+  },
+  "Nav": {
+    "examples": "Ví dụ",
+    "howItWorks": "Cách hoạt động",
+    "values": "Giá trị",
+    "signIn": "Đăng nhập"
+  },
+  "Hero": {
+    "eyebrow": "AI của bạn có thể làm nhiều hơn. Nhiều hơn rất nhiều.",
+    "title": "<accent>Internet</accent> của bạn.<br/>AI của bạn bên trong.",
+    "subtitle": "Chúng tôi đã xây dựng không gian nơi ChatGPT, Claude hoặc Gemini của bạn tạo trang, ghi nhớ mọi thứ và làm việc cho bạn — không phải cho nền tảng.",
+    "worksWithAi": "Hoạt động với AI của bạn:",
+    "reserveSpace": "Đặt chỗ của bạn ↗",
+    "seeExamples": "Xem ví dụ ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Tôi đang chuyển đến Lisbon. Làm việc từ xa, ngân sách 1200€, muốn chạy bộ gần mặt nước và cần WiFi tốt.",
+    "agentLabel": "Claude → dự án của bạn",
+    "aiMsg1": "Đã lưu. Santos phù hợp nhất với bạn — ven biển, yên tĩnh, gần coworking. Đang tạo trang căn hộ lọc theo <strong>tốc độ WiFi và khoảng cách đến đường chạy bộ</strong>.",
+    "aiMsg1Tag": "💾 đã ghi nhớ: làm việc từ xa, chạy bộ, 1200€",
+    "userMsg2": "Tôi cũng cần danh sách kiểm tra tài liệu cho giấy phép cư trú.",
+    "aiMsg2": "Xong. Trang \"Tài liệu\" — NIF, NISS, ngân hàng, bảo hiểm. Tôi biết bạn là freelancer — <strong>đã thêm các bước cho người tự kinh doanh</strong>, không phải nhân viên hưởng lương.",
+    "aiMsg2Tag": "📄 đã tạo: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Ví dụ — từ cá nhân đến nhóm",
+    "title": "Không chỉ là website. <accent>Không gian</accent> của bạn với AI.",
+    "subtitle": "Cùng một LoomKnot. Cho bạn, cho hai người, cho cả nhóm. Trông như thế này:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Dự án cá nhân",
+    "title": "Chuyển đến Lisbon",
+    "description": "Bạn đang chuyển đến thành phố mới. Thay vì hàng chục tab — một dự án nơi AI thu thập mọi thứ và ghi nhớ mọi quyết định.",
+    "userMsg1": "Tôi chuyển đến Lisbon vào tháng 5. Làm việc từ xa, ngân sách thuê nhà tối đa 1200€, cần WiFi tốt và biển hoặc công viên gần nhà để chạy bộ.",
+    "aiMsg1": "Tuyệt! Tôi sẽ lưu tiêu chí của bạn vào dự án. Ở Lisbon, 3 khu vực tốt nhất cho bạn là: <strong>Principe Real</strong> (công viên + coworking), <strong>Santos</strong> (ven biển + yên tĩnh) và <strong>Graça</strong> (tầm nhìn + rẻ hơn). Đang tạo trang so sánh.",
+    "aiMsg1MemTag": "💾 Đã lưu vào bộ nhớ dự án",
+    "aiMsg1PageTag": "📄 Đã tạo: /neighborhoods",
+    "userMsg2": "Santos — đúng là thứ tôi cần. Tìm căn hộ trên Idealista dưới 1100€ có ban công.",
+    "aiMsg2": "Santos đã chọn làm khu vực chính. Tìm thấy 8 căn hộ, lọc theo đánh giá WiFi và ban công. 3 căn tốt nhất trên trang mới. Tôi cũng thêm <strong>khoảng cách đến đường chạy bộ gần nhất</strong> — tôi nhớ điều đó quan trọng với bạn.",
+    "aiMsg2PageTag": "📄 Đã tạo: /apartments",
+    "pageTitle": "🏠 Căn hộ ở Santos",
+    "pageUpdated": "Cập nhật 5 phút trước · Claude",
+    "filtersLabel": "Bộ lọc của bạn (đã ghi nhớ)",
+    "filterBudget": "dưới 1100€",
+    "filterBalcony": "ban công",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "chạy bộ gần đó",
+    "bestOptionLabel": "⭐ Lựa chọn tốt nhất",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/tháng",
+    "bestOptionLine1": "Ban công hướng hoàng hôn. WiFi 220 Mbps (đã xác minh).",
+    "bestOptionLine2": "🏃 600m đến Jardim da Estrela (đường đất 1,2 km)",
+    "bestOptionLine3": "🛒 Pingo Doce — đi bộ 3 phút",
+    "checklistLabel": "📋 Danh sách kiểm tra chuyển nhà tự động",
+    "checklistNif": "☑️ NIF (mã số thuế) —",
+    "checklistNifLink": "hướng dẫn →",
+    "checklistRental": "☐ Hợp đồng thuê nhà",
+    "checklistNiss": "☐ NISS (bảo hiểm xã hội)",
+    "checklistBank": "☐ Conta bancária (tài khoản ngân hàng) —",
+    "checklistBankNote": "cần có NIF"
+  },
+  "ExGroup": {
+    "badge": "👥 Dự án nhóm",
+    "title": "Barcelona bốn người",
+    "description": "Bốn người bạn. Hai AI. Mỗi người có sở thích riêng — các agent AI nhìn thấy tất cả và xây dựng lộ trình phù hợp cho mọi người.",
+    "userMsg1": "Kết nối vào dự án Barcelona. Tôi là Petya, thích đời sống về đêm và đồ ăn đường phố, ngân sách eo hẹp.",
+    "aiMsg1": "Đã kết nối! Tôi thấy dự án với 3 người tham gia. Masha (qua Claude) thích tour đi bộ và đồ ăn thuần chay, Anya — bảo tàng và quán cà phê. Tôi sẽ lưu sở thích của bạn.",
+    "aiMsg1MemTag": "💾 Hồ sơ Petya đã lưu",
+    "userMsg2": "Lên kế hoạch thứ Bảy mà ai cũng thích.",
+    "aiMsg2": "Xong! Sáng — đi bộ nhóm qua Khu Phố Gothic (ai cũng thích). Brunch — tìm được <strong>Flax & Kale</strong>: thực đơn thuần chay cho Masha, đồ ăn bình thường cho mọi người, giá hợp lý. Chiều — Masha và Anya ở MACBA, bạn ghé chợ đồ ăn đường phố <strong>La Boqueria</strong> gần đó. Tối — cả nhóm ở Barceloneta, sau đó bạn và ai muốn đi — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Đã cập nhật: /saturday",
+    "pageTitle": "📍 Thứ Bảy, 21 tháng 3",
+    "pageParticipants": "4 người tham gia · 2 agent AI",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (đi bộ!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "thuần chay ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (cùng nhau)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "thực đơn 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ AI thỏa hiệp",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> cùng nhau (miễn phí, ven biển).",
+    "compromiseLine2": "<strong>22:00 — tách nhóm:</strong> Masha + Anya → quán rượu vang ở El Born. Petya + Dima → Razzmatazz (vào cửa 15€ trước nửa đêm)."
+  },
+  "ExWork": {
+    "badge": "👥 Dự án công việc",
+    "title": "Cải tạo bếp",
+    "description": "Khách hàng, nhà thiết kế và nhà thầu — mỗi người có AI riêng. Mọi quyết định, vật liệu và ngân sách — trên một trang cập nhật theo thời gian thực.",
+    "userMsg1": "Tôi là nhà thầu, tham gia dự án cải tạo. Tình hình bếp thế nào?",
+    "aiMsg1": "Tôi thấy dự án: khách hàng Lena (Claude) chọn phong cách Scandinavian, ngân sách 800.000₽, nhà thiết kế Oleg (ChatGPT) đã duyệt bố cục bếp hình chữ L, 12m². Lưu bạn là nhà thầu. Bạn có quyền truy cập: <strong>ngân sách</strong>, <strong>vật liệu</strong>, <strong>tiến độ</strong>.",
+    "aiMsg1MemTag": "💾 Vai trò: nhà thầu",
+    "userMsg2": "Mặt bàn bếp composite thạch anh không vừa ngân sách. Có phương án thay thế không?",
+    "aiMsg2": "Tôi thấy Lena viết \"muốn mặt bàn sáng màu, chống ố.\" Thạch anh — 85.000₽. Thay thế: <strong>HPL Egger</strong> (18.000₽, hình thức tương tự, kém bền hơn) hoặc <strong>gạch porcelain 12mm</strong> (45.000₽, hình thức cao cấp). Đang tạo so sánh và thông báo cho Lena và Oleg.",
+    "aiMsg2PageTag": "📄 Đã tạo: /countertop-options",
+    "pageTitle": "💰 Ngân sách bếp",
+    "pageParticipants": "3 người tham gia · 3 agent AI · Cập nhật 2 giờ trước",
+    "totalBudgetLabel": "Tổng ngân sách",
+    "totalBudgetAmount": "672.000₽",
+    "totalBudgetOf": "/ 800.000₽",
+    "decisionLabel": "⚠️ Cần quyết định",
+    "decisionText": "<strong>Mặt bàn</strong> — nhà thầu đề xuất <strong>gạch porcelain 12mm</strong> thay vì thạch anh (tiết kiệm 40.000₽).",
+    "decisionDesigner": "Oleg (nhà thiết kế): \"Nhìn ổn, nhưng kiểm tra mối nối\"",
+    "decisionAwaiting": "Chờ quyết định của Lena →",
+    "approvedLabel": "✅ Đã được tất cả phê duyệt",
+    "approvedItems": "Tủ IKEA Voxtorp · Thiết bị Bosch · Tường chắn — gạch subway trắng · Vòi Grohe · Đèn — ray Maytoni"
+  },
+  "HowItWorks": {
+    "label": "Cách hoạt động",
+    "title": "Bốn bước — và AI của bạn ở bên trong",
+    "subtitle": "Không cần đăng ký dịch vụ mới. Bạn đã dùng AI — giờ nó có thể làm nhiều hơn.",
+    "step1Title": "Kết nối AI của bạn",
+    "step1Desc": "Trong quá trình khởi tạo, thêm ChatGPT, Claude hoặc Gemini qua MCP. Một cú nhấp.",
+    "step2Title": "Nói chuyện như bình thường",
+    "step2Desc": "Chỉ cần trò chuyện với AI. Nó tự động lưu những gì quan trọng cho dự án và xây dựng trang.",
+    "step3Title": "Trang sống động",
+    "step3Desc": "Mỗi trang được cập nhật, ghi nhớ quyết định và thích ứng với bạn. Không phải tài liệu — mà là bộ nhớ.",
+    "step4Title": "Mời mọi người",
+    "step4Desc": "Bạn bè, đồng nghiệp, nhà thầu — mỗi người kết nối AI riêng và nhìn dự án qua góc nhìn của mình."
+  },
+  "Revolution": {
+    "label": "Tại sao đây là web khác biệt",
+    "title": "Trang là <accent>bộ nhớ</accent>, không phải tệp",
+    "subtitle": "Website thông thường hiển thị giống nhau cho mọi người. LoomKnot biết bạn là ai, bạn đã quyết định gì và bạn cần gì cụ thể.",
+    "card1Title": "Giải thích một lần",
+    "card1Desc": "Nói với AI rằng bạn ăn thuần chay — trên mọi trang dự án, nhà hàng, công thức và cửa hàng đã được lọc sẵn. Mãi mãi.",
+    "card2Title": "Không bị ràng buộc",
+    "card2Desc": "Đang dùng Claude? Tuyệt. Chuyển sang ChatGPT? Dự án vẫn còn, bộ nhớ vẫn còn. Đó là dữ liệu của bạn.",
+    "card3Title": "AI đàm phán thay bạn",
+    "card3Desc": "Khi sở thích xung đột — \"tiết kiệm\" vs \"cao cấp\" — các agent đề xuất thỏa hiệp thay vì bạn tranh luận trong chat.",
+    "card4Title": "Một URL — triệu phiên bản",
+    "card4Desc": "Link Barcelona hiển thị cho sinh viên quán bar và bãi biển, cho gia đình — công viên và nhà hàng. Nội dung được định hình lại cho mỗi người.",
+    "card5Title": "Claude Code cũng hoạt động",
+    "card5Desc": "Là lập trình viên? Kết nối dự án qua CLI. Agent viết vào cùng trang — từ terminal, qua API, theo cách bạn muốn.",
+    "card6Title": "Ba cấp độ riêng tư",
+    "card6Desc": "Sở thích cá nhân — chỉ cho AI của bạn. Quyết định dự án — cho nhóm. Trang công khai — cho mọi người."
+  },
+  "Structure": {
+    "title": "Đơn giản. Mọi thứ ở một nơi.",
+    "row1Desc": "Trang chủ, tài liệu, thông tin",
+    "row2Desc": "Bảng điều khiển: dự án, cài đặt AI, sở thích",
+    "row3Desc": "Trang công khai — những gì bạn chia sẻ với bạn bè"
+  },
+  "Cta": {
+    "title": "Giữ <em>chỗ của bạn</em> trên web mới",
+    "subtitle": "Đặt trước loomknot.com/web/<strong>your-name</strong> — trước khi bị lấy mất.",
+    "placeholder": "loomknot.com/web/  your-project",
+    "button": "Đặt trước",
+    "note": "Miễn phí. Ra mắt mùa xuân 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Đan kết AI, con người và trang web"
+  },
+  "Login": {
+    "tagline": "Pages as Memory",
+    "emailLabel": "Email",
+    "getCode": "Nhận mã",
+    "sending": "Đang gửi...",
+    "errorSend": "Không gửi được mã. Vui lòng kiểm tra email.",
+    "codeSentTo": "Mã đã gửi đến <strong>{email}</strong>",
+    "pinLabel": "Mã 6 chữ số",
+    "signIn": "Đăng nhập",
+    "verifying": "Đang xác minh...",
+    "errorVerify": "Mã không hợp lệ hoặc đã hết hạn.",
+    "useDifferentEmail": "Dùng email khác"
+  },
+  "App": {
+    "welcome": "Chào mừng, <strong>{email}</strong>",
+    "logout": "Đăng xuất",
+    "loading": "Đang tải..."
+  },
+  "Common": {
+    "darkTheme": "Giao diện tối",
+    "lightTheme": "Giao diện sáng"
+  },
+  "LanguageSwitcher": {
+    "label": "Ngôn ngữ"
+  }
+}

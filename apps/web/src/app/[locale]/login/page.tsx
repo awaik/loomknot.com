@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { sendMagicLink, verifyPin, useAuthStore } from '@/lib/auth';
+import { useRouter } from '@/i18n/navigation';
 
 type Step = 'email' | 'pin';
 
 export default function LoginPage() {
   const router = useRouter();
+  const t = useTranslations('Login');
   const { isAuthenticated, isLoading } = useAuthStore();
   const [step, setStep] = useState<Step>('email');
   const [email, setEmail] = useState('');
@@ -32,7 +34,7 @@ export default function LoginPage() {
       setStep('pin');
       setTimeout(() => pinRef.current?.focus(), 100);
     } catch {
-      setError('Failed to send code. Please check your email.');
+      setError(t('errorSend'));
     } finally {
       setSubmitting(false);
     }
@@ -47,7 +49,7 @@ export default function LoginPage() {
       await verifyPin(email, pin);
       router.replace('/app');
     } catch {
-      setError('Invalid or expired code.');
+      setError(t('errorVerify'));
       setPin('');
     } finally {
       setSubmitting(false);
@@ -62,7 +64,7 @@ export default function LoginPage() {
             Loom<span className="text-thread">knot</span>
           </h1>
           <p className="mt-2 text-content-secondary text-sm">
-            Pages as Memory
+            {t('tagline')}
           </p>
         </div>
 
@@ -73,7 +75,7 @@ export default function LoginPage() {
                 htmlFor="email"
                 className="mb-1 block text-sm font-medium text-content"
               >
-                Email
+                {t('emailLabel')}
               </label>
               <input
                 id="email"
@@ -97,13 +99,16 @@ export default function LoginPage() {
               disabled={submitting}
               className="w-full rounded-lg bg-thread px-4 py-2.5 font-medium text-white transition-colors hover:bg-thread/90 disabled:opacity-50"
             >
-              {submitting ? 'Sending...' : 'Get code'}
+              {submitting ? t('sending') : t('getCode')}
             </button>
           </form>
         ) : (
           <form onSubmit={handleVerify} className="space-y-4">
             <p className="text-sm text-content-secondary">
-              Code sent to <strong className="text-content">{email}</strong>
+              {t.rich('codeSentTo', {
+                strong: (chunks) => <strong className="text-content">{chunks}</strong>,
+                email,
+              })}
             </p>
 
             <div>
@@ -111,7 +116,7 @@ export default function LoginPage() {
                 htmlFor="pin"
                 className="mb-1 block text-sm font-medium text-content"
               >
-                6-digit code
+                {t('pinLabel')}
               </label>
               <input
                 ref={pinRef}
@@ -140,7 +145,7 @@ export default function LoginPage() {
               disabled={submitting || pin.length < 6}
               className="w-full rounded-lg bg-thread px-4 py-2.5 font-medium text-white transition-colors hover:bg-thread/90 disabled:opacity-50"
             >
-              {submitting ? 'Verifying...' : 'Sign in'}
+              {submitting ? t('verifying') : t('signIn')}
             </button>
 
             <button
@@ -152,7 +157,7 @@ export default function LoginPage() {
               }}
               className="w-full text-sm text-content-secondary hover:text-content"
             >
-              Use different email
+              {t('useDifferentEmail')}
             </button>
           </form>
         )}

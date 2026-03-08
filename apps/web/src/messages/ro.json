@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Webul care te cunoaște",
+    "template": "%s | LoomKnot",
+    "description": "O platformă unde AI-ul tău creează pagini, își amintește totul și lucrează pentru tine — nu pentru platformă."
+  },
+  "Nav": {
+    "examples": "Exemple",
+    "howItWorks": "Cum funcționează",
+    "values": "Valori",
+    "signIn": "Autentificare"
+  },
+  "Hero": {
+    "eyebrow": "AI-ul tău poate face mai mult. Mult mai mult.",
+    "title": "<accent>Internetul</accent> tău.<br/>AI-ul tău înăuntru.",
+    "subtitle": "Am construit un spațiu unde ChatGPT, Claude sau Gemini al tău creează pagini, își amintește totul și lucrează pentru tine — nu pentru platformă.",
+    "worksWithAi": "Funcționează cu AI-ul tău:",
+    "reserveSpace": "Rezervă-ți locul ↗",
+    "seeExamples": "Vezi exemple ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Mă mut în Lisabona. Lucrez remote, buget 1200€, vreau să alerg lângă apă și am nevoie de WiFi decent.",
+    "agentLabel": "Claude → proiectul tău",
+    "aiMsg1": "Salvat. Santos este cel mai bun pentru tine — pe malul apei, liniștit, coworking aproape. Creez o pagină de apartamente filtrată după <strong>viteza WiFi și distanța până la traseele de alergare</strong>.",
+    "aiMsg1Tag": "💾 memorat: lucru remote, alergare, 1200€",
+    "userMsg2": "Am nevoie și de o listă de documente pentru permisul de ședere.",
+    "aiMsg2": "Gata. Pagina \"Documents\" — NIF, NISS, bancă, asigurare. Știu că ești freelancer — <strong>am adăugat pașii pentru lucrătorii independenți</strong>, nu pentru angajați.",
+    "aiMsg2Tag": "📄 creat: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Exemple — de la personal la grup",
+    "title": "Nu doar un site. <accent>Spațiul</accent> tău cu AI.",
+    "subtitle": "Același LoomKnot. Pentru tine singur, pentru doi, pentru o echipă. Iată cum arată:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Proiect personal",
+    "title": "Mutarea în Lisabona",
+    "description": "Te muți într-un oraș nou. În loc de zeci de tab-uri — un singur proiect unde AI-ul strânge totul pentru tine și ține minte fiecare decizie.",
+    "userMsg1": "Mă mut în Lisabona în mai. Lucrez remote, buget de chirie până la 1200€, am nevoie de WiFi bun și de mare sau parc aproape pentru alergat.",
+    "aiMsg1": "Excelent! Salvez criteriile tale în proiect. Pentru Lisabona, cele mai bune 3 cartiere pentru tine sunt: <strong>Principe Real</strong> (parc + coworking-uri), <strong>Santos</strong> (malul apei + liniște) și <strong>Graça</strong> (priveliști + mai ieftin). Creez o pagină de comparație.",
+    "aiMsg1MemTag": "💾 Salvat în memoria proiectului",
+    "aiMsg1PageTag": "📄 Creat: /neighborhoods",
+    "userMsg2": "Santos — exact ce am nevoie. Găsește apartamente pe Idealista sub 1100€ cu balcon.",
+    "aiMsg2": "Santos selectat ca și cartier principal. Am găsit 8 apartamente, filtrate după recenzii WiFi și disponibilitatea balconului. Cele mai bune 3 sunt pe o pagină nouă. Am adăugat și <strong>distanța până la cel mai apropiat traseu de alergare</strong> — îmi amintesc că e important pentru tine.",
+    "aiMsg2PageTag": "📄 Creat: /apartments",
+    "pageTitle": "🏠 Apartamente în Santos",
+    "pageUpdated": "Actualizat acum 5 minute · Claude",
+    "filtersLabel": "Filtrele tale (memorate)",
+    "filterBudget": "sub 1100€",
+    "filterBalcony": "balcon",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "alergare aproape",
+    "bestOptionLabel": "⭐ Cea mai bună opțiune",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/lună",
+    "bestOptionLine1": "Balcon orientat spre apus. WiFi 220 Mbps (verificat).",
+    "bestOptionLine2": "🏃 600m până la Jardim da Estrela (potecă de pământ 1,2 km)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 min pe jos",
+    "checklistLabel": "📋 Checklist automat pentru mutare",
+    "checklistNif": "☑️ NIF (număr fiscal) —",
+    "checklistNifLink": "ghid →",
+    "checklistRental": "☐ Contract de închiriere",
+    "checklistNiss": "☐ NISS (asigurări sociale)",
+    "checklistBank": "☐ Conta bancária (cont bancar) —",
+    "checklistBankNote": "NIF necesar"
+  },
+  "ExGroup": {
+    "badge": "👥 Proiect de grup",
+    "title": "Barcelona în patru",
+    "description": "Patru prieteni. Două AI-uri. Fiecare are preferințele lui — agenții AI le văd pe toate și construiesc un traseu care funcționează pentru toți.",
+    "userMsg1": "Conectează-mă la proiectul nostru Barcelona. Sunt Petya, îmi place viața de noapte și mâncarea de stradă, buget strâns.",
+    "aiMsg1": "Conectat! Văd un proiect cu 3 participanți. Masha (prin Claude) preferă tururi pe jos și mâncare vegană, Anya — muzee și cafenele. Salvez preferințele tale.",
+    "aiMsg1MemTag": "💾 Profilul lui Petya salvat",
+    "userMsg2": "Fă un plan de sâmbătă care să fie grozav pentru toți.",
+    "aiMsg2": "Gata! Dimineața — plimbare în grup prin Cartierul Gotic (tuturor le place). Brunch — am găsit <strong>Flax & Kale</strong>: meniu vegan pentru Masha, mâncare obișnuită pentru restul, accesibil. După-amiaza — Masha și Anya la MACBA, iar tu la piața de mâncare de stradă din apropiere <strong>La Boqueria</strong>. Seara — toți împreună la Barceloneta, apoi tu și cine mai vrea — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Actualizat: /saturday",
+    "pageTitle": "📍 Sâmbătă, 21 martie",
+    "pageParticipants": "4 participanți · 2 agenți AI",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (pe jos!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegan ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (împreună)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "meniu 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ Compromis AI",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> împreună (gratis, lângă apă).",
+    "compromiseLine2": "<strong>22:00 — ne separăm:</strong> Masha + Anya → wine bar în El Born. Petya + Dima → Razzmatazz (intrare 15€ înainte de miezul nopții)."
+  },
+  "ExWork": {
+    "badge": "👥 Proiect de lucru",
+    "title": "Renovarea bucătăriei",
+    "description": "Un client, un designer și un contractor — fiecare cu AI-ul lui. Toate deciziile, materialele și bugetul — pe o singură pagină actualizată în timp real.",
+    "userMsg1": "Sunt contractorul, mă alătur proiectului de renovare. Care-i statusul bucătăriei?",
+    "aiMsg1": "Văd proiectul: clienta Lena (Claude) a ales stil scandinav, buget 800.000₽, designerul Oleg (ChatGPT) a aprobat planul bucătăriei în formă de L, 12m². Te salvez ca contractor. Ai acces la: <strong>buget</strong>, <strong>materiale</strong>, <strong>calendar</strong>.",
+    "aiMsg1MemTag": "💾 Rol: contractor",
+    "userMsg2": "Blatul din compozit de cuarț nu intră în buget. Sunt alternative?",
+    "aiMsg2": "Văd că Lena a scris «vreau blat deschis la culoare, rezistent la pete». Cuarț — 85.000₽. Alternative: <strong>HPL Egger</strong> (18.000₽, aspect similar, mai puțin durabil) sau <strong>gresie porțelanată 12mm</strong> (45.000₽, aspect premium). Creez o comparație și îi anunț pe Lena și Oleg.",
+    "aiMsg2PageTag": "📄 Creat: /countertop-options",
+    "pageTitle": "💰 Bugetul bucătăriei",
+    "pageParticipants": "3 participanți · 3 agenți AI · Actualizat acum 2h",
+    "totalBudgetLabel": "Buget total",
+    "totalBudgetAmount": "672.000₽",
+    "totalBudgetOf": "din 800.000₽",
+    "decisionLabel": "⚠️ Decizie necesară",
+    "decisionText": "<strong>Blat</strong> — contractorul propune <strong>gresie porțelanată 12mm</strong> în loc de cuarț (economie 40.000₽).",
+    "decisionDesigner": "Oleg (designer): «Arată bine vizual, dar verifică rosturile»",
+    "decisionAwaiting": "Se așteaptă decizia Lenei →",
+    "approvedLabel": "✅ Aprobat de toți",
+    "approvedItems": "Corpuri IKEA Voxtorp · Electrocasnice Bosch · Backsplash — faianță subway albă · Baterie Grohe · Iluminat — Maytoni track"
+  },
+  "HowItWorks": {
+    "label": "Cum funcționează",
+    "title": "Patru pași — și AI-ul tău e înăuntru",
+    "subtitle": "Nu trebuie să te înscrii la servicii noi. Deja folosești AI — acum poate face mai mult.",
+    "step1Title": "Conectează-ți AI-ul",
+    "step1Desc": "La onboarding, adaugă ChatGPT, Claude sau Gemini prin MCP. Un singur clic.",
+    "step2Title": "Vorbește ca de obicei",
+    "step2Desc": "Doar conversezi cu AI-ul tău. Salvează automat ce contează în proiect și construiește pagini.",
+    "step3Title": "Paginile sunt vii",
+    "step3Desc": "Fiecare pagină se actualizează, ține minte deciziile și se adaptează la tine. Nu e un document — e memorie.",
+    "step4Title": "Invită oameni",
+    "step4Desc": "Prieteni, colegi, contractori — fiecare își conectează propriul AI și vede proiectul din perspectiva lui."
+  },
+  "Revolution": {
+    "label": "De ce e un web diferit",
+    "title": "O pagină e <accent>memorie</accent>, nu un fișier",
+    "subtitle": "Un site obișnuit arată tuturor același lucru. LoomKnot știe cine ești, ce ai decis și ce anume ai nevoie.",
+    "card1Title": "Explică o dată",
+    "card1Desc": "Spune-i AI-ului tău că ești vegan — și pe fiecare pagină de proiect, restaurantele, rețetele și magazinele sunt deja filtrate. Pentru totdeauna.",
+    "card2Title": "Fără captivitate",
+    "card2Desc": "Folosești Claude? Perfect. Ai trecut pe ChatGPT? Proiectul tău rămâne, memoria ta rămâne. Sunt datele tale.",
+    "card3Title": "AI-ul negociază pentru tine",
+    "card3Desc": "Când preferințele se ciocnesc — «buget» vs «premium» — agenții propun un compromis în loc să te cerți în chat.",
+    "card4Title": "Un URL — un milion de versiuni",
+    "card4Desc": "Link-ul Barcelona pentru un student arată baruri și plaje, pentru o familie — parcuri și restaurante. Conținutul se remodelează pentru fiecare.",
+    "card5Title": "Claude Code funcționează și el",
+    "card5Desc": "Dezvoltator? Conectează-ți proiectul prin CLI. Agentul scrie pe aceleași pagini — din terminal, prin API, cum vrei.",
+    "card6Title": "Trei niveluri de confidențialitate",
+    "card6Desc": "Preferințe personale — doar pentru AI-ul tău. Decizii de proiect — pentru echipă. Pagină publică — pentru toți."
+  },
+  "Structure": {
+    "title": "Simplu. Un singur loc pentru tot.",
+    "row1Desc": "Landing, documentație, informații",
+    "row2Desc": "Tabloul tău de bord: proiecte, setări AI, preferințe",
+    "row3Desc": "Pagină publică — ce partajezi cu prietenii"
+  },
+  "Cta": {
+    "title": "Revendică-ți <em>locul</em> în noul web",
+    "subtitle": "Rezervă loomknot.com/web/<strong>numele-tău</strong> — înainte să fie luat.",
+    "placeholder": "loomknot.com/web/  proiectul-tău",
+    "button": "Rezervă",
+    "note": "Gratuit. Lansare primăvara 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Țesem AI, oameni și pagini"
+  },
+  "Login": {
+    "tagline": "Paginile ca Memorie",
+    "emailLabel": "Email",
+    "getCode": "Primește codul",
+    "sending": "Se trimite...",
+    "errorSend": "Nu s-a putut trimite codul. Verifică-ți emailul.",
+    "codeSentTo": "Cod trimis la <strong>{email}</strong>",
+    "pinLabel": "Cod din 6 cifre",
+    "signIn": "Autentificare",
+    "verifying": "Se verifică...",
+    "errorVerify": "Cod invalid sau expirat.",
+    "useDifferentEmail": "Folosește alt email"
+  },
+  "App": {
+    "welcome": "Bun venit, <strong>{email}</strong>",
+    "logout": "Deconectare",
+    "loading": "Se încarcă..."
+  },
+  "Common": {
+    "darkTheme": "Temă întunecată",
+    "lightTheme": "Temă luminoasă"
+  },
+  "LanguageSwitcher": {
+    "label": "Limbă"
+  }
+}

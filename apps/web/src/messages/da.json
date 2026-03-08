@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Nettet der kender dig",
+    "template": "%s | LoomKnot",
+    "description": "En platform hvor din AI laver sider, husker alt og arbejder for dig — ikke for platformen."
+  },
+  "Nav": {
+    "examples": "Eksempler",
+    "howItWorks": "Sådan virker det",
+    "values": "Værdier",
+    "signIn": "Log ind"
+  },
+  "Hero": {
+    "eyebrow": "Din AI kan mere. Meget mere.",
+    "title": "Dit <accent>internet</accent>.<br/>Din AI indeni.",
+    "subtitle": "Vi har bygget et rum, hvor din ChatGPT, Claude eller Gemini laver sider, husker alt og arbejder for dig — ikke for platformen.",
+    "worksWithAi": "Virker med din AI:",
+    "reserveSpace": "Reservér din plads ↗",
+    "seeExamples": "Se eksempler ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Jeg flytter til Lissabon. Fjernarbejde, budget 1200€, jeg vil løbe tæt på vandet og har brug for ordentligt WiFi.",
+    "agentLabel": "Claude → dit projekt",
+    "aiMsg1": "Gemt. Santos er bedst for dig — havnefront, roligt, coworking i nærheden. Opretter en lejlighedsside filtreret efter <strong>WiFi-hastighed og afstand til løberuter</strong>.",
+    "aiMsg1Tag": "💾 husket: fjernarbejde, løb, 1200€",
+    "userMsg2": "Jeg har også brug for en dokumenttjekliste til opholdstilladelsen.",
+    "aiMsg2": "Færdig. Side \"Dokumenter\" — NIF, NISS, bank, forsikring. Jeg ved, at du er freelancer — <strong>tilføjede trin for selvstændige</strong>, ikke lønmodtagere.",
+    "aiMsg2Tag": "📄 oprettet: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Eksempler — fra personligt til gruppe",
+    "title": "Ikke bare en hjemmeside. Dit <accent>rum</accent> med AI.",
+    "subtitle": "Det samme LoomKnot. Til dig selv, til to, til et hold. Sådan ser det ud:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Personligt projekt",
+    "title": "Flytning til Lissabon",
+    "description": "Du flytter til en ny by. I stedet for snesevis af faner — ét projekt, hvor AI samler alt for dig og husker hver beslutning.",
+    "userMsg1": "Jeg flytter til Lissabon i maj. Jeg arbejder hjemmefra, lejebudget op til 1200€, jeg har brug for godt WiFi og havet eller en park i nærheden til løb.",
+    "aiMsg1": "Fedt! Jeg gemmer dine kriterier i projektet. I Lissabon er de 3 bedste kvarterer for dig: <strong>Principe Real</strong> (park + coworking), <strong>Santos</strong> (havnefront + roligt) og <strong>Graça</strong> (udsigt + billigere). Opretter en sammenligningsside.",
+    "aiMsg1MemTag": "💾 Gemt i projekthukommelsen",
+    "aiMsg1PageTag": "📄 Oprettet: /neighborhoods",
+    "userMsg2": "Santos — det er præcis, hvad jeg har brug for. Find lejligheder på Idealista under 1100€ med altan.",
+    "aiMsg2": "Santos valgt som hovedkvarter. Fandt 8 lejligheder, filtreret efter WiFi-anmeldelser og altan. De bedste 3 er på en ny side. Jeg tilføjede også <strong>afstand til nærmeste løbesti</strong> — jeg husker, at det er vigtigt for dig.",
+    "aiMsg2PageTag": "📄 Oprettet: /apartments",
+    "pageTitle": "🏠 Lejligheder i Santos",
+    "pageUpdated": "Opdateret for 5 minutter siden · Claude",
+    "filtersLabel": "Dine filtre (husket)",
+    "filterBudget": "under 1100€",
+    "filterBalcony": "altan",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "løb i nærheden",
+    "bestOptionLabel": "⭐ Bedste mulighed",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/md.",
+    "bestOptionLine1": "Altan mod solnedgang. WiFi 220 Mbps (verificeret).",
+    "bestOptionLine2": "🏃 600m til Jardim da Estrela (1,2 km grusvej)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 min gang",
+    "checklistLabel": "📋 Automatisk flyttetjekliste",
+    "checklistNif": "☑️ NIF (skattenummer) —",
+    "checklistNifLink": "guide →",
+    "checklistRental": "☐ Lejekontrakt",
+    "checklistNiss": "☐ NISS (social sikring)",
+    "checklistBank": "☐ Conta bancária (bankkonto) —",
+    "checklistBankNote": "NIF påkrævet"
+  },
+  "ExGroup": {
+    "badge": "👥 Gruppeprojekt",
+    "title": "Barcelona for fire",
+    "description": "Fire venner. To AI'er. Alle har deres egne præferencer — AI-agenterne ser dem alle og bygger en rute, der virker for alle.",
+    "userMsg1": "Forbind til vores Barcelona-projekt. Jeg er Petya, jeg elsker natteliv og street food, stramt budget.",
+    "aiMsg1": "Forbundet! Jeg ser et projekt med 3 deltagere. Masha (via Claude) foretrækker gåture og vegansk mad, Anya — museer og caféer. Gemmer dine præferencer.",
+    "aiMsg1MemTag": "💾 Petyas profil gemt",
+    "userMsg2": "Lav en lørdagsplan, der er fantastisk for alle.",
+    "aiMsg2": "Færdig! Morgen — gruppevandring gennem Gotiske Kvarter (alle elsker det). Brunch — jeg fandt <strong>Flax & Kale</strong>: vegansk menu til Masha, almindelig mad til resten, budgetvenligt. Eftermiddag — Masha og Anya på MACBA, mens du tager til street food-markedet <strong>La Boqueria</strong>. Aften — alle på Barceloneta sammen, derefter dig og dem der er friske — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Opdateret: /saturday",
+    "pageTitle": "📍 Lørdag 21. marts",
+    "pageParticipants": "4 deltagere · 2 AI-agenter",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (til fods!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegan ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (sammen)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menu 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ AI-kompromis",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> sammen (gratis, ved vandet).",
+    "compromiseLine2": "<strong>22:00 — opdeling:</strong> Masha + Anya → vinbar i El Born. Petya + Dima → Razzmatazz (entre 15€ før midnat)."
+  },
+  "ExWork": {
+    "badge": "👥 Arbejdsprojekt",
+    "title": "Køkkenrenovering",
+    "description": "En kunde, en designer og en entreprenør — hver med sin egen AI. Alle beslutninger, materialer og budget — på én side, der opdateres i realtid.",
+    "userMsg1": "Jeg er entreprenøren og tilslutter mig renoveringsprojektet. Hvad er status på køkkenet?",
+    "aiMsg1": "Jeg ser projektet: kunden Lena (Claude) valgte skandinavisk stil, budget 800.000₽, designeren Oleg (ChatGPT) godkendte det L-formede køkkenlayout, 12m². Gemmer dig som entreprenør. Du har adgang til: <strong>budget</strong>, <strong>materialer</strong>, <strong>tidsplan</strong>.",
+    "aiMsg1MemTag": "💾 Rolle: entreprenør",
+    "userMsg2": "Kvartskomposit-bordpladen passer ikke i budgettet. Er der alternativer?",
+    "aiMsg2": "Jeg kan se, at Lena skrev \"vil have en lys bordplade, pletsikker\". Kvarts — 85.000₽. Alternativer: <strong>HPL Egger</strong> (18.000₽, lignende udseende, mindre holdbar) eller <strong>12mm porcelænsstengods</strong> (45.000₽, premium-look). Opretter sammenligning og pinger Lena og Oleg.",
+    "aiMsg2PageTag": "📄 Oprettet: /countertop-options",
+    "pageTitle": "💰 Køkkenbudget",
+    "pageParticipants": "3 deltagere · 3 AI-agenter · Opdateret for 2 timer siden",
+    "totalBudgetLabel": "Samlet budget",
+    "totalBudgetAmount": "672.000₽",
+    "totalBudgetOf": "af 800.000₽",
+    "decisionLabel": "⚠️ Beslutning nødvendig",
+    "decisionText": "<strong>Bordplade</strong> — entreprenøren foreslår <strong>12mm porcelænsstengods</strong> i stedet for kvarts (besparelse 40.000₽).",
+    "decisionDesigner": "Oleg (designer): \"Ser fint ud visuelt, men tjek fugerne\"",
+    "decisionAwaiting": "Afventer Lenas beslutning →",
+    "approvedLabel": "✅ Godkendt af alle",
+    "approvedItems": "IKEA Voxtorp skabe · Bosch hvidevarer · Stænkplade — hvid metroflise · Grohe vandhane · Belysning — Maytoni skinne"
+  },
+  "HowItWorks": {
+    "label": "Sådan virker det",
+    "title": "Fire trin — og din AI er indeni",
+    "subtitle": "Ingen tilmelding til nye tjenester. Du bruger allerede AI — nu kan den mere.",
+    "step1Title": "Forbind din AI",
+    "step1Desc": "Under onboarding tilføjer du din ChatGPT, Claude eller Gemini via MCP. Ét klik.",
+    "step2Title": "Snak som sædvanligt",
+    "step2Desc": "Bare chat med din AI. Den gemmer automatisk det vigtige for projektet og bygger sider.",
+    "step3Title": "Siderne lever",
+    "step3Desc": "Hver side opdateres, husker beslutninger og tilpasser sig dig. Det er ikke et dokument — det er hukommelse.",
+    "step4Title": "Invitér folk",
+    "step4Desc": "Venner, kolleger, entreprenører — alle forbinder deres egen AI og ser projektet gennem deres egne øjne."
+  },
+  "Revolution": {
+    "label": "Derfor er dette et anderledes internet",
+    "title": "En side er <accent>hukommelse</accent>, ikke en fil",
+    "subtitle": "En almindelig hjemmeside viser alle det samme. LoomKnot ved, hvem du er, hvad du besluttede, og hvad netop du har brug for.",
+    "card1Title": "Forklar én gang",
+    "card1Desc": "Fortæl din AI, at du er veganer — og på hver projektside er restauranter, opskrifter og butikker allerede filtreret. For altid.",
+    "card2Title": "Ingen fastlåsning",
+    "card2Desc": "Bruger du Claude? Fint. Skiftet til ChatGPT? Dit projekt bliver, din hukommelse bliver. Det er dine data.",
+    "card3Title": "AI forhandler for dig",
+    "card3Desc": "Når præferencer kolliderer — \"budget\" vs \"premium\" — foreslår agenterne et kompromis i stedet for at I skændes i chatten.",
+    "card4Title": "Én URL — en million versioner",
+    "card4Desc": "Barcelona-linket viser en studerende barer og strande, en familie — parker og restauranter. Indholdet former sig til alle.",
+    "card5Title": "Claude Code virker også",
+    "card5Desc": "Udvikler? Forbind dit projekt via CLI. Agenten skriver til de samme sider — fra terminalen, via API, som du vil.",
+    "card6Title": "Tre niveauer af privatliv",
+    "card6Desc": "Personlige præferencer — kun for din AI. Projektbeslutninger — for holdet. Offentlig side — for alle."
+  },
+  "Structure": {
+    "title": "Enkelt. Alt samlet ét sted.",
+    "row1Desc": "Landingsside, dokumentation, information",
+    "row2Desc": "Dit dashboard: projekter, AI-indstillinger, præferencer",
+    "row3Desc": "Offentlig side — det du deler med venner"
+  },
+  "Cta": {
+    "title": "Sikr <em>din plads</em> i det nye internet",
+    "subtitle": "Reservér loomknot.com/web/<strong>dit-navn</strong> — inden det er taget.",
+    "placeholder": "loomknot.com/web/  dit-projekt",
+    "button": "Reservér",
+    "note": "Gratis. Lancering forår 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Væver AI, mennesker og sider sammen"
+  },
+  "Login": {
+    "tagline": "Pages as Memory",
+    "emailLabel": "E-mail",
+    "getCode": "Hent kode",
+    "sending": "Sender...",
+    "errorSend": "Kunne ikke sende koden. Tjek venligst din e-mail.",
+    "codeSentTo": "Kode sendt til <strong>{email}</strong>",
+    "pinLabel": "6-cifret kode",
+    "signIn": "Log ind",
+    "verifying": "Bekræfter...",
+    "errorVerify": "Ugyldig eller udløbet kode.",
+    "useDifferentEmail": "Brug en anden e-mail"
+  },
+  "App": {
+    "welcome": "Velkommen, <strong>{email}</strong>",
+    "logout": "Log ud",
+    "loading": "Indlæser..."
+  },
+  "Common": {
+    "darkTheme": "Mørkt tema",
+    "lightTheme": "Lyst tema"
+  },
+  "LanguageSwitcher": {
+    "label": "Sprog"
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — 懂你的互联网",
+    "template": "%s | LoomKnot",
+    "description": "一个让你的 AI 创建页面、记住一切、为你而非平台服务的平台。"
+  },
+  "Nav": {
+    "examples": "示例",
+    "howItWorks": "工作原理",
+    "values": "价值观",
+    "signIn": "登录"
+  },
+  "Hero": {
+    "eyebrow": "你的 AI 能做更多。远不止于此。",
+    "title": "你的<accent>互联网</accent>。<br/>你的 AI 就在其中。",
+    "subtitle": "我们打造了一个空间，让你的 ChatGPT、Claude 或 Gemini 创建页面、记住一切，为你服务——而非为平台。",
+    "worksWithAi": "支持你的 AI：",
+    "reserveSpace": "预留你的空间 ↗",
+    "seeExamples": "查看示例 ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "我要搬到里斯本。远程办公，预算 1200€，我想在水边跑步，需要靠谱的 WiFi。",
+    "agentLabel": "Claude → 你的项目",
+    "aiMsg1": "已保存。Santos 最适合你——临水、安静、附近有共享办公空间。正在创建公寓页面，按 <strong>WiFi 速度和跑步路线距离</strong> 筛选。",
+    "aiMsg1Tag": "💾 已记住：远程办公、跑步、1200€",
+    "userMsg2": "我还需要一份居留许可的文件清单。",
+    "aiMsg2": "搞定。「文件」页面——NIF、NISS、银行、保险。我知道你是自由职业者——<strong>已添加自雇者步骤</strong>，而非受雇者。",
+    "aiMsg2Tag": "📄 已创建：/documents、/apartments"
+  },
+  "Examples": {
+    "label": "示例——从个人到团队",
+    "title": "不只是网站。是你的 AI <accent>空间</accent>。",
+    "subtitle": "同一个 LoomKnot。为自己、为两人、为团队。看看是什么样的："
+  },
+  "ExPersonal": {
+    "badge": "👤 个人项目",
+    "title": "搬到里斯本",
+    "description": "你要搬到一座新城市。不用打开无数标签页——一个项目，AI 帮你汇总一切，记住每个决定。",
+    "userMsg1": "我五月要搬到里斯本。远程办公，房租预算 1200€ 以内，需要好的 WiFi，附近有海边或公园可以跑步。",
+    "aiMsg1": "太好了！我会把你的条件保存到项目中。在里斯本，最适合你的 3 个社区是：<strong>Principe Real</strong>（公园 + 共享办公）、<strong>Santos</strong>（临水 + 安静）和 <strong>Graça</strong>（景观好 + 更便宜）。正在创建对比页面。",
+    "aiMsg1MemTag": "💾 已保存到项目记忆",
+    "aiMsg1PageTag": "📄 已创建：/neighborhoods",
+    "userMsg2": "Santos——正是我需要的。帮我在 Idealista 上找 1100€ 以下有阳台的公寓。",
+    "aiMsg2": "已选定 Santos 为主要社区。找到 8 套公寓，按 WiFi 评价和阳台筛选。最好的 3 套在新页面上。我还加了<strong>到最近跑步路线的距离</strong>——我记得这对你很重要。",
+    "aiMsg2PageTag": "📄 已创建：/apartments",
+    "pageTitle": "🏠 Santos 公寓",
+    "pageUpdated": "5 分钟前更新 · Claude",
+    "filtersLabel": "你的筛选条件（已记住）",
+    "filterBudget": "1100€ 以下",
+    "filterBalcony": "阳台",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "附近可跑步",
+    "bestOptionLabel": "⭐ 最佳选择",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/月",
+    "bestOptionLine1": "朝西阳台，看日落。WiFi 220 Mbps（已验证）。",
+    "bestOptionLine2": "🏃 距 Jardim da Estrela 600米（1.2 公里土路跑道）",
+    "bestOptionLine3": "🛒 Pingo Doce — 步行 3 分钟",
+    "checklistLabel": "📋 搬家自动清单",
+    "checklistNif": "☑️ NIF（税号）——",
+    "checklistNifLink": "指南 →",
+    "checklistRental": "☐ 租房合同",
+    "checklistNiss": "☐ NISS（社保）",
+    "checklistBank": "☐ Conta bancária（银行账户）——",
+    "checklistBankNote": "需先有 NIF"
+  },
+  "ExGroup": {
+    "badge": "👥 团队项目",
+    "title": "四人巴塞罗那之旅",
+    "description": "四个朋友。两个 AI。每个人都有自己的偏好——AI 代理看到所有偏好，规划出适合所有人的路线。",
+    "userMsg1": "加入我们的巴塞罗那项目。我是 Petya，喜欢夜生活和街头美食，预算紧张。",
+    "aiMsg1": "已连接！我看到项目有 3 位参与者。Masha（通过 Claude）喜欢步行游览和素食，Anya 偏爱博物馆和咖啡馆。我会保存你的偏好。",
+    "aiMsg1MemTag": "💾 Petya 的档案已保存",
+    "userMsg2": "帮我制定一个周六计划，让每个人都满意。",
+    "aiMsg2": "搞定！上午——一起漫步哥特区（大家都喜欢）。早午餐——找到了 <strong>Flax & Kale</strong>：有 Masha 的素食菜单，其他人的常规菜品，而且很实惠。下午——Masha 和 Anya 去 MACBA，你去旁边的街头美食市场 <strong>La Boqueria</strong>。晚上——大家一起去 Barceloneta，之后你和有兴趣的人去 Razzmatazz。",
+    "aiMsg2PageTag": "📄 已更新：/saturday",
+    "pageTitle": "📍 周六，3月21日",
+    "pageParticipants": "4 位参与者 · 2 个 AI 代理",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — 桂尔公园（步行！）",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "素食 ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — 桂尔公园（一起）",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "菜单 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ AI 折衷方案",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> 大家一起（免费，临水）。",
+    "compromiseLine2": "<strong>22:00 — 分头行动：</strong> Masha + Anya → El Born 的酒吧。Petya + Dima → Razzmatazz（午夜前入场 15€）。"
+  },
+  "ExWork": {
+    "badge": "👥 工作项目",
+    "title": "厨房翻新",
+    "description": "一位业主、一位设计师、一位施工方——各自有各自的 AI。所有决策、材料和预算都在一个实时更新的页面上。",
+    "userMsg1": "我是施工方，加入翻新项目。厨房进展如何？",
+    "aiMsg1": "我看到项目信息：业主 Lena（Claude）选择了北欧风格，预算 800,000₽，设计师 Oleg（ChatGPT）确认了 L 型厨房布局，12m²。已将你保存为施工方。你可以访问：<strong>预算</strong>、<strong>材料</strong>、<strong>进度</strong>。",
+    "aiMsg1MemTag": "💾 角色：施工方",
+    "userMsg2": "石英复合台面超出预算了。有其他选择吗？",
+    "aiMsg2": "我看到 Lena 写了「想要浅色台面，防污」。石英——85,000₽。替代方案：<strong>HPL Egger</strong>（18,000₽，外观相似，耐用性稍差）或 <strong>12mm 岩板</strong>（45,000₽，高端质感）。正在创建对比并通知 Lena 和 Oleg。",
+    "aiMsg2PageTag": "📄 已创建：/countertop-options",
+    "pageTitle": "💰 厨房预算",
+    "pageParticipants": "3 位参与者 · 3 个 AI 代理 · 2 小时前更新",
+    "totalBudgetLabel": "总预算",
+    "totalBudgetAmount": "672,000₽",
+    "totalBudgetOf": "共 800,000₽",
+    "decisionLabel": "⚠️ 需要决定",
+    "decisionText": "<strong>台面</strong>——施工方建议用 <strong>12mm 岩板</strong> 替代石英（节省 40,000₽）。",
+    "decisionDesigner": "Oleg（设计师）：「视觉上没问题，但要检查接缝」",
+    "decisionAwaiting": "等待 Lena 决定 →",
+    "approvedLabel": "✅ 已获全部同意",
+    "approvedItems": "IKEA Voxtorp 橱柜 · Bosch 家电 · 后挡板——白色地铁砖 · Grohe 水龙头 · 照明——Maytoni 轨道灯"
+  },
+  "HowItWorks": {
+    "label": "工作原理",
+    "title": "四个步骤——你的 AI 就位",
+    "subtitle": "无需注册新服务。你已经在用 AI——现在它可以做更多。",
+    "step1Title": "连接你的 AI",
+    "step1Desc": "在入门流程中，通过 MCP 添加你的 ChatGPT、Claude 或 Gemini。一键完成。",
+    "step2Title": "像往常一样对话",
+    "step2Desc": "照常和你的 AI 聊天。它会自动保存项目中的重要信息并创建页面。",
+    "step3Title": "页面是活的",
+    "step3Desc": "每个页面会更新、记住决定，并根据你进行调整。它不是文档——是记忆。",
+    "step4Title": "邀请他人",
+    "step4Desc": "朋友、同事、合作伙伴——每个人连接自己的 AI，从自己的视角看到项目。"
+  },
+  "Revolution": {
+    "label": "为什么这是不一样的互联网",
+    "title": "页面是<accent>记忆</accent>，不是文件",
+    "subtitle": "普通网站向所有人展示相同内容。LoomKnot 知道你是谁、你做了什么决定、你具体需要什么。",
+    "card1Title": "只需说一次",
+    "card1Desc": "告诉你的 AI 你是素食者——在每个项目页面上，餐厅、食谱和商店都已为你筛选。永久生效。",
+    "card2Title": "不被绑定",
+    "card2Desc": "在用 Claude？很好。换成 ChatGPT？你的项目还在，记忆还在。数据是你的。",
+    "card3Title": "AI 替你协商",
+    "card3Desc": "当偏好冲突——「经济型」vs「高端」——代理会提出折衷方案，而非让你在聊天中争论。",
+    "card4Title": "一个链接——百万种版本",
+    "card4Desc": "巴塞罗那的链接给学生看的是酒吧和海滩，给家庭看的是公园和餐厅。内容为每个人重新塑造。",
+    "card5Title": "Claude Code 也能用",
+    "card5Desc": "你是开发者？通过 CLI 连接你的项目。代理写入同样的页面——通过终端、API，随你选择。",
+    "card6Title": "三级隐私保护",
+    "card6Desc": "个人偏好——只有你的 AI 可见。项目决策——团队可见。公开页面——所有人可见。"
+  },
+  "Structure": {
+    "title": "简单。一切都在一个地方。",
+    "row1Desc": "落地页、文档、信息",
+    "row2Desc": "你的面板：项目、AI 设置、偏好",
+    "row3Desc": "公开页面——你分享给朋友的内容"
+  },
+  "Cta": {
+    "title": "在新互联网中占据<em>你的位置</em>",
+    "subtitle": "预留 loomknot.com/web/<strong>your-name</strong>——趁还没被占。",
+    "placeholder": "loomknot.com/web/  your-project",
+    "button": "预留",
+    "note": "免费。2026 年春季上线。"
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · 编织 AI、人与页面"
+  },
+  "Login": {
+    "tagline": "页面即记忆",
+    "emailLabel": "邮箱",
+    "getCode": "获取验证码",
+    "sending": "发送中...",
+    "errorSend": "验证码发送失败。请检查你的邮箱地址。",
+    "codeSentTo": "验证码已发送至 <strong>{email}</strong>",
+    "pinLabel": "6 位验证码",
+    "signIn": "登录",
+    "verifying": "验证中...",
+    "errorVerify": "验证码无效或已过期。",
+    "useDifferentEmail": "使用其他邮箱"
+  },
+  "App": {
+    "welcome": "欢迎，<strong>{email}</strong>",
+    "logout": "退出登录",
+    "loading": "加载中..."
+  },
+  "Common": {
+    "darkTheme": "深色主题",
+    "lightTheme": "浅色主题"
+  },
+  "LanguageSwitcher": {
+    "label": "语言"
+  }
+}

@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Sieć, która cię zna",
+    "template": "%s | LoomKnot",
+    "description": "Platforma, na której twoje AI tworzy strony, pamięta wszystko i pracuje dla ciebie — nie dla platformy."
+  },
+  "Nav": {
+    "examples": "Przykłady",
+    "howItWorks": "Jak to działa",
+    "values": "Wartości",
+    "signIn": "Zaloguj się"
+  },
+  "Hero": {
+    "eyebrow": "Twoje AI może więcej. O wiele więcej.",
+    "title": "Twój <accent>internet</accent>.<br/>Twoje AI w środku.",
+    "subtitle": "Stworzyliśmy przestrzeń, w której twój ChatGPT, Claude lub Gemini tworzy strony, pamięta wszystko i pracuje dla ciebie — nie dla platformy.",
+    "worksWithAi": "Działa z twoim AI:",
+    "reserveSpace": "Zarezerwuj swoje miejsce ↗",
+    "seeExamples": "Zobacz przykłady ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Przeprowadzam się do Lizbony. Praca zdalna, budżet 1200€, chcę biegać nad wodą i potrzebuję dobrego WiFi.",
+    "agentLabel": "Claude → twój projekt",
+    "aiMsg1": "Zapisano. Santos jest najlepsze dla ciebie — nad wodą, spokojnie, coworking w pobliżu. Tworzę stronę mieszkań filtrowaną wg <strong>prędkości WiFi i odległości do tras biegowych</strong>.",
+    "aiMsg1Tag": "💾 zapamiętano: praca zdalna, bieganie, 1200€",
+    "userMsg2": "Potrzebuję też listy dokumentów do pozwolenia na pobyt.",
+    "aiMsg2": "Gotowe. Strona \"Documents\" — NIF, NISS, bank, ubezpieczenie. Wiem, że jesteś freelancerem — <strong>dodałem kroki dla samozatrudnionych</strong>, nie dla pracowników etatowych.",
+    "aiMsg2Tag": "📄 utworzono: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Przykłady — od osobistych do grupowych",
+    "title": "Nie tylko strona. Twoja <accent>przestrzeń</accent> z AI.",
+    "subtitle": "Ten sam LoomKnot. Dla ciebie samego, we dwoje, dla zespołu. Oto jak to wygląda:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Projekt osobisty",
+    "title": "Przeprowadzka do Lizbony",
+    "description": "Przenosisz się do nowego miasta. Zamiast dziesiątek kart — jeden projekt, w którym AI zbiera wszystko i pamięta każdą decyzję.",
+    "userMsg1": "Przeprowadzam się do Lizbony w maju. Pracuję zdalnie, budżet na wynajem do 1200€, potrzebuję dobrego WiFi i morza lub parku w pobliżu do biegania.",
+    "aiMsg1": "Świetnie! Zapiszę twoje kryteria w projekcie. Dla Lizbony 3 najlepsze dzielnice to: <strong>Principe Real</strong> (park + coworkingi), <strong>Santos</strong> (nad wodą + cisza) i <strong>Graça</strong> (widoki + taniej). Tworzę stronę porównawczą.",
+    "aiMsg1MemTag": "💾 Zapisano w pamięci projektu",
+    "aiMsg1PageTag": "📄 Utworzono: /neighborhoods",
+    "userMsg2": "Santos — dokładnie to, czego potrzebuję. Znajdź mieszkania na Idealista poniżej 1100€ z balkonem.",
+    "aiMsg2": "Santos wybrane jako główna dzielnica. Znaleziono 8 mieszkań, przefiltrowanych wg opinii o WiFi i dostępności balkonu. Najlepsze 3 na nowej stronie. Dodałem też <strong>odległość do najbliższej trasy biegowej</strong> — pamiętam, że to dla ciebie ważne.",
+    "aiMsg2PageTag": "📄 Utworzono: /apartments",
+    "pageTitle": "🏠 Mieszkania w Santos",
+    "pageUpdated": "Zaktualizowano 5 minut temu · Claude",
+    "filtersLabel": "Twoje filtry (zapamiętane)",
+    "filterBudget": "poniżej 1100€",
+    "filterBalcony": "balkon",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "bieganie w pobliżu",
+    "bestOptionLabel": "⭐ Najlepsza opcja",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/mies.",
+    "bestOptionLine1": "Balkon od strony zachodu słońca. WiFi 220 Mbps (zweryfikowane).",
+    "bestOptionLine2": "🏃 600m do Jardim da Estrela (ścieżka gruntowa 1,2 km)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 min pieszo",
+    "checklistLabel": "📋 Automatyczna lista kontrolna przeprowadzki",
+    "checklistNif": "☑️ NIF (numer podatkowy) —",
+    "checklistNifLink": "poradnik →",
+    "checklistRental": "☐ Umowa najmu",
+    "checklistNiss": "☐ NISS (ubezpieczenie społeczne)",
+    "checklistBank": "☐ Conta bancária (konto bankowe) —",
+    "checklistBankNote": "wymagany NIF"
+  },
+  "ExGroup": {
+    "badge": "👥 Projekt grupowy",
+    "title": "Barcelona we czwórkę",
+    "description": "Czworo przyjaciół. Dwa AI. Każdy ma swoje preferencje — agenci AI widzą je wszystkie i budują trasę, która pasuje wszystkim.",
+    "userMsg1": "Dołącz do naszego projektu Barcelona. Jestem Petya, lubię życie nocne i street food, budżet napięty.",
+    "aiMsg1": "Połączono! Widzę projekt z 3 uczestnikami. Masha (przez Claude) woli spacery i jedzenie wegańskie, Anya — muzea i kawiarnie. Zapisuję twoje preferencje.",
+    "aiMsg1MemTag": "💾 Profil Petya zapisany",
+    "userMsg2": "Zrób plan na sobotę, który spodoba się wszystkim.",
+    "aiMsg2": "Gotowe! Rano — wspólny spacer po Dzielnicy Gotyckiej (każdy lubi). Brunch — znalazłem <strong>Flax & Kale</strong>: menu wegańskie dla Mashy, normalne jedzenie dla reszty, przystępne cenowo. Po południu — Masha i Anya w MACBA, a ty na pobliski targ street food <strong>La Boqueria</strong>. Wieczorem — wszyscy razem na Barcelonecie, potem ty i chętni — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Zaktualizowano: /saturday",
+    "pageTitle": "📍 Sobota, 21 marca",
+    "pageParticipants": "4 uczestników · 2 agentów AI",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (pieszo!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegan ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (razem)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menu 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ Kompromis AI",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> razem (za darmo, nad wodą).",
+    "compromiseLine2": "<strong>22:00 — rozdzielamy się:</strong> Masha + Anya → wine bar w El Born. Petya + Dima → Razzmatazz (wejście 15€ przed północą)."
+  },
+  "ExWork": {
+    "badge": "👥 Projekt firmowy",
+    "title": "Remont kuchni",
+    "description": "Klient, projektant i wykonawca — każdy ze swoim AI. Wszystkie decyzje, materiały i budżet — na jednej stronie aktualizowanej w czasie rzeczywistym.",
+    "userMsg1": "Jestem wykonawcą, dołączam do projektu remontu. Jaki jest status kuchni?",
+    "aiMsg1": "Widzę projekt: klientka Lena (Claude) wybrała styl skandynawski, budżet 800 000₽, projektant Oleg (ChatGPT) zatwierdził układ kuchni w kształcie L, 12m². Zapisuję cię jako wykonawcę. Masz dostęp do: <strong>budżetu</strong>, <strong>materiałów</strong>, <strong>harmonogramu</strong>.",
+    "aiMsg1MemTag": "💾 Rola: wykonawca",
+    "userMsg2": "Blat z kompozytu kwarcowego nie zmieści się w budżecie. Jakieś alternatywy?",
+    "aiMsg2": "Widzę, że Lena napisała \"chcę jasny blat, odporny na plamy.\" Kwarc — 85 000₽. Alternatywy: <strong>HPL Egger</strong> (18 000₽, podobny wygląd, mniej trwały) lub <strong>gres porcelanowy 12mm</strong> (45 000₽, wygląd premium). Tworzę porównanie i informuję Lenę i Olega.",
+    "aiMsg2PageTag": "📄 Utworzono: /countertop-options",
+    "pageTitle": "💰 Budżet kuchni",
+    "pageParticipants": "3 uczestników · 3 agentów AI · Zaktualizowano 2 godz. temu",
+    "totalBudgetLabel": "Łączny budżet",
+    "totalBudgetAmount": "672 000₽",
+    "totalBudgetOf": "z 800 000₽",
+    "decisionLabel": "⚠️ Wymagana decyzja",
+    "decisionText": "<strong>Blat</strong> — wykonawca proponuje <strong>gres porcelanowy 12mm</strong> zamiast kwarcu (oszczędność 40 000₽).",
+    "decisionDesigner": "Oleg (projektant): \"Wizualnie w porządku, ale sprawdź fugi\"",
+    "decisionAwaiting": "Oczekiwanie na decyzję Leny →",
+    "approvedLabel": "✅ Zatwierdzone przez wszystkich",
+    "approvedItems": "Szafki IKEA Voxtorp · Sprzęt Bosch · Backsplash — białe kafelki subway · Bateria Grohe · Oświetlenie — Maytoni track"
+  },
+  "HowItWorks": {
+    "label": "Jak to działa",
+    "title": "Cztery kroki — i twoje AI jest w środku",
+    "subtitle": "Nie musisz rejestrować się w nowych usługach. Już korzystasz z AI — teraz może więcej.",
+    "step1Title": "Podłącz swoje AI",
+    "step1Desc": "Podczas onboardingu dodaj ChatGPT, Claude lub Gemini przez MCP. Jedno kliknięcie.",
+    "step2Title": "Rozmawiaj jak zwykle",
+    "step2Desc": "Po prostu czatuj ze swoim AI. Automatycznie zapisuje co ważne w projekcie i buduje strony.",
+    "step3Title": "Strony żyją",
+    "step3Desc": "Każda strona się aktualizuje, pamięta decyzje i dostosowuje się do ciebie. To nie dokument — to pamięć.",
+    "step4Title": "Zaproś ludzi",
+    "step4Desc": "Przyjaciele, współpracownicy, wykonawcy — każdy podłącza swoje AI i widzi projekt z własnej perspektywy."
+  },
+  "Revolution": {
+    "label": "Dlaczego to inny internet",
+    "title": "Strona to <accent>pamięć</accent>, nie plik",
+    "subtitle": "Zwykła strona pokazuje wszystkim to samo. LoomKnot wie, kim jesteś, co zdecydowałeś i czego konkretnie potrzebujesz.",
+    "card1Title": "Wyjaśnij raz",
+    "card1Desc": "Powiedz swojemu AI, że jesteś weganem — i na każdej stronie projektu restauracje, przepisy i sklepy są już przefiltrowane. Na zawsze.",
+    "card2Title": "Bez przywiązania",
+    "card2Desc": "Używasz Claude? Świetnie. Przeszedłeś na ChatGPT? Twój projekt zostaje, twoja pamięć zostaje. To twoje dane.",
+    "card3Title": "AI negocjuje za ciebie",
+    "card3Desc": "Gdy preferencje się zderzają — \"budżet\" vs \"premium\" — agenci proponują kompromis zamiast kłócić się na czacie.",
+    "card4Title": "Jeden URL — milion wersji",
+    "card4Desc": "Link do Barcelony dla studenta pokazuje bary i plaże, dla rodziny — parki i restauracje. Treść zmienia się dla każdego.",
+    "card5Title": "Claude Code też działa",
+    "card5Desc": "Programista? Podłącz projekt przez CLI. Agent pisze na tych samych stronach — z terminala, przez API, jak chcesz.",
+    "card6Title": "Trzy poziomy prywatności",
+    "card6Desc": "Osobiste preferencje — tylko dla twojego AI. Decyzje projektu — dla zespołu. Strona publiczna — dla wszystkich."
+  },
+  "Structure": {
+    "title": "Prosto. Jedno miejsce na wszystko.",
+    "row1Desc": "Landing, dokumentacja, informacje",
+    "row2Desc": "Twój dashboard: projekty, ustawienia AI, preferencje",
+    "row3Desc": "Strona publiczna — to, co dzielisz z przyjaciółmi"
+  },
+  "Cta": {
+    "title": "Zajmij <em>swoje miejsce</em> w nowej sieci",
+    "subtitle": "Zarezerwuj loomknot.com/web/<strong>twoje-imię</strong> — zanim ktoś je zajmie.",
+    "placeholder": "loomknot.com/web/  twój-projekt",
+    "button": "Zarezerwuj",
+    "note": "Bezpłatnie. Start wiosna 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Splatamy AI, ludzi i strony"
+  },
+  "Login": {
+    "tagline": "Strony jako Pamięć",
+    "emailLabel": "Email",
+    "getCode": "Wyślij kod",
+    "sending": "Wysyłanie...",
+    "errorSend": "Nie udało się wysłać kodu. Sprawdź swój email.",
+    "codeSentTo": "Kod wysłany na <strong>{email}</strong>",
+    "pinLabel": "6-cyfrowy kod",
+    "signIn": "Zaloguj się",
+    "verifying": "Weryfikacja...",
+    "errorVerify": "Nieprawidłowy lub wygasły kod.",
+    "useDifferentEmail": "Użyj innego emaila"
+  },
+  "App": {
+    "welcome": "Witaj, <strong>{email}</strong>",
+    "logout": "Wyloguj",
+    "loading": "Ładowanie..."
+  },
+  "Common": {
+    "darkTheme": "Ciemny motyw",
+    "lightTheme": "Jasny motyw"
+  },
+  "LanguageSwitcher": {
+    "label": "Język"
+  }
+}

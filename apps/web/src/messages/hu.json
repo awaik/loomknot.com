@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — A web, ami ismer téged",
+    "template": "%s | LoomKnot",
+    "description": "Egy platform, ahol a mesterséges intelligenciád oldalakat hoz létre, mindenre emlékszik, és neked dolgozik — nem a platformnak."
+  },
+  "Nav": {
+    "examples": "Példák",
+    "howItWorks": "Hogyan működik",
+    "values": "Értékek",
+    "signIn": "Bejelentkezés"
+  },
+  "Hero": {
+    "eyebrow": "Az AI-od többre képes. Sokkal többre.",
+    "title": "A te <accent>interneted</accent>.<br/>A te AI-od benne.",
+    "subtitle": "Építettünk egy teret, ahol a ChatGPT-d, Claude-od vagy Geminid oldalakat hoz létre, mindenre emlékszik, és neked dolgozik — nem a platformnak.",
+    "worksWithAi": "Működik a te AI-oddal:",
+    "reserveSpace": "Foglald le a helyed ↗",
+    "seeExamples": "Nézd meg a példákat ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Lisszabonba költözöm. Távmunka, 1200€ budget, a víz mellett szeretnék futni, és megbízható WiFi kell.",
+    "agentLabel": "Claude → a te projekted",
+    "aiMsg1": "Elmentve. Santos a legjobb neked — vízpart, csendes, coworking a közelben. Készítek egy lakásoldalt <strong>WiFi sebesség és futóútvonal távolság</strong> alapján szűrve.",
+    "aiMsg1Tag": "💾 megjegyezve: távmunka, futás, 1200€",
+    "userMsg2": "Szükségem van egy dokumentum-ellenőrzőlistára is a tartózkodási engedélyhez.",
+    "aiMsg2": "Kész. \"Dokumentumok\" oldal — NIF, NISS, bank, biztosítás. Tudom, hogy szabadúszó vagy — <strong>az önfoglalkoztatóknak szóló lépéseket adtam hozzá</strong>, nem az alkalmazottakét.",
+    "aiMsg2Tag": "📄 létrehozva: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Példák — személyestől a csoportosig",
+    "title": "Nem csak egy weboldal. A te <accent>tered</accent> AI-val.",
+    "subtitle": "Ugyanaz a LoomKnot. Magadnak, kettőtöknek, egy csapatnak. Így néz ki:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Személyes projekt",
+    "title": "Költözés Lisszabonba",
+    "description": "Új városba költözöl. Tucatnyi fül helyett — egy projekt, ahol az AI mindent összegyűjt neked és minden döntésre emlékszik.",
+    "userMsg1": "Májusban Lisszabonba költözöm. Távmunkás vagyok, bérleti budget max 1200€, jó WiFi kell és a tenger vagy park a közelben futáshoz.",
+    "aiMsg1": "Remek! Elmentem a kritériumaidat a projektbe. Lisszabonban a 3 legjobb kerület neked: <strong>Principe Real</strong> (park + coworkingek), <strong>Santos</strong> (vízpart + csendes) és <strong>Graça</strong> (kilátás + olcsóbb). Készítek egy összehasonlító oldalt.",
+    "aiMsg1MemTag": "💾 Elmentve a projekt memóriájába",
+    "aiMsg1PageTag": "📄 Létrehozva: /neighborhoods",
+    "userMsg2": "Santos — pontosan az, amire szükségem van. Keress lakásokat az Idealista-n 1100€ alatt erkéllyel.",
+    "aiMsg2": "Santos kiválasztva fő kerületként. 8 lakást találtam, WiFi értékelések és erkély elérhetőség szerint szűrve. A legjobb 3 egy új oldalon van. Hozzáadtam a <strong>legközelebbi futópálya távolságát</strong> is — emlékszem, hogy ez fontos neked.",
+    "aiMsg2PageTag": "📄 Létrehozva: /apartments",
+    "pageTitle": "🏠 Lakások Santosban",
+    "pageUpdated": "Frissítve 5 perce · Claude",
+    "filtersLabel": "Szűrőid (megjegyezve)",
+    "filterBudget": "1100€ alatt",
+    "filterBalcony": "erkély",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "futás a közelben",
+    "bestOptionLabel": "⭐ Legjobb választás",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/hó",
+    "bestOptionLine1": "Nyugatra néző erkély. WiFi 220 Mbps (ellenőrizve).",
+    "bestOptionLine2": "🏃 600m a Jardim da Estrelához (1,2 km földes ösvény)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 perc séta",
+    "checklistLabel": "📋 Automatikus költözési ellenőrzőlista",
+    "checklistNif": "☑️ NIF (adószám) —",
+    "checklistNifLink": "útmutató →",
+    "checklistRental": "☐ Bérleti szerződés",
+    "checklistNiss": "☐ NISS (társadalombiztosítás)",
+    "checklistBank": "☐ Conta bancária (bankszámla) —",
+    "checklistBankNote": "NIF szükséges"
+  },
+  "ExGroup": {
+    "badge": "👥 Csoportos projekt",
+    "title": "Barcelona négyen",
+    "description": "Négy barát. Két AI. Mindenkinek megvannak a saját preferenciái — az AI-ügynökök mindet látják és olyan útvonalat készítenek, ami mindenkinek megfelel.",
+    "userMsg1": "Csatlakozz a barcelonai projektünkhöz. Petya vagyok, szeretem az éjszakai életet és a street foodot, szűk a budget.",
+    "aiMsg1": "Csatlakozva! Látok egy projektet 3 résztvevővel. Masha (Claude-on keresztül) sétáló túrákat és vegán ételt preferál, Anya — múzeumokat és kávézókat. Elmentem a preferenciáidat.",
+    "aiMsg1MemTag": "💾 Petya profilja elmentve",
+    "userMsg2": "Készíts egy szombati tervet, ami mindenkinek tetszik.",
+    "aiMsg2": "Kész! Reggel — csoportos séta a Gótikus negyedben (mindenki szereti). Brunch — találtam egy helyet: <strong>Flax & Kale</strong>: vegán menü Mashának, normál étel a többieknek, budgetbarát. Délután — Masha és Anya a MACBA-ban, míg te a közeli street food piacra, a <strong>La Boqueria</strong>-ba mész. Este — mindenki együtt Barcelonetán, aztán te és aki benne van — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Frissítve: /saturday",
+    "pageTitle": "📍 Szombat, március 21.",
+    "pageParticipants": "4 résztvevő · 2 AI-ügynök",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (gyalog!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegán ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (együtt)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menü 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ AI kompromisszum",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> együtt (ingyenes, a víznél).",
+    "compromiseLine2": "<strong>22:00 — szétválás:</strong> Masha + Anya → borbár El Bornban. Petya + Dima → Razzmatazz (belépő 15€ éjfél előtt)."
+  },
+  "ExWork": {
+    "badge": "👥 Munkaprojekt",
+    "title": "Konyhafelújítás",
+    "description": "Egy megrendelő, egy tervező és egy kivitelező — mindegyiknek saját AI-ja. Minden döntés, anyag és budget — egy oldalon, ami valós időben frissül.",
+    "userMsg1": "Én vagyok a kivitelező, csatlakozom a felújítási projekthez. Mi a konyha státusza?",
+    "aiMsg1": "Látom a projektet: Lena megrendelő (Claude) skandináv stílust választott, budget 800 000₽, Oleg tervező (ChatGPT) jóváhagyta az L-alakú konyhaelrendezést, 12m². Elmentelek kivitelezőként. Hozzáférsz: <strong>budget</strong>, <strong>anyagok</strong>, <strong>ütemterv</strong>.",
+    "aiMsg1MemTag": "💾 Szerep: kivitelező",
+    "userMsg2": "A kvarckompozit munkalap nem fér bele a budgetbe. Van alternatíva?",
+    "aiMsg2": "Látom, hogy Lena ezt írta: \"világos munkalapot akarok, foltálló legyen.\" Kvarc — 85 000₽. Alternatívák: <strong>HPL Egger</strong> (18 000₽, hasonló megjelenés, kevésbé tartós) vagy <strong>12mm-es porcelán kőlap</strong> (45 000₽, prémium megjelenés). Készítek egy összehasonlítást és szólok Lenának és Olegnek.",
+    "aiMsg2PageTag": "📄 Létrehozva: /countertop-options",
+    "pageTitle": "💰 Konyha budget",
+    "pageParticipants": "3 résztvevő · 3 AI-ügynök · Frissítve 2 órája",
+    "totalBudgetLabel": "Teljes budget",
+    "totalBudgetAmount": "672 000₽",
+    "totalBudgetOf": "800 000₽-ból",
+    "decisionLabel": "⚠️ Döntés szükséges",
+    "decisionText": "<strong>Munkalap</strong> — a kivitelező <strong>12mm-es porcelán kőlapot</strong> javasol kvarc helyett (megtakarítás 40 000₽).",
+    "decisionDesigner": "Oleg (tervező): \"Vizuálisan jó, de ellenőrizd a fugákat\"",
+    "decisionAwaiting": "Lena döntésére várunk →",
+    "approvedLabel": "✅ Mindenki jóváhagyta",
+    "approvedItems": "IKEA Voxtorp szekrények · Bosch készülékek · Hátfal — fehér metró csempe · Grohe csaptelep · Világítás — Maytoni sínrendszer"
+  },
+  "HowItWorks": {
+    "label": "Hogyan működik",
+    "title": "Négy lépés — és az AI-od benne van",
+    "subtitle": "Nem kell új szolgáltatásra regisztrálni. Már használsz AI-t — most többre képes.",
+    "step1Title": "Csatlakoztasd az AI-odat",
+    "step1Desc": "A beállítás során add hozzá a ChatGPT-det, Claude-odat vagy Geminid MCP-n keresztül. Egyetlen kattintás.",
+    "step2Title": "Beszélgess, ahogy szoktál",
+    "step2Desc": "Csak csevegj az AI-oddal. Automatikusan elmenti, ami fontos a projektnek, és oldalakat épít.",
+    "step3Title": "Az oldalak élnek",
+    "step3Desc": "Minden oldal frissül, emlékszik a döntésekre és alkalmazkodik hozzád. Nem dokumentum — hanem memória.",
+    "step4Title": "Hívj meg embereket",
+    "step4Desc": "Barátok, kollégák, kivitelezők — mindenki csatlakoztatja a saját AI-ját és a saját szemszögéből látja a projektet."
+  },
+  "Revolution": {
+    "label": "Miért más ez a web",
+    "title": "Az oldal <accent>memória</accent>, nem fájl",
+    "subtitle": "Egy hagyományos weboldal mindenkinek ugyanazt mutatja. A LoomKnot tudja, ki vagy, mit döntöttél és mire van szükséged.",
+    "card1Title": "Egyszer magyarázd el",
+    "card1Desc": "Mondd el az AI-odnak, hogy vegán vagy — és minden projektoldalon az éttermek, receptek és boltok már szűrve vannak. Örökre.",
+    "card2Title": "Nincs bezárva",
+    "card2Desc": "Claude-ot használsz? Remek. Átvátottál ChatGPT-re? A projekted megmarad, a memóriád megmarad. Ez a te adatod.",
+    "card3Title": "Az AI tárgyal helyetted",
+    "card3Desc": "Ha a preferenciák ütköznek — \"budget\" vs \"prémium\" — az ügynökök kompromisszumot javasolnak ahelyett, hogy te vitatkoznál a chatben.",
+    "card4Title": "Egy URL — millió verzió",
+    "card4Desc": "A barcelonai link egy diáknak bárokat és strandokat mutat, egy családnak — parkokat és éttermeket. A tartalom mindenki számára átformálódik.",
+    "card5Title": "A Claude Code is működik",
+    "card5Desc": "Fejlesztő vagy? Csatlakoztasd a projektedet CLI-n keresztül. Az ügynök ugyanazokra az oldalakra ír — a terminálból, API-n keresztül, ahogy akarod.",
+    "card6Title": "Három szintű adatvédelem",
+    "card6Desc": "Személyes preferenciák — csak a te AI-odnak. Projektdöntések — a csapatnak. Nyilvános oldal — mindenkinek."
+  },
+  "Structure": {
+    "title": "Egyszerű. Minden egy helyen.",
+    "row1Desc": "Landing oldal, dokumentáció, információ",
+    "row2Desc": "A te vezérlőpultod: projektek, AI beállítások, preferenciák",
+    "row3Desc": "Nyilvános oldal — amit megosztasz a barátaiddal"
+  },
+  "Cta": {
+    "title": "Foglald le <em>a helyed</em> az új weben",
+    "subtitle": "Foglald le a loomknot.com/web/<strong>a-te-neved</strong> címet — mielőtt elveszik.",
+    "placeholder": "loomknot.com/web/  a-te-projekted",
+    "button": "Foglalás",
+    "note": "Ingyenes. Indulás 2026 tavaszán."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · AI-t, embereket és oldalakat szővünk össze"
+  },
+  "Login": {
+    "tagline": "Pages as Memory",
+    "emailLabel": "E-mail",
+    "getCode": "Kód kérése",
+    "sending": "Küldés...",
+    "errorSend": "Nem sikerült elküldeni a kódot. Kérjük, ellenőrizd az e-mail címed.",
+    "codeSentTo": "Kód elküldve: <strong>{email}</strong>",
+    "pinLabel": "6 számjegyű kód",
+    "signIn": "Bejelentkezés",
+    "verifying": "Ellenőrzés...",
+    "errorVerify": "Érvénytelen vagy lejárt kód.",
+    "useDifferentEmail": "Másik e-mail cím használata"
+  },
+  "App": {
+    "welcome": "Üdvözlünk, <strong>{email}</strong>",
+    "logout": "Kijelentkezés",
+    "loading": "Betöltés..."
+  },
+  "Common": {
+    "darkTheme": "Sötét téma",
+    "lightTheme": "Világos téma"
+  },
+  "LanguageSwitcher": {
+    "label": "Nyelv"
+  }
+}

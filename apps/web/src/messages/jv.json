@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Web Sing Ngerti Sampéyan",
+    "template": "%s | LoomKnot",
+    "description": "Platform ing ngendi AI sampéyan nggawé kaca, éling kabèh, lan nyambut gawé kanggo sampéyan — dudu kanggo platform."
+  },
+  "Nav": {
+    "examples": "Conto",
+    "howItWorks": "Cara kerjané",
+    "values": "Nilai",
+    "signIn": "Mlebu"
+  },
+  "Hero": {
+    "eyebrow": "AI sampéyan bisa nindakaké luwih akèh. Luwih akèh manèh.",
+    "title": "<accent>Internet</accent> sampéyan.<br/>AI sampéyan ing njero.",
+    "subtitle": "Kita nggawé papan ing ngendi ChatGPT, Claude utawa Gemini sampéyan nggawé kaca, éling kabèh, lan nyambut gawé kanggo sampéyan — dudu kanggo platform.",
+    "worksWithAi": "Bisa dianggo karo AI sampéyan:",
+    "reserveSpace": "Pesan papan sampéyan ↗",
+    "seeExamples": "Delok conto ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Aku arep pindhah menyang Lisbon. Kerja jarak adoh, anggaran 1200€, aku pengin mlayu ing cedhak banyu lan butuh WiFi sing apik.",
+    "agentLabel": "Claude → proyek sampéyan",
+    "aiMsg1": "Wis disimpen. Santos paling cocok kanggo sampéyan — pinggir banyu, tentrem, coworking cedhak. Nggawé kaca apartemen sing disaring miturut <strong>kecepatan WiFi lan jarak menyang rute mlayu</strong>.",
+    "aiMsg1Tag": "💾 diéling: kerja jarak adoh, mlayu, 1200€",
+    "userMsg2": "Aku uga butuh daftar dokumen kanggo ijin tinggal.",
+    "aiMsg2": "Rampung. Kaca \"Documents\" — NIF, NISS, bank, asuransi. Aku ngerti sampéyan pekerja mandiri — <strong>nambahi langkah kanggo wiraswasta</strong>, dudu pegawai.",
+    "aiMsg2Tag": "📄 digawé: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Conto — saka pribadi nganti kelompok",
+    "title": "Dudu mung situs web. <accent>Papan</accent> sampéyan karo AI.",
+    "subtitle": "LoomKnot sing padha. Kanggo sampéyan dhéwé, kanggo wong loro, kanggo tim. Mangkéné rupané:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Proyek pribadi",
+    "title": "Pindhah menyang Lisbon",
+    "description": "Sampéyan pindhah menyang kutha anyar. Tinimbang puluhan tab — siji proyek ing ngendi AI ngumpulaké kabèh kanggo sampéyan lan éling saben keputusan.",
+    "userMsg1": "Aku pindhah menyang Lisbon ing Mei. Aku kerja jarak adoh, anggaran sewa nganti 1200€, aku butuh WiFi apik lan segara utawa taman cedhak kanggo mlayu.",
+    "aiMsg1": "Apik! Aku bakal nyimpen kriteria sampéyan ing proyek. Kanggo Lisbon, 3 lingkungan paling apik kanggo sampéyan: <strong>Principe Real</strong> (taman + coworking), <strong>Santos</strong> (pinggir banyu + tentrem) lan <strong>Graça</strong> (panorama + luwih murah). Nggawé kaca perbandingan.",
+    "aiMsg1MemTag": "💾 Disimpen ing memori proyek",
+    "aiMsg1PageTag": "📄 Digawé: /neighborhoods",
+    "userMsg2": "Santos — iku pas sing tak butuhké. Golek apartemen ing Idealista sangisore 1100€ karo balkon.",
+    "aiMsg2": "Santos dipilih dadi lingkungan utama. Nemokake 8 apartemen, disaring miturut review WiFi lan ketersediaan balkon. 3 sing paling apik ana ing kaca anyar. Aku uga nambahi <strong>jarak menyang jalur mlayu tercedhak</strong> — aku éling kuwi penting kanggo sampéyan.",
+    "aiMsg2PageTag": "📄 Digawé: /apartments",
+    "pageTitle": "🏠 Apartemen ing Santos",
+    "pageUpdated": "Dianyari 5 menit kepungkur · Claude",
+    "filtersLabel": "Filter sampéyan (diéling)",
+    "filterBudget": "sangisore 1100€",
+    "filterBalcony": "balkon",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "jalur mlayu cedhak",
+    "bestOptionLabel": "⭐ Pilihan paling apik",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/sasi",
+    "bestOptionLine1": "Balkon ngadep srengéngé angslup. WiFi 220 Mbps (diverifikasi).",
+    "bestOptionLine2": "🏃 600m menyang Jardim da Estrela (jalur lemah 1,2 km)",
+    "bestOptionLine3": "🛒 Pingo Doce — mlaku 3 menit",
+    "checklistLabel": "📋 Daftar otomatis kanggo pindhahan",
+    "checklistNif": "☑️ NIF (nomer pajak) —",
+    "checklistNifLink": "panduan →",
+    "checklistRental": "☐ Kontrak sewa",
+    "checklistNiss": "☐ NISS (jaminan sosial)",
+    "checklistBank": "☐ Conta bancária (rekening bank) —",
+    "checklistBankNote": "NIF dibutuhké"
+  },
+  "ExGroup": {
+    "badge": "👥 Proyek kelompok",
+    "title": "Barcelona kanggo papat",
+    "description": "Papat kanca. Loro AI. Saben wong duwé preferensi dhéwé — agen AI ndelok kabèh lan nggawé rute sing cocok kanggo kabèh.",
+    "userMsg1": "Sambungna menyang proyek Barcelona. Aku Petya, aku seneng nightlife lan jajan pinggir dalan, anggaran pas-pasan.",
+    "aiMsg1": "Nyambung! Aku ndelok proyek karo 3 peserta. Masha (liwat Claude) seneng tur mlaku lan panganan vegan, Anya — museum lan kedai kopi. Aku bakal nyimpen preferensi sampéyan.",
+    "aiMsg1MemTag": "💾 Profil Petya disimpen",
+    "userMsg2": "Gawéna rencana kanggo Setu sing apik kanggo kabèh.",
+    "aiMsg2": "Rampung! Ésuk — mlaku bareng liwat Kuarter Gotik (kabèh seneng). Brunch — aku nemokake <strong>Flax & Kale</strong>: menu vegan kanggo Masha, panganan biasa kanggo liyané, ramah anggaran. Awan — Masha lan Anya ing MACBA, sampéyan menyang pasar jajan cedhak <strong>La Boqueria</strong>. Soré — kabèh bareng ing Barceloneta, banjur sampéyan lan sing gelem — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Dianyari: /saturday",
+    "pageTitle": "📍 Setu, 21 Maret",
+    "pageParticipants": "4 peserta · 2 agen AI",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (mlaku!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegan ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (bareng)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menu 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ Kompromi AI",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> bareng (gratis, cedhak banyu).",
+    "compromiseLine2": "<strong>22:00 — pisah:</strong> Masha + Anya → wine bar ing El Born. Petya + Dima → Razzmatazz (mlebu 15€ sadurungé tengah wengi)."
+  },
+  "ExWork": {
+    "badge": "👥 Proyek kerja",
+    "title": "Renovasi pawon",
+    "description": "Klien, desainer, lan kontraktor — saben wong karo AI dhéwé. Kabèh keputusan, bahan, lan anggaran — ing siji kaca sing dianyari wektu nyata.",
+    "userMsg1": "Aku kontraktor, melu proyek renovasi. Piyé kabaré pawon?",
+    "aiMsg1": "Aku ndelok proyek: klien Lena (Claude) milih gaya Skandinavia, anggaran 800.000₽, desainer Oleg (ChatGPT) nyetujoni tata letak pawon bentuk L, 12m². Nyimpen sampéyan minangka kontraktor. Sampéyan duwé akses menyang: <strong>anggaran</strong>, <strong>bahan</strong>, <strong>jadwal</strong>.",
+    "aiMsg1MemTag": "💾 Peran: kontraktor",
+    "userMsg2": "Meja komposit kuarsa ora cukup anggarané. Ana alternatif?",
+    "aiMsg2": "Aku ndelok Lena nulis \"pengin meja warna terang, tahan noda.\" Kuarsa — 85.000₽. Alternatif: <strong>HPL Egger</strong> (18.000₽, rupané mirip, kurang awet) utawa <strong>porselen stoneware 12mm</strong> (45.000₽, tampilan premium). Nggawé perbandingan lan mènèhi notifikasi Lena lan Oleg.",
+    "aiMsg2PageTag": "📄 Digawé: /countertop-options",
+    "pageTitle": "💰 Anggaran pawon",
+    "pageParticipants": "3 peserta · 3 agen AI · Dianyari 2 jam kepungkur",
+    "totalBudgetLabel": "Total anggaran",
+    "totalBudgetAmount": "672.000₽",
+    "totalBudgetOf": "saka 800.000₽",
+    "decisionLabel": "⚠️ Butuh keputusan",
+    "decisionText": "<strong>Meja</strong> — kontraktor nyaranake <strong>porselen stoneware 12mm</strong> tinimbang kuarsa (ngirit 40.000₽).",
+    "decisionDesigner": "Oleg (desainer): \"Sacara visual apik, nanging priksa sambungané\"",
+    "decisionAwaiting": "Nunggu keputusan Lena →",
+    "approvedLabel": "✅ Disetujoni kabèh",
+    "approvedItems": "Lemari IKEA Voxtorp · Piranti Bosch · Backsplash — ubin subway putih · Kran Grohe · Lampu — Maytoni track"
+  },
+  "HowItWorks": {
+    "label": "Cara kerjané",
+    "title": "Papat langkah — lan AI sampéyan wis ing njero",
+    "subtitle": "Ora perlu ndhaptar layanan anyar. Sampéyan wis nganggo AI — saiki bisa nindakaké luwih akèh.",
+    "step1Title": "Sambungna AI sampéyan",
+    "step1Desc": "Nalika onboarding, tambahna ChatGPT, Claude utawa Gemini sampéyan liwat MCP. Siji klik.",
+    "step2Title": "Ngobrol kaya biasané",
+    "step2Desc": "Cukup ngobrol karo AI sampéyan. Sacara otomatis nyimpen sing penting ing proyek lan nggawé kaca.",
+    "step3Title": "Kaca-kaca urip",
+    "step3Desc": "Saben kaca dianyari, éling keputusan, lan adaptasi karo sampéyan. Iki dudu dokumen — iki memori.",
+    "step4Title": "Undang wong",
+    "step4Desc": "Kanca, kolega, kontraktor — kabèh nyambungaké AI dhéwé lan ndelok proyek saka sudut pandang dhéwé."
+  },
+  "Revolution": {
+    "label": "Apa iki web sing béda",
+    "title": "Kaca iku <accent>memori</accent>, dudu file",
+    "subtitle": "Situs web biasa nuduhake kabèh wong sing padha. LoomKnot ngerti sapa sampéyan, apa sing wis diputusake, lan apa sing sampéyan butuhké.",
+    "card1Title": "Cukup ngomong sepisan",
+    "card1Desc": "Kandhana AI sampéyan yèn sampéyan vegan — lan ing saben kaca proyek, restoran, resep, lan toko wis disaring. Selawasé.",
+    "card2Title": "Ora dikunci",
+    "card2Desc": "Nganggo Claude? Apik. Ganti menyang ChatGPT? Proyek sampéyan tetep, memori sampéyan tetep. Iki data sampéyan.",
+    "card3Title": "AI negosiasi kanggo sampéyan",
+    "card3Desc": "Nalika preferensi bentrok — \"anggaran\" vs \"premium\" — agen nyaranake kompromi tinimbang sampéyan debat ing chat.",
+    "card4Title": "Siji URL — yutan versi",
+    "card4Desc": "Link Barcelona kanggo mahasiswa nuduhake bar lan pantai, kanggo keluarga — taman lan restoran. Konten menyesuaikan kanggo saben wong.",
+    "card5Title": "Claude Code uga bisa",
+    "card5Desc": "Pengembang? Sambungna proyek sampéyan liwat CLI. Agen nulis menyang kaca sing padha — saka terminal, liwat API, sakarepe.",
+    "card6Title": "Telung tingkat privasi",
+    "card6Desc": "Preferensi pribadi — mung kanggo AI sampéyan. Keputusan proyek — kanggo tim. Kaca publik — kanggo kabèh."
+  },
+  "Structure": {
+    "title": "Prasaja. Siji papan kanggo kabèh.",
+    "row1Desc": "Landing, dokumentasi, informasi",
+    "row2Desc": "Dasbor sampéyan: proyek, pengaturan AI, preferensi",
+    "row3Desc": "Kaca publik — sing sampéyan bagékaké karo kanca"
+  },
+  "Cta": {
+    "title": "Klaim <em>papan sampéyan</em> ing web anyar",
+    "subtitle": "Pesan loomknot.com/web/<strong>jeneng-sampéyan</strong> — sadurungé entek.",
+    "placeholder": "loomknot.com/web/  proyek-sampéyan",
+    "button": "Pesan",
+    "note": "Gratis. Diluncuraké musim semi 2026."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Nenun AI, manungsa, lan kaca"
+  },
+  "Login": {
+    "tagline": "Kaca minangka Memori",
+    "emailLabel": "Email",
+    "getCode": "Entuk kode",
+    "sending": "Ngirim...",
+    "errorSend": "Gagal ngirim kode. Mangga priksa email sampéyan.",
+    "codeSentTo": "Kode dikirim menyang <strong>{email}</strong>",
+    "pinLabel": "Kode 6 digit",
+    "signIn": "Mlebu",
+    "verifying": "Mverifikasi...",
+    "errorVerify": "Kode ora valid utawa wis kadaluwarsa.",
+    "useDifferentEmail": "Nganggo email liya"
+  },
+  "App": {
+    "welcome": "Sugeng rawuh, <strong>{email}</strong>",
+    "logout": "Metu",
+    "loading": "Ngundhuh..."
+  },
+  "Common": {
+    "darkTheme": "Téma peteng",
+    "lightTheme": "Téma padhang"
+  },
+  "LanguageSwitcher": {
+    "label": "Basa"
+  }
+}

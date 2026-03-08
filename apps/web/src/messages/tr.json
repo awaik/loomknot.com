@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — Seni Tanıyan Web",
+    "template": "%s | LoomKnot",
+    "description": "Yapay zekanızın sayfalar oluşturduğu, her şeyi hatırladığı ve platform için değil sizin için çalıştığı bir platform."
+  },
+  "Nav": {
+    "examples": "Örnekler",
+    "howItWorks": "Nasıl çalışır",
+    "values": "Değerler",
+    "signIn": "Giriş yap"
+  },
+  "Hero": {
+    "eyebrow": "Yapay zekanız daha fazlasını yapabilir. Çok daha fazlasını.",
+    "title": "Senin <accent>internetin</accent>.<br/>Senin yapay zekan içinde.",
+    "subtitle": "ChatGPT, Claude veya Gemini'nizin sayfalar oluşturduğu, her şeyi hatırladığı ve platform için değil sizin için çalıştığı bir alan yarattık.",
+    "worksWithAi": "Yapay zekanızla çalışır:",
+    "reserveSpace": "Yerinizi ayırtın ↗",
+    "seeExamples": "Örneklere bakın ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "Lizbon'a taşınıyorum. Uzaktan çalışma, bütçe 1200€, su kenarında koşmak istiyorum ve düzgün WiFi lazım.",
+    "agentLabel": "Claude → projeniz",
+    "aiMsg1": "Kaydedildi. Santos sizin için en uygun — sahil, sakin, yakınında coworking. <strong>WiFi hızı ve koşu parkurlarına uzaklığa</strong> göre filtrelenmiş bir daire sayfası oluşturuyorum.",
+    "aiMsg1Tag": "💾 hatırlandı: uzaktan çalışma, koşu, 1200€",
+    "userMsg2": "Oturma izni için belge kontrol listesi de lazım.",
+    "aiMsg2": "Tamam. \"Belgeler\" sayfası — NIF, NISS, banka, sigorta. Serbest çalışan olduğunuzu biliyorum — <strong>maaşlı çalışanlar için değil, serbest meslek sahipleri için adımlar ekledim</strong>.",
+    "aiMsg2Tag": "📄 oluşturuldu: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "Örnekler — kişiselden gruba",
+    "title": "Sadece bir web sitesi değil. Yapay zekalı <accent>alanınız</accent>.",
+    "subtitle": "Aynı LoomKnot. Kendiniz için, ikiniz için, bir ekip için. İşte böyle görünüyor:"
+  },
+  "ExPersonal": {
+    "badge": "👤 Kişisel proje",
+    "title": "Lizbon'a taşınma",
+    "description": "Yeni bir şehre taşınıyorsunuz. Düzinelerce sekme yerine — yapay zekanın her şeyi topladığı ve her kararı hatırladığı tek bir proje.",
+    "userMsg1": "Mayıs'ta Lizbon'a taşınıyorum. Uzaktan çalışıyorum, kira bütçesi 1200€'ya kadar, iyi WiFi ve koşu için yakınında deniz veya park lazım.",
+    "aiMsg1": "Harika! Kriterlerinizi projeye kaydedeceğim. Lizbon'da sizin için en iyi 3 mahalle: <strong>Principe Real</strong> (park + coworking'ler), <strong>Santos</strong> (sahil + sakin) ve <strong>Graça</strong> (manzara + daha uygun fiyatlı). Karşılaştırma sayfası oluşturuyorum.",
+    "aiMsg1MemTag": "💾 Proje belleğine kaydedildi",
+    "aiMsg1PageTag": "📄 Oluşturuldu: /neighborhoods",
+    "userMsg2": "Santos — tam da ihtiyacım olan yer. Idealista'da balkonlu 1100€ altı daire bul.",
+    "aiMsg2": "Santos ana mahalle olarak seçildi. 8 daire buldum, WiFi yorumları ve balkon durumuna göre filtrelendi. En iyi 3'ü yeni bir sayfada. Ayrıca <strong>en yakın koşu parkuruna uzaklığı</strong> da ekledim — bunun sizin için önemli olduğunu hatırlıyorum.",
+    "aiMsg2PageTag": "📄 Oluşturuldu: /apartments",
+    "pageTitle": "🏠 Santos'ta daireler",
+    "pageUpdated": "5 dakika önce güncellendi · Claude",
+    "filtersLabel": "Filtreleriniz (hatırlanan)",
+    "filterBudget": "1100€ altı",
+    "filterBalcony": "balkon",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "yakında koşu",
+    "bestOptionLabel": "⭐ En iyi seçenek",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/ay",
+    "bestOptionLine1": "Gün batımına bakan balkon. WiFi 220 Mbps (doğrulanmış).",
+    "bestOptionLine2": "🏃 Jardim da Estrela'ya 600m (1,2 km toprak parkur)",
+    "bestOptionLine3": "🛒 Pingo Doce — 3 dk yürüme",
+    "checklistLabel": "📋 Taşınma otomatik kontrol listesi",
+    "checklistNif": "☑️ NIF (vergi numarası) —",
+    "checklistNifLink": "kılavuz →",
+    "checklistRental": "☐ Kira sözleşmesi",
+    "checklistNiss": "☐ NISS (sosyal güvenlik)",
+    "checklistBank": "☐ Conta bancária (banka hesabı) —",
+    "checklistBankNote": "NIF gerekli"
+  },
+  "ExGroup": {
+    "badge": "👥 Grup projesi",
+    "title": "Dört kişilik Barselona",
+    "description": "Dört arkadaş. İki yapay zeka. Herkesin kendine ait tercihleri var — yapay zeka ajanları hepsini görür ve herkese uyan bir rota oluşturur.",
+    "userMsg1": "Barselona projemize bağlan. Ben Petya, gece hayatı ve sokak yemeği severim, bütçe kısıtlı.",
+    "aiMsg1": "Bağlandım! 3 katılımcılı bir proje görüyorum. Masha (Claude ile) yürüyüş turları ve vegan yemek tercih ediyor, Anya — müzeler ve kafeler. Tercihlerinizi kaydedeceğim.",
+    "aiMsg1MemTag": "💾 Petya'nın profili kaydedildi",
+    "userMsg2": "Herkesin mutlu olacağı bir Cumartesi planı yap.",
+    "aiMsg2": "Tamam! Sabah — Gotik Mahalle'de grup yürüyüşü (herkes seviyor). Brunch — <strong>Flax & Kale</strong> buldum: Masha için vegan menü, diğerleri için normal yemek, bütçe dostu. Öğleden sonra — Masha ve Anya MACBA'da, sen yakındaki sokak yemeği pazarı <strong>La Boqueria</strong>'dasın. Akşam — herkes birlikte Barceloneta'da, sonra sen ve katılmak isteyen — Razzmatazz.",
+    "aiMsg2PageTag": "📄 Güncellendi: /saturday",
+    "pageTitle": "📍 Cumartesi, 21 Mart",
+    "pageParticipants": "4 katılımcı · 2 yapay zeka ajanı",
+    "mashaName": "Masha",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell (yürüyerek!)",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "vegan ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "Petya",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell (birlikte)",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "menü 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ Yapay zeka uzlaşması",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> birlikte (ücretsiz, su kenarında).",
+    "compromiseLine2": "<strong>22:00 — ayrılma:</strong> Masha + Anya → El Born'da şarap barı. Petya + Dima → Razzmatazz (gece yarısından önce giriş 15€)."
+  },
+  "ExWork": {
+    "badge": "👥 İş projesi",
+    "title": "Mutfak yenileme",
+    "description": "Bir müşteri, bir tasarımcı ve bir müteahhit — her birinin kendi yapay zekası var. Tüm kararlar, malzemeler ve bütçe — gerçek zamanlı güncellenen tek bir sayfada.",
+    "userMsg1": "Ben müteahhidim, yenileme projesine katılıyorum. Mutfağın durumu ne?",
+    "aiMsg1": "Projeyi görüyorum: müşteri Lena (Claude) İskandinav stilini seçti, bütçe 800.000₽, tasarımcı Oleg (ChatGPT) L şeklinde mutfak düzenini onayladı, 12m². Sizi müteahhit olarak kaydediyorum. Erişiminiz: <strong>bütçe</strong>, <strong>malzemeler</strong>, <strong>zaman çizelgesi</strong>.",
+    "aiMsg1MemTag": "💾 Rol: müteahhit",
+    "userMsg2": "Kuvars kompozit tezgah bütçeye sığmıyor. Alternatifler var mı?",
+    "aiMsg2": "Lena'nın \"açık renk tezgah, lekeye dayanıklı\" yazdığını görüyorum. Kuvars — 85.000₽. Alternatifler: <strong>HPL Egger</strong> (18.000₽, benzer görünüm, daha az dayanıklı) veya <strong>12mm porselen taş</strong> (45.000₽, premium görünüm). Karşılaştırma oluşturuyorum ve Lena ile Oleg'e bildiriyorum.",
+    "aiMsg2PageTag": "📄 Oluşturuldu: /countertop-options",
+    "pageTitle": "💰 Mutfak bütçesi",
+    "pageParticipants": "3 katılımcı · 3 yapay zeka ajanı · 2 saat önce güncellendi",
+    "totalBudgetLabel": "Toplam bütçe",
+    "totalBudgetAmount": "672.000₽",
+    "totalBudgetOf": "/ 800.000₽",
+    "decisionLabel": "⚠️ Karar gerekli",
+    "decisionText": "<strong>Tezgah</strong> — müteahhit kuvars yerine <strong>12mm porselen taş</strong> öneriyor (40.000₽ tasarruf).",
+    "decisionDesigner": "Oleg (tasarımcı): \"Görsel olarak iyi, ama derzleri kontrol edin\"",
+    "decisionAwaiting": "Lena'nın kararı bekleniyor →",
+    "approvedLabel": "✅ Herkes tarafından onaylandı",
+    "approvedItems": "IKEA Voxtorp dolaplar · Bosch beyaz eşya · Tezgah arkası — beyaz metro fayans · Grohe batarya · Aydınlatma — Maytoni ray"
+  },
+  "HowItWorks": {
+    "label": "Nasıl çalışır",
+    "title": "Dört adım — ve yapay zekanız içeride",
+    "subtitle": "Yeni servislere kayıt yok. Zaten yapay zeka kullanıyorsunuz — şimdi daha fazlasını yapabilir.",
+    "step1Title": "Yapay zekanızı bağlayın",
+    "step1Desc": "Başlangıçta ChatGPT, Claude veya Gemini'nizi MCP ile ekleyin. Tek tık.",
+    "step2Title": "Her zamanki gibi konuşun",
+    "step2Desc": "Yapay zekanızla sohbet edin. Proje için önemli olanları otomatik kaydeder ve sayfalar oluşturur.",
+    "step3Title": "Sayfalar canlı",
+    "step3Desc": "Her sayfa güncellenir, kararları hatırlar ve size uyum sağlar. Bu bir belge değil — bir bellektir.",
+    "step4Title": "İnsanları davet edin",
+    "step4Desc": "Arkadaşlar, meslektaşlar, müteahhitler — herkes kendi yapay zekasını bağlar ve projeyi kendi penceresinden görür."
+  },
+  "Revolution": {
+    "label": "Bu neden farklı bir web",
+    "title": "Bir sayfa dosya değil, <accent>bellektir</accent>",
+    "subtitle": "Normal bir web sitesi herkese aynı şeyi gösterir. LoomKnot kim olduğunuzu, ne kararlar aldığınızı ve tam olarak neye ihtiyacınız olduğunu bilir.",
+    "card1Title": "Bir kez açıklayın",
+    "card1Desc": "Yapay zekanıza vegan olduğunuzu söyleyin — her proje sayfasında restoranlar, tarifler ve mağazalar zaten filtrelenmiş olur. Sonsuza dek.",
+    "card2Title": "Bağımlılık yok",
+    "card2Desc": "Claude mu kullanıyorsunuz? Harika. ChatGPT'ye mi geçtiniz? Projeniz kalır, belleğiniz kalır. Bu sizin veriniz.",
+    "card3Title": "Yapay zeka sizin yerinize müzakere eder",
+    "card3Desc": "Tercihler çatıştığında — \"bütçe\" vs \"premium\" — sohbette tartışmanız yerine ajanlar uzlaşma önerir.",
+    "card4Title": "Bir URL — bir milyon versiyon",
+    "card4Desc": "Barselona bağlantısı bir öğrenciye barlar ve plajları, bir aileye parklar ve restoranları gösterir. İçerik herkese göre yeniden şekillenir.",
+    "card5Title": "Claude Code da çalışır",
+    "card5Desc": "Geliştirici misiniz? Projenizi CLI ile bağlayın. Ajan aynı sayfalara yazar — terminalden, API ile, istediğiniz şekilde.",
+    "card6Title": "Üç gizlilik seviyesi",
+    "card6Desc": "Kişisel tercihler — sadece yapay zekanız için. Proje kararları — ekip için. Herkese açık sayfa — herkes için."
+  },
+  "Structure": {
+    "title": "Basit. Her şey tek yerde.",
+    "row1Desc": "Açılış sayfası, dokümantasyon, bilgi",
+    "row2Desc": "Kontrol paneliniz: projeler, yapay zeka ayarları, tercihler",
+    "row3Desc": "Herkese açık sayfa — arkadaşlarınızla paylaştığınız"
+  },
+  "Cta": {
+    "title": "Yeni web'de <em>yerinizi</em> alın",
+    "subtitle": "loomknot.com/web/<strong>your-name</strong> adresini ayırtın — alınmadan önce.",
+    "placeholder": "loomknot.com/web/  your-project",
+    "button": "Ayırt",
+    "note": "Ücretsiz. 2026 baharında lansman."
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · Yapay zekayı, insanları ve sayfaları birbirine dokuyor"
+  },
+  "Login": {
+    "tagline": "Pages as Memory",
+    "emailLabel": "E-posta",
+    "getCode": "Kod al",
+    "sending": "Gönderiliyor...",
+    "errorSend": "Kod gönderilemedi. Lütfen e-postanızı kontrol edin.",
+    "codeSentTo": "<strong>{email}</strong> adresine kod gönderildi",
+    "pinLabel": "6 haneli kod",
+    "signIn": "Giriş yap",
+    "verifying": "Doğrulanıyor...",
+    "errorVerify": "Geçersiz veya süresi dolmuş kod.",
+    "useDifferentEmail": "Farklı e-posta kullan"
+  },
+  "App": {
+    "welcome": "Hoş geldiniz, <strong>{email}</strong>",
+    "logout": "Çıkış yap",
+    "loading": "Yükleniyor..."
+  },
+  "Common": {
+    "darkTheme": "Koyu tema",
+    "lightTheme": "Açık tema"
+  },
+  "LanguageSwitcher": {
+    "label": "Dil"
+  }
+}

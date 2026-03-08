@@ -1,9 +1,28 @@
 'use client';
 
 import { useEffect } from 'react';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { Link } from '@/i18n/navigation';
+
+/* ── Rich text tag helpers ────────────────────────────────────── */
+
+const strongTag = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
+
+const accentTag = (chunks: React.ReactNode) => (
+  <em className="font-serif italic text-accent relative">
+    {chunks}
+    <span className="absolute bottom-0.5 left-0 right-0 h-[3px] bg-accent-soft rounded-sm" />
+  </em>
+);
+
+const emTag = (chunks: React.ReactNode) => (
+  <em className="font-serif italic">{chunks}</em>
+);
+
+const brTag = () => <br />;
 
 /* ── Helper components ─────────────────────────────────────────── */
 
@@ -32,7 +51,7 @@ function ChatPanel({
       <div className="px-5 py-3.5 border-b border-border flex items-center gap-2.5 text-[0.85rem] font-semibold">
         <span className="w-2 h-2 rounded-full" style={{ background: agentColor }} />
         <span>{agent}</span>
-        <span className="text-content-tertiary font-normal text-[0.78rem] ml-auto">{mcpLabel}</span>
+        <span className="text-content-tertiary font-normal text-[0.78rem] ms-auto">{mcpLabel}</span>
       </div>
       <div className="p-5 flex flex-col gap-3.5">{children}</div>
     </div>
@@ -123,6 +142,19 @@ function Tag({ className, children }: { className?: string; children: React.Reac
 /* ── Main component ────────────────────────────────────────────── */
 
 export function LandingPage() {
+  const nav = useTranslations('Nav');
+  const hero = useTranslations('Hero');
+  const demo = useTranslations('HeroDemo');
+  const ex = useTranslations('Examples');
+  const ep = useTranslations('ExPersonal');
+  const eg = useTranslations('ExGroup');
+  const ew = useTranslations('ExWork');
+  const how = useTranslations('HowItWorks');
+  const rev = useTranslations('Revolution');
+  const str = useTranslations('Structure');
+  const cta = useTranslations('Cta');
+  const footer = useTranslations('Footer');
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -146,20 +178,21 @@ export function LandingPage() {
         </Link>
         <div className="hidden md:flex gap-7 items-center">
           <a href="#examples" className="text-muted text-sm font-medium transition-colors duration-normal hover:text-content">
-            Examples
+            {nav('examples')}
           </a>
           <a href="#how" className="text-muted text-sm font-medium transition-colors duration-normal hover:text-content">
-            How it works
+            {nav('howItWorks')}
           </a>
           <a href="#revolution" className="text-muted text-sm font-medium transition-colors duration-normal hover:text-content">
-            Values
+            {nav('values')}
           </a>
+          <LanguageSwitcher variant="compact" />
           <ThemeToggle />
           <Link
             href="/login"
             className="bg-ink text-cream px-[22px] py-2.5 rounded-pill text-sm font-medium transition-transform duration-normal hover:scale-[1.03]"
           >
-            Sign in
+            {nav('signIn')}
           </Link>
         </div>
       </nav>
@@ -207,7 +240,7 @@ export function LandingPage() {
           className="text-[clamp(0.95rem,1.6vw,1.12rem)] font-medium text-thread-dark mb-3.5 tracking-[0.01em] relative"
           style={{ animation: 'hero-fade-up 0.7s ease-out both' }}
         >
-          Your AI can do more. Much more.
+          {hero('eyebrow')}
         </p>
 
         {/* Title */}
@@ -215,17 +248,9 @@ export function LandingPage() {
           className="font-serif text-[clamp(2.8rem,7vw,5.2rem)] leading-[1.04] font-normal max-w-[820px] tracking-[-0.025em] relative"
           style={{ animation: 'hero-fade-up 0.8s ease-out 0.08s both' }}
         >
-          Your{' '}
-          <em className="italic text-accent relative">
-            internet
-            <span className="absolute bottom-0.5 left-0 right-0 h-[3px] bg-accent-soft rounded-sm" />
-          </em>
-          .<br />
-          Your AI inside.
+          {hero.rich('title', { accent: accentTag, br: brTag })}
           <span className="block font-sans text-[clamp(1rem,2vw,1.35rem)] font-normal text-content-secondary tracking-normal leading-normal mt-[18px]">
-            We built a space where your ChatGPT, Claude or Gemini
-            <br className="hidden md:block" />
-            creates pages, remembers everything, and works for&nbsp;you&nbsp;—&nbsp;not&nbsp;the&nbsp;platform.
+            {hero('subtitle')}
           </span>
         </h1>
 
@@ -252,42 +277,30 @@ export function LandingPage() {
                 {
                   variant: 'user' as const,
                   delay: '0.8s',
-                  content: "I'm moving to Lisbon. Remote work, budget 1200\u20AC, I want to run near the water and need decent WiFi.",
+                  content: demo('userMsg1'),
                 },
                 {
                   variant: 'ai' as const,
                   delay: '2.2s',
-                  agent: 'Claude \u2192 your project',
+                  agent: demo('agentLabel'),
                   agentColor: 'var(--color-claude)',
-                  content: (
-                    <>
-                      Saved. Santos is best for you — waterfront, quiet, coworking nearby. Creating an apartment page filtered
-                      by <strong>WiFi speed and distance to running routes</strong>.
-                      <span className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-[7px] text-[0.7rem] font-semibold bg-sage/10 text-sage">
-                        💾 remembered: remote work, running, 1200\u20AC
-                      </span>
-                    </>
-                  ),
+                  content: demo.rich('aiMsg1', { strong: strongTag }),
+                  tag: demo('aiMsg1Tag'),
+                  tagType: 'mem' as const,
                 },
                 {
                   variant: 'user' as const,
                   delay: '4.0s',
-                  content: 'I also need a document checklist for the residence permit.',
+                  content: demo('userMsg2'),
                 },
                 {
                   variant: 'ai' as const,
                   delay: '5.4s',
-                  agent: 'Claude \u2192 your project',
+                  agent: demo('agentLabel'),
                   agentColor: 'var(--color-claude)',
-                  content: (
-                    <>
-                      Done. "Documents" page — NIF, NISS, bank, insurance. I know you're a freelancer —{' '}
-                      <strong>added steps for self-employed</strong>, not salaried workers.
-                      <span className="inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-[7px] text-[0.7rem] font-semibold bg-accent/[0.08] text-accent">
-                        📄 created: /documents, /apartments
-                      </span>
-                    </>
-                  ),
+                  content: demo.rich('aiMsg2', { strong: strongTag }),
+                  tag: demo('aiMsg2Tag'),
+                  tagType: 'page' as const,
                 },
               ].map((msg, i) => (
                 <div
@@ -313,6 +326,15 @@ export function LandingPage() {
                     </span>
                   )}
                   {msg.content}
+                  {msg.variant === 'ai' && msg.tag && (
+                    <span className={cn(
+                      'inline-flex items-center gap-1 mt-2 px-2 py-0.5 rounded-[7px] text-[0.7rem] font-semibold',
+                      msg.tagType === 'mem' && 'bg-sage/10 text-sage',
+                      msg.tagType === 'page' && 'bg-accent/[0.08] text-accent',
+                    )}>
+                      {msg.tag}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
@@ -324,7 +346,7 @@ export function LandingPage() {
           className="flex gap-2.5 items-center mt-8 flex-wrap justify-center relative"
           style={{ animation: 'hero-fade-up 0.8s ease-out 0.45s both' }}
         >
-          <span className="text-[0.82rem] text-muted mr-1">Works with your AI:</span>
+          <span className="text-[0.82rem] text-muted me-1">{hero('worksWithAi')}</span>
           {[
             { name: 'Claude', color: 'var(--color-claude)', border: 'rgba(212,165,116,0.35)', text: '#8B5E15', bg: 'rgba(212,165,116,0.06)' },
             { name: 'ChatGPT', color: 'var(--color-chatgpt)', border: 'rgba(116,170,156,0.35)', text: '#4E8A7C', bg: 'rgba(116,170,156,0.06)' },
@@ -350,13 +372,13 @@ export function LandingPage() {
             href="#cta"
             className="bg-ink text-cream px-8 py-[15px] rounded-pill text-base font-semibold transition-all duration-normal hover:-translate-y-0.5 hover:shadow-lg"
           >
-            Reserve your space ↗
+            {hero('reserveSpace')}
           </a>
           <a
             href="#examples"
             className="text-muted px-5 py-[15px] text-[0.95rem] font-medium transition-colors duration-normal hover:text-content"
           >
-            See examples ↓
+            {hero('seeExamples')}
           </a>
         </div>
       </section>
@@ -364,82 +386,73 @@ export function LandingPage() {
       {/* ━━━━━━━━━━━━━━━━━━━━ EXAMPLES ━━━━━━━━━━━━━━━━━━━━ */}
       <section className="px-6 pb-[100px] pt-[60px] max-w-[1100px] mx-auto" id="examples">
         <div className="text-[0.78rem] font-semibold tracking-[0.1em] uppercase mb-3.5 text-center text-thread-dark reveal">
-          Examples — from personal to group
+          {ex('label')}
         </div>
         <h2 className="font-serif text-[clamp(1.8rem,4vw,2.7rem)] leading-tight text-center mb-3 reveal">
-          Not just a website. Your{' '}
-          <em className="font-serif italic text-accent">space</em> with&nbsp;AI.
+          {ex.rich('title', { accent: accentTag })}
         </h2>
         <p className="text-center text-muted text-base max-w-[540px] mx-auto mb-12 leading-relaxed reveal">
-          The same LoomKnot. For yourself, for two, for a team. Here's what it looks like:
+          {ex('subtitle')}
         </p>
 
         {/* ── Example 1: Personal — Lisbon ─── */}
         <div className="mb-20 reveal">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-pill text-[0.72rem] font-semibold tracking-[0.06em] uppercase bg-thread/[0.12] text-thread-dark mb-3.5">
-            👤 Personal project
+            {ep('badge')}
           </span>
-          <div className="font-serif text-[clamp(1.5rem,3vw,2rem)] mb-1.5">Moving to Lisbon</div>
+          <div className="font-serif text-[clamp(1.5rem,3vw,2rem)] mb-1.5">{ep('title')}</div>
           <p className="text-muted text-[0.95rem] mb-6 leading-relaxed max-w-[600px]">
-            You're moving to a new city. Instead of dozens of tabs — one project where AI gathers everything for you and
-            remembers every decision.
+            {ep('description')}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <ChatPanel agent="Claude" agentColor="var(--color-claude)" mcpLabel="MCP → lisbon-move">
-              <UserMsg>
-                I'm moving to Lisbon in May. I work remotely, rent budget up to 1200\u20AC, I need good WiFi and the sea
-                or a park nearby for running.
-              </UserMsg>
+              <UserMsg>{ep('userMsg1')}</UserMsg>
               <AiMsg agent="Claude" agentColor="var(--color-claude)">
-                Great! I'll save your criteria to the project. For Lisbon, the 3 best neighborhoods for you are:{' '}
-                <strong>Principe Real</strong> (park + coworkings), <strong>Santos</strong> (waterfront + quiet) and{' '}
-                <strong>Gra\u00E7a</strong> (views + cheaper). Creating a comparison page.
+                {ep.rich('aiMsg1', { strong: strongTag })}
                 <br />
-                <MemTag>💾 Saved to project memory</MemTag>
-                <PageCreatedTag>📄 Created: /neighborhoods</PageCreatedTag>
+                <MemTag>{ep('aiMsg1MemTag')}</MemTag>
+                <PageCreatedTag>{ep('aiMsg1PageTag')}</PageCreatedTag>
               </AiMsg>
-              <UserMsg>Santos — that's exactly what I need. Find apartments on Idealista under 1100\u20AC with a balcony.</UserMsg>
+              <UserMsg>{ep('userMsg2')}</UserMsg>
               <AiMsg agent="Claude" agentColor="var(--color-claude)">
-                Santos selected as the main neighborhood. Found 8 apartments, filtered by WiFi reviews and balcony
-                availability. The best 3 are on a new page. I also added <strong>distance to the nearest running trail</strong> — I
-                remember that's important to you.
+                {ep.rich('aiMsg2', { strong: strongTag })}
                 <br />
-                <PageCreatedTag>📄 Created: /apartments</PageCreatedTag>
+                <PageCreatedTag>{ep('aiMsg2PageTag')}</PageCreatedTag>
               </AiMsg>
             </ChatPanel>
 
             <PagePanel url={<>loomknot.com/app/<b className="text-accent font-semibold">lisbon-move</b>/apartments</>}>
-              <div className="font-serif text-[1.3rem] mb-1">🏠 Apartments in Santos</div>
-              <div className="text-[0.72rem] text-muted mb-[18px]">Updated 5 minutes ago · Claude</div>
+              <div className="font-serif text-[1.3rem] mb-1">{ep('pageTitle')}</div>
+              <div className="text-[0.72rem] text-muted mb-[18px]">{ep('pageUpdated')}</div>
 
-              <ContentBlock label="Your filters (remembered)">
+              <ContentBlock label={ep('filtersLabel')}>
                 <div className="flex gap-1 flex-wrap">
-                  <Tag className="bg-thread/10 text-thread-dark">under 1100\u20AC</Tag>
-                  <Tag className="bg-sage/10 text-sage">balcony</Tag>
-                  <Tag className="bg-info/10 text-info">WiFi 100+ Mbps</Tag>
-                  <Tag className="bg-accent/[0.08] text-accent">running nearby</Tag>
+                  <Tag className="bg-thread/10 text-thread-dark">{ep('filterBudget')}</Tag>
+                  <Tag className="bg-sage/10 text-sage">{ep('filterBalcony')}</Tag>
+                  <Tag className="bg-info/10 text-info">{ep('filterWifi')}</Tag>
+                  <Tag className="bg-accent/[0.08] text-accent">{ep('filterRunning')}</Tag>
                 </div>
               </ContentBlock>
 
-              <ContentBlock label="⭐ Best option">
-                <strong>Rua de Santos, T2 · 1050\u20AC/mo</strong>
+              <ContentBlock label={ep('bestOptionLabel')}>
+                <strong>{ep('bestOptionTitle')}</strong>
                 <br />
-                Sunset-facing balcony. WiFi 220 Mbps (verified).
+                {ep('bestOptionLine1')}
                 <br />
-                🏃 600m to Jardim da Estrela (1.2 km dirt trail)
+                {ep('bestOptionLine2')}
                 <br />
-                🛒 Pingo Doce — 3 min walk
+                {ep('bestOptionLine3')}
               </ContentBlock>
 
-              <ContentBlock label="📋 Auto-checklist for moving">
-                ☑️ NIF (tax number) —{' '}
-                <span className="text-accent cursor-pointer">guide →</span>
+              <ContentBlock label={ep('checklistLabel')}>
+                {ep('checklistNif')}{' '}
+                <span className="text-accent cursor-pointer">{ep('checklistNifLink')}</span>
                 <br />
-                ☐ Rental contract
+                {ep('checklistRental')}
                 <br />
-                ☐ NISS (social security)
+                {ep('checklistNiss')}
                 <br />
-                ☐ Conta banc\u00E1ria (bank account) — <em>NIF required</em>
+                {ep('checklistBank')} <em>{ep('checklistBankNote')}</em>
               </ContentBlock>
             </PagePanel>
           </div>
@@ -448,39 +461,31 @@ export function LandingPage() {
         {/* ── Example 2: Group — Barcelona ─── */}
         <div className="mb-20 reveal">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-pill text-[0.72rem] font-semibold tracking-[0.06em] uppercase bg-sage/[0.12] text-sage mb-3.5">
-            👥 Group project
+            {eg('badge')}
           </span>
-          <div className="font-serif text-[clamp(1.5rem,3vw,2rem)] mb-1.5">Barcelona for four</div>
+          <div className="font-serif text-[clamp(1.5rem,3vw,2rem)] mb-1.5">{eg('title')}</div>
           <p className="text-muted text-[0.95rem] mb-6 leading-relaxed max-w-[600px]">
-            Four friends. Two AIs. Everyone has their own preferences — AI agents see them all and build a route that
-            works for everyone.
+            {eg('description')}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <ChatPanel agent="ChatGPT" agentColor="var(--color-chatgpt)" mcpLabel="MCP → bcn-march">
-              <UserMsg>
-                Connect to our Barcelona project. I'm Petya, I love nightlife and street food, budget is tight.
-              </UserMsg>
+              <UserMsg>{eg('userMsg1')}</UserMsg>
               <AiMsg agent="ChatGPT" agentColor="var(--color-chatgpt)">
-                Connected! I see a project with 3 participants. Masha (via Claude) prefers walking tours and vegan food,
-                Anya — museums and coffee shops. I'll save your preferences.
+                {eg('aiMsg1')}
                 <br />
-                <MemTag>💾 Petya's profile saved</MemTag>
+                <MemTag>{eg('aiMsg1MemTag')}</MemTag>
               </AiMsg>
-              <UserMsg>Make a plan for Saturday that's great for everyone.</UserMsg>
+              <UserMsg>{eg('userMsg2')}</UserMsg>
               <AiMsg agent="ChatGPT" agentColor="var(--color-chatgpt)">
-                Done! Morning — a group walk through the Gothic Quarter (everyone loves it). Brunch — I found{' '}
-                <strong>Flax & Kale</strong>: vegan menu for Masha, regular food for everyone else, budget-friendly.
-                Afternoon — Masha and Anya at MACBA, while you hit the nearby street food market{' '}
-                <strong>La Boqueria</strong>. Evening — everyone at Barceloneta together, then you and whoever's up for
-                it — Razzmatazz.
+                {eg.rich('aiMsg2', { strong: strongTag })}
                 <br />
-                <PageCreatedTag>📄 Updated: /saturday</PageCreatedTag>
+                <PageCreatedTag>{eg('aiMsg2PageTag')}</PageCreatedTag>
               </AiMsg>
             </ChatPanel>
 
             <PagePanel url={<>loomknot.com/web/<b className="text-accent font-semibold">bcn-march</b>/saturday</>}>
-              <div className="font-serif text-[1.3rem] mb-1">📍 Saturday, March 21</div>
-              <div className="text-[0.72rem] text-muted mb-4">4 participants · 2 AI agents</div>
+              <div className="font-serif text-[1.3rem] mb-1">{eg('pageTitle')}</div>
+              <div className="text-[0.72rem] text-muted mb-4">{eg('pageParticipants')}</div>
 
               {/* Split view */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -494,16 +499,16 @@ export function LandingPage() {
                       M
                     </div>
                     <div>
-                      <div className="text-[0.8rem] font-semibold">Masha</div>
-                      <div className="text-[0.68rem] text-muted">Claude · 🚶 🌱</div>
+                      <div className="text-[0.8rem] font-semibold">{eg('mashaName')}</div>
+                      <div className="text-[0.68rem] text-muted">{eg('mashaAgent')}</div>
                     </div>
                   </div>
                   <div className="text-[0.8rem] leading-relaxed space-y-1">
-                    <div>09:00 — Park G\u00FCell (on foot!)</div>
+                    <div>{eg('mashaSchedule1')}</div>
                     <div>
-                      11:00 — Flax & Kale <span className="text-sage font-semibold">vegan ✓</span>
+                      {eg('mashaSchedule2')} <span className="text-sage font-semibold">{eg('mashaVeganTag')}</span>
                     </div>
-                    <div>14:00 — MACBA</div>
+                    <div>{eg('mashaSchedule3')}</div>
                   </div>
                 </div>
                 {/* Petya */}
@@ -516,16 +521,16 @@ export function LandingPage() {
                       P
                     </div>
                     <div>
-                      <div className="text-[0.8rem] font-semibold">Petya</div>
-                      <div className="text-[0.68rem] text-muted">ChatGPT · 🎉 💰</div>
+                      <div className="text-[0.8rem] font-semibold">{eg('petyaName')}</div>
+                      <div className="text-[0.68rem] text-muted">{eg('petyaAgent')}</div>
                     </div>
                   </div>
                   <div className="text-[0.8rem] leading-relaxed space-y-1">
-                    <div>09:00 — Park G\u00FCell (together)</div>
+                    <div>{eg('petyaSchedule1')}</div>
                     <div>
-                      11:00 — Flax & Kale <span className="text-thread-dark font-semibold">menu 12\u20AC</span>
+                      {eg('petyaSchedule2')} <span className="text-thread-dark font-semibold">{eg('petyaBudgetTag')}</span>
                     </div>
-                    <div>14:00 — La Boqueria 🌮</div>
+                    <div>{eg('petyaSchedule3')}</div>
                   </div>
                 </div>
               </div>
@@ -539,13 +544,12 @@ export function LandingPage() {
                 }}
               >
                 <div className="text-[0.72rem] font-bold tracking-[0.06em] uppercase text-sage mb-2 flex items-center gap-1.5">
-                  ⚡ AI compromise
+                  {eg('compromiseLabel')}
                 </div>
                 <div className="text-[0.84rem] leading-relaxed">
-                  <strong>18:00 — Barceloneta</strong> together (free, by the water).
+                  {eg.rich('compromiseLine1', { strong: strongTag })}
                   <br />
-                  <strong>22:00 — split up:</strong> Masha + Anya → wine bar in El Born. Petya + Dima → Razzmatazz
-                  (entry 15\u20AC before midnight).
+                  {eg.rich('compromiseLine2', { strong: strongTag })}
                 </div>
               </div>
             </PagePanel>
@@ -555,43 +559,38 @@ export function LandingPage() {
         {/* ── Example 3: Work — Kitchen ─── */}
         <div className="reveal">
           <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-pill text-[0.72rem] font-semibold tracking-[0.06em] uppercase bg-sage/[0.12] text-sage mb-3.5">
-            👥 Work project
+            {ew('badge')}
           </span>
-          <div className="font-serif text-[clamp(1.5rem,3vw,2rem)] mb-1.5">Kitchen renovation</div>
+          <div className="font-serif text-[clamp(1.5rem,3vw,2rem)] mb-1.5">{ew('title')}</div>
           <p className="text-muted text-[0.95rem] mb-6 leading-relaxed max-w-[600px]">
-            A client, a designer, and a contractor — each with their own AI. All decisions, materials, and budget — on
-            one page that updates in real time.
+            {ew('description')}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
             <ChatPanel agent="Gemini" agentColor="var(--color-gemini)" mcpLabel="MCP → kitchen-reno">
-              <UserMsg>I'm the contractor, joining the renovation project. What's the status on the kitchen?</UserMsg>
+              <UserMsg>{ew('userMsg1')}</UserMsg>
               <AiMsg agent="Gemini" agentColor="var(--color-gemini)">
-                I see the project: client Lena (Claude) chose Scandinavian style, budget 800,000₽, designer Oleg
-                (ChatGPT) approved the L-shaped kitchen layout, 12m². Saving you as the contractor. You have access to:{' '}
-                <strong>budget</strong>, <strong>materials</strong>, <strong>timeline</strong>.
+                {ew.rich('aiMsg1', { strong: strongTag })}
                 <br />
-                <MemTag>💾 Role: contractor</MemTag>
+                <MemTag>{ew('aiMsg1MemTag')}</MemTag>
               </AiMsg>
-              <UserMsg>Quartz composite countertop won't fit the budget. Any alternatives?</UserMsg>
+              <UserMsg>{ew('userMsg2')}</UserMsg>
               <AiMsg agent="Gemini" agentColor="var(--color-gemini)">
-                I see that Lena wrote "want a light countertop, stain-resistant." Quartz — 85,000₽. Alternatives:{' '}
-                <strong>HPL Egger</strong> (18,000₽, similar look, less durable) or <strong>12mm porcelain stoneware</strong>{' '}
-                (45,000₽, premium look). Creating a comparison and pinging Lena and Oleg.
+                {ew.rich('aiMsg2', { strong: strongTag })}
                 <br />
-                <PageCreatedTag>📄 Created: /countertop-options</PageCreatedTag>
+                <PageCreatedTag>{ew('aiMsg2PageTag')}</PageCreatedTag>
               </AiMsg>
             </ChatPanel>
 
             <PagePanel url={<>loomknot.com/app/<b className="text-accent font-semibold">kitchen-reno</b>/budget</>}>
-              <div className="font-serif text-[1.3rem] mb-1">💰 Kitchen budget</div>
-              <div className="text-[0.72rem] text-muted mb-4">3 participants · 3 AI agents · Updated 2h ago</div>
+              <div className="font-serif text-[1.3rem] mb-1">{ew('pageTitle')}</div>
+              <div className="text-[0.72rem] text-muted mb-4">{ew('pageParticipants')}</div>
 
-              <ContentBlock label="Total budget">
+              <ContentBlock label={ew('totalBudgetLabel')}>
                 <div className="flex justify-between items-center">
                   <div className="text-[1.3rem] font-bold font-serif">
-                    672,000₽ <span className="text-[0.8rem] text-muted font-normal">of 800,000₽</span>
+                    {ew('totalBudgetAmount')} <span className="text-[0.8rem] text-muted font-normal">{ew('totalBudgetOf')}</span>
                   </div>
-                  <div className="w-[100px] h-2 bg-surface-alt rounded overflow-hidden ml-3">
+                  <div className="w-[100px] h-2 bg-surface-alt rounded overflow-hidden ms-3">
                     <div
                       className="h-full rounded"
                       style={{
@@ -603,22 +602,18 @@ export function LandingPage() {
                 </div>
               </ContentBlock>
 
-              <ContentBlock label="⚠️ Decision needed">
-                <strong>Countertop</strong> — contractor suggests <strong>12mm porcelain stoneware</strong> instead of
-                quartz (saving 40,000₽).
+              <ContentBlock label={ew('decisionLabel')}>
+                {ew.rich('decisionText', { strong: strongTag })}
                 <br />
                 <span className="text-[0.76rem] text-muted">
-                  Oleg (designer): "Looks fine visually, but check the seams"
+                  {ew('decisionDesigner')}
                 </span>
                 <br />
-                <span className="text-[0.76rem] text-accent font-semibold">Awaiting Lena's decision →</span>
+                <span className="text-[0.76rem] text-accent font-semibold">{ew('decisionAwaiting')}</span>
               </ContentBlock>
 
-              <ContentBlock label="✅ Approved by all">
-                <span className="text-[0.82rem]">
-                  IKEA Voxtorp cabinets · Bosch appliances · Backsplash — white subway tile · Grohe faucet · Lighting —
-                  Maytoni track
-                </span>
+              <ContentBlock label={ew('approvedLabel')}>
+                <span className="text-[0.82rem]">{ew('approvedItems')}</span>
               </ContentBlock>
             </PagePanel>
           </div>
@@ -639,22 +634,22 @@ export function LandingPage() {
         />
         <div className="max-w-[1000px] mx-auto relative">
           <div className="text-[0.78rem] font-semibold tracking-[0.1em] uppercase mb-3.5 text-center text-thread reveal">
-            How it works
+            {how('label')}
           </div>
           <h2 className="font-serif text-[clamp(1.8rem,4vw,2.7rem)] leading-tight text-center mb-3 reveal">
-            Four steps — and&nbsp;your AI&nbsp;is&nbsp;inside
+            {how('title')}
           </h2>
           <p className="text-center text-cream/50 text-base max-w-[540px] mx-auto mb-14 leading-relaxed reveal">
-            No signing up for new services. You already use AI — now it can do more.
+            {how('subtitle')}
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { num: '1', icon: '🔗', title: 'Connect your AI', desc: 'During onboarding, add your ChatGPT, Claude or Gemini via MCP. One click.' },
-              { num: '2', icon: '💬', title: 'Talk as usual', desc: 'Just chat with your AI. It automatically saves what matters to the project and builds pages.' },
-              { num: '3', icon: '📄', title: 'Pages are alive', desc: 'Each page updates, remembers decisions, and adapts to you. It\'s not a document — it\'s memory.' },
-              { num: '4', icon: '👥', title: 'Invite people', desc: 'Friends, colleagues, contractors — everyone connects their own AI and sees the project through their own lens.' },
-            ].map((step, i) => (
+            {([
+              { num: '1', icon: '🔗', titleKey: 'step1Title' as const, descKey: 'step1Desc' as const },
+              { num: '2', icon: '💬', titleKey: 'step2Title' as const, descKey: 'step2Desc' as const },
+              { num: '3', icon: '📄', titleKey: 'step3Title' as const, descKey: 'step3Desc' as const },
+              { num: '4', icon: '👥', titleKey: 'step4Title' as const, descKey: 'step4Desc' as const },
+            ]).map((step, i) => (
               <div
                 key={step.num}
                 className="text-center p-8 rounded-xl border border-thread/10 bg-white/[0.02] transition-all duration-slow hover:bg-white/[0.04] hover:border-thread/20 hover:-translate-y-1 reveal"
@@ -664,8 +659,8 @@ export function LandingPage() {
                   {step.num}
                 </div>
                 <span className="text-[2rem] mb-3.5 block">{step.icon}</span>
-                <h3 className="font-serif text-lg mb-2">{step.title}</h3>
-                <p className="text-[0.84rem] text-cream/55 leading-relaxed">{step.desc}</p>
+                <h3 className="font-serif text-lg mb-2">{how(step.titleKey)}</h3>
+                <p className="text-[0.84rem] text-cream/55 leading-relaxed">{how(step.descKey)}</p>
               </div>
             ))}
           </div>
@@ -675,33 +670,32 @@ export function LandingPage() {
       {/* ━━━━━━━━━━━━━━━━━━━━ REVOLUTION ━━━━━━━━━━━━━━━━━━━━ */}
       <section className="py-20 px-6 max-w-[900px] mx-auto" id="revolution">
         <div className="text-[0.78rem] font-semibold tracking-[0.1em] uppercase mb-3.5 text-center text-thread-dark reveal">
-          Why this is a different web
+          {rev('label')}
         </div>
         <h2 className="font-serif text-[clamp(1.8rem,4vw,2.7rem)] leading-tight text-center mb-3 reveal">
-          A page is{' '}
-          <em className="font-serif italic text-accent">memory</em>, not a file
+          {rev.rich('title', { accent: accentTag })}
         </h2>
         <p className="text-center text-muted text-base max-w-[540px] mx-auto mb-12 leading-relaxed reveal">
-          A regular website shows everyone the same thing. LoomKnot knows who you are, what you decided, and what you specifically need.
+          {rev('subtitle')}
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[
-            { icon: '🧠', title: 'Explain once', desc: 'Tell your AI you\'re vegan — and on every project page, restaurants, recipes, and stores are already filtered. Forever.' },
-            { icon: '🔓', title: 'No lock-in', desc: 'Using Claude? Great. Switched to ChatGPT? Your project stays, your memory stays. It\'s your data.' },
-            { icon: '⚡', title: 'AI negotiates for you', desc: 'When preferences clash — "budget" vs "premium" — agents suggest a compromise instead of you arguing in chat.' },
-            { icon: '🌐', title: 'One URL — a million versions', desc: 'The Barcelona link for a student shows bars and beaches, for a family — parks and restaurants. Content reshapes for everyone.' },
-            { icon: '🛠', title: 'Claude Code works too', desc: 'Developer? Connect your project via CLI. The agent writes to the same pages — from the terminal, via API, however you want.' },
-            { icon: '🔒', title: 'Three levels of privacy', desc: 'Personal preferences — only for your AI. Project decisions — for the team. Public page — for\u00A0everyone.' },
-          ].map((card, i) => (
+          {([
+            { icon: '🧠', titleKey: 'card1Title' as const, descKey: 'card1Desc' as const },
+            { icon: '🔓', titleKey: 'card2Title' as const, descKey: 'card2Desc' as const },
+            { icon: '⚡', titleKey: 'card3Title' as const, descKey: 'card3Desc' as const },
+            { icon: '🌐', titleKey: 'card4Title' as const, descKey: 'card4Desc' as const },
+            { icon: '🛠', titleKey: 'card5Title' as const, descKey: 'card5Desc' as const },
+            { icon: '🔒', titleKey: 'card6Title' as const, descKey: 'card6Desc' as const },
+          ]).map((card, i) => (
             <div
-              key={card.title}
+              key={card.titleKey}
               className="p-7 rounded-[18px] border border-border bg-surface-elevated transition-all duration-slow hover:-translate-y-[3px] hover:shadow-md reveal"
               style={{ transitionDelay: `${(i % 2) * 0.1}s` }}
             >
               <span className="text-[1.8rem] mb-3 block">{card.icon}</span>
-              <div className="font-serif text-lg mb-1.5">{card.title}</div>
-              <div className="text-[0.86rem] text-muted leading-relaxed">{card.desc}</div>
+              <div className="font-serif text-lg mb-1.5">{rev(card.titleKey)}</div>
+              <div className="text-[0.86rem] text-muted leading-relaxed">{rev(card.descKey)}</div>
             </div>
           ))}
         </div>
@@ -710,24 +704,24 @@ export function LandingPage() {
       {/* ━━━━━━━━━━━━━━━━━━━━ STRUCTURE ━━━━━━━━━━━━━━━━━━━━ */}
       <section className="px-6 pt-[60px] pb-20 max-w-[700px] mx-auto text-center reveal">
         <h2 className="font-serif text-[clamp(1.8rem,4vw,2.7rem)] leading-tight mb-8">
-          Simple. One place for&nbsp;everything.
+          {str('title')}
         </h2>
         <div className="flex flex-col gap-2.5">
           {[
-            { emoji: '🏠', path: 'loomknot.com', desc: 'Landing, documentation, information' },
-            { emoji: '⚙️', path: 'loomknot.com', accent: '/app', desc: 'Your dashboard: projects, AI settings, preferences' },
-            { emoji: '🌐', path: 'loomknot.com', accent: '/web/bcn-march', desc: 'Public page — what you share with friends' },
+            { emoji: '🏠', path: 'loomknot.com', accent: undefined, descKey: 'row1Desc' as const },
+            { emoji: '⚙️', path: 'loomknot.com', accent: '/app', descKey: 'row2Desc' as const },
+            { emoji: '🌐', path: 'loomknot.com', accent: '/web/bcn-march', descKey: 'row3Desc' as const },
           ].map((row) => (
             <div
-              key={row.accent ?? row.path}
-              className="flex flex-col md:flex-row items-center gap-3.5 px-5 py-4 rounded-[14px] border border-border bg-surface-elevated text-left transition-colors duration-normal hover:border-thread"
+              key={row.descKey}
+              className="flex flex-col md:flex-row items-center gap-3.5 px-5 py-4 rounded-[14px] border border-border bg-surface-elevated text-start transition-colors duration-normal hover:border-thread"
             >
               <span className="text-xl min-w-[28px] text-center">{row.emoji}</span>
               <span className="font-mono font-semibold text-[0.86rem] md:min-w-[210px]">
                 {row.path}
                 {row.accent && <span className="text-accent">{row.accent}</span>}
               </span>
-              <span className="text-[0.84rem] text-muted">{row.desc}</span>
+              <span className="text-[0.84rem] text-muted">{str(row.descKey)}</span>
             </div>
           ))}
         </div>
@@ -740,28 +734,30 @@ export function LandingPage() {
           style={{ background: 'linear-gradient(90deg, transparent, var(--color-thread-light), transparent)' }}
         />
         <h2 className="font-serif text-[clamp(2rem,5vw,3.2rem)] leading-[1.1] mb-[18px] max-w-[580px] mx-auto reveal">
-          Stake{' '}
-          <em className="font-serif italic">your place</em> in&nbsp;the&nbsp;new&nbsp;web
+          {cta.rich('title', { em: emTag })}
         </h2>
         <p className="text-base text-muted mb-8 leading-relaxed reveal">
-          Reserve loomknot.com/web/<strong>your-name</strong> — before it's taken.
+          {cta.rich('subtitle', { strong: strongTag })}
         </p>
         <div className="flex flex-col md:flex-row gap-2.5 max-w-[440px] mx-auto reveal">
           <input
             type="text"
             className="flex-1 px-[18px] py-[15px] border-[1.5px] border-thread-light rounded-[14px] text-[0.95rem] font-sans bg-surface-elevated text-content outline-none transition-colors duration-normal focus:border-thread placeholder:text-muted"
-            placeholder="loomknot.com/web/  your-project"
+            placeholder={cta('placeholder')}
           />
           <button className="px-7 py-[15px] bg-accent text-white border-none rounded-[14px] text-[0.95rem] font-semibold font-sans cursor-pointer transition-all duration-normal hover:bg-[#C4543D] hover:-translate-y-0.5 whitespace-nowrap">
-            Reserve
+            {cta('button')}
           </button>
         </div>
-        <p className="mt-3.5 text-[0.78rem] text-muted reveal">Free. Launching spring 2026.</p>
+        <p className="mt-3.5 text-[0.78rem] text-muted reveal">{cta('note')}</p>
       </section>
 
       {/* ━━━━━━━━━━━━━━━━━━━━ FOOTER ━━━━━━━━━━━━━━━━━━━━ */}
       <footer className="py-9 px-6 text-center border-t border-border">
-        <p className="text-[0.8rem] text-muted">&copy; 2026 LoomKnot &middot; Weaving AI, people, and&nbsp;pages</p>
+        <div className="flex items-center justify-center gap-4">
+          <p className="text-[0.8rem] text-muted">{footer('copyright')}</p>
+          <LanguageSwitcher variant="compact" />
+        </div>
       </footer>
     </>
   );

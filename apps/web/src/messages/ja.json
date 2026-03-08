@@ -1,0 +1,187 @@
+{
+  "Metadata": {
+    "title": "LoomKnot — あなたを知るウェブ",
+    "template": "%s | LoomKnot",
+    "description": "あなたのAIがページを作り、すべてを記憶し、プラットフォームではなくあなたのために働くプラットフォーム。"
+  },
+  "Nav": {
+    "examples": "事例",
+    "howItWorks": "仕組み",
+    "values": "価値観",
+    "signIn": "ログイン"
+  },
+  "Hero": {
+    "eyebrow": "あなたのAIはもっとできる。ずっと多くのことを。",
+    "title": "あなたの<accent>インターネット</accent>。<br/>あなたのAIが中に。",
+    "subtitle": "ChatGPT、Claude、Geminiがページを作り、すべてを記憶し、プラットフォームではなくあなたのために働く空間を作りました。",
+    "worksWithAi": "あなたのAIと連携：",
+    "reserveSpace": "スペースを予約 ↗",
+    "seeExamples": "事例を見る ↓"
+  },
+  "HeroDemo": {
+    "userMsg1": "リスボンに引っ越します。リモートワーク、予算1200€、水辺でランニングしたいし、まともなWiFiが必要です。",
+    "agentLabel": "Claude → あなたのプロジェクト",
+    "aiMsg1": "保存しました。Santosがあなたに最適です — ウォーターフロント、静か、コワーキングが近い。<strong>WiFi速度とランニングコースまでの距離</strong>でフィルタリングしたアパートページを作成中。",
+    "aiMsg1Tag": "💾 記憶: リモートワーク、ランニング、1200€",
+    "userMsg2": "滞在許可証の書類チェックリストも必要です。",
+    "aiMsg2": "完了。「書類」ページ — NIF、NISS、銀行、保険。あなたがフリーランサーであることを知っているので、<strong>給与労働者ではなく自営業者向けの手順を追加</strong>しました。",
+    "aiMsg2Tag": "📄 作成: /documents, /apartments"
+  },
+  "Examples": {
+    "label": "事例 — 個人からグループまで",
+    "title": "ただのウェブサイトではない。AIを備えたあなたの<accent>空間</accent>。",
+    "subtitle": "同じLoomKnot。自分のために、2人のために、チームのために。こんな感じです："
+  },
+  "ExPersonal": {
+    "badge": "👤 個人プロジェクト",
+    "title": "リスボンへの引っ越し",
+    "description": "新しい街に引っ越します。何十ものタブの代わりに — AIがすべてを集め、すべての決定を記憶するひとつのプロジェクト。",
+    "userMsg1": "5月にリスボンに引っ越します。リモートワーク、家賃予算は1200€まで、良いWiFiと近くに海か公園が必要です（ランニング用）。",
+    "aiMsg1": "素晴らしい！条件をプロジェクトに保存します。リスボンであなたに最適な3つの地区は：<strong>Principe Real</strong>（公園＋コワーキング）、<strong>Santos</strong>（ウォーターフロント＋静か）、<strong>Graça</strong>（眺望＋お手頃）。比較ページを作成します。",
+    "aiMsg1MemTag": "💾 プロジェクトメモリに保存",
+    "aiMsg1PageTag": "📄 作成: /neighborhoods",
+    "userMsg2": "Santos — まさにそれです。Idealistaでバルコニー付き1100€以下のアパートを探してください。",
+    "aiMsg2": "Santosをメインの地区として選択しました。8件のアパートを見つけ、WiFiレビューとバルコニーの有無でフィルタリングしました。ベスト3を新しいページに掲載しました。<strong>最寄りのランニングコースまでの距離</strong>も追加しました — それがあなたにとって重要なのを覚えています。",
+    "aiMsg2PageTag": "📄 作成: /apartments",
+    "pageTitle": "🏠 Santosのアパート",
+    "pageUpdated": "5分前に更新 · Claude",
+    "filtersLabel": "あなたのフィルター（記憶済み）",
+    "filterBudget": "1100€以下",
+    "filterBalcony": "バルコニー",
+    "filterWifi": "WiFi 100+ Mbps",
+    "filterRunning": "近くでランニング",
+    "bestOptionLabel": "⭐ ベストオプション",
+    "bestOptionTitle": "Rua de Santos, T2 · 1050€/月",
+    "bestOptionLine1": "夕日が見えるバルコニー。WiFi 220 Mbps（確認済み）。",
+    "bestOptionLine2": "🏃 Jardim da Estrelaまで600m（1.2 kmダートトレイル）",
+    "bestOptionLine3": "🛒 Pingo Doce — 徒歩3分",
+    "checklistLabel": "📋 引っ越し自動チェックリスト",
+    "checklistNif": "☑️ NIF（納税者番号）—",
+    "checklistNifLink": "ガイド →",
+    "checklistRental": "☐ 賃貸契約書",
+    "checklistNiss": "☐ NISS（社会保険番号）",
+    "checklistBank": "☐ Conta bancária（銀行口座）—",
+    "checklistBankNote": "NIF必須"
+  },
+  "ExGroup": {
+    "badge": "👥 グループプロジェクト",
+    "title": "4人のバルセロナ旅行",
+    "description": "4人の友達。2つのAI。全員がそれぞれの好みを持ち、AIエージェントがそれらを把握して全員に合うルートを作ります。",
+    "userMsg1": "バルセロナプロジェクトに接続して。僕はペーチャ、ナイトライフとストリートフードが好き、予算少なめ。",
+    "aiMsg1": "接続しました！3人の参加者がいるプロジェクトを確認しました。マーシャ（Claude経由）は街歩きツアーとヴィーガン料理が好み、アーニャ — 美術館とカフェが好み。あなたの好みを保存します。",
+    "aiMsg1MemTag": "💾 ペーチャのプロフィール保存",
+    "userMsg2": "土曜日の全員が楽しめるプランを作って。",
+    "aiMsg2": "完了！午前 — ゴシック地区のグループ散策（全員が好き）。ブランチ — <strong>Flax & Kale</strong>を見つけました：マーシャ用ヴィーガンメニュー、他の全員に通常メニュー、予算に優しい。午後 — マーシャとアーニャはMACBAへ、あなたは近くのストリートフードマーケット<strong>La Boqueria</strong>へ。夜 — 全員でBarcelonetaへ、その後あなたと一緒に行きたい人 — Razzmatazz。",
+    "aiMsg2PageTag": "📄 更新: /saturday",
+    "pageTitle": "📍 3月21日 土曜日",
+    "pageParticipants": "4名の参加者 · 2つのAIエージェント",
+    "mashaName": "マーシャ",
+    "mashaAgent": "Claude · 🚶 🌱",
+    "mashaSchedule1": "09:00 — Park Güell（徒歩で！）",
+    "mashaSchedule2": "11:00 — Flax & Kale",
+    "mashaVeganTag": "ヴィーガン ✓",
+    "mashaSchedule3": "14:00 — MACBA",
+    "petyaName": "ペーチャ",
+    "petyaAgent": "ChatGPT · 🎉 💰",
+    "petyaSchedule1": "09:00 — Park Güell（一緒に）",
+    "petyaSchedule2": "11:00 — Flax & Kale",
+    "petyaBudgetTag": "メニュー 12€",
+    "petyaSchedule3": "14:00 — La Boqueria 🌮",
+    "compromiseLabel": "⚡ AIの妥協案",
+    "compromiseLine1": "<strong>18:00 — Barceloneta</strong> 全員一緒（無料、水辺）。",
+    "compromiseLine2": "<strong>22:00 — 別行動：</strong>マーシャ＋アーニャ → El Bornのワインバー。ペーチャ＋ディーマ → Razzmatazz（深夜0時前の入場15€）。"
+  },
+  "ExWork": {
+    "badge": "👥 仕事プロジェクト",
+    "title": "キッチンリノベーション",
+    "description": "クライアント、デザイナー、施工者 — それぞれが自分のAIを持つ。すべての決定、資材、予算 — リアルタイムで更新される1つのページに。",
+    "userMsg1": "施工者としてリノベーションプロジェクトに参加します。キッチンの状況はどうですか？",
+    "aiMsg1": "プロジェクトを確認しました：クライアントのレナ（Claude）が北欧スタイルを選択、予算800,000₽、デザイナーのオレグ（ChatGPT）がL字型キッチンレイアウト、12m²を承認。あなたを施工者として保存します。アクセス権限：<strong>予算</strong>、<strong>資材</strong>、<strong>スケジュール</strong>。",
+    "aiMsg1MemTag": "💾 役割: 施工者",
+    "userMsg2": "クォーツ合成カウンタートップは予算に合いません。代替案はありますか？",
+    "aiMsg2": "レナが「明るいカウンタートップ、汚れに強いもの」と書いていたのを確認しました。クォーツ — 85,000₽。代替案：<strong>HPL Egger</strong>（18,000₽、似た見た目、耐久性低め）または<strong>12mmポーセリンストーンウェア</strong>（45,000₽、プレミアムな見た目）。比較を作成し、レナとオレグに通知します。",
+    "aiMsg2PageTag": "📄 作成: /countertop-options",
+    "pageTitle": "💰 キッチン予算",
+    "pageParticipants": "3名の参加者 · 3つのAIエージェント · 2時間前に更新",
+    "totalBudgetLabel": "総予算",
+    "totalBudgetAmount": "672,000₽",
+    "totalBudgetOf": "/ 800,000₽",
+    "decisionLabel": "⚠️ 決定が必要",
+    "decisionText": "<strong>カウンタートップ</strong> — 施工者がクォーツの代わりに<strong>12mmポーセリンストーンウェア</strong>を提案（40,000₽節約）。",
+    "decisionDesigner": "オレグ（デザイナー）：「見た目は問題ないが、継ぎ目を確認して」",
+    "decisionAwaiting": "レナの決定待ち →",
+    "approvedLabel": "✅ 全員承認済み",
+    "approvedItems": "IKEA Voxtorpキャビネット · Bosch家電 · バックスプラッシュ — 白いサブウェイタイル · Grohe水栓 · 照明 — Maytoniトラック"
+  },
+  "HowItWorks": {
+    "label": "仕組み",
+    "title": "4つのステップ — あなたのAIが中に",
+    "subtitle": "新しいサービスへの登録は不要。すでにAIを使っています — これからはもっとできるようになります。",
+    "step1Title": "AIを接続",
+    "step1Desc": "オンボーディング中に、MCP経由でChatGPT、Claude、Geminiを追加。ワンクリック。",
+    "step2Title": "いつも通り話す",
+    "step2Desc": "AIとチャットするだけ。プロジェクトにとって重要なことを自動的に保存し、ページを作成します。",
+    "step3Title": "ページは生きている",
+    "step3Desc": "各ページは更新され、決定を記憶し、あなたに適応します。ドキュメントではなく、メモリです。",
+    "step4Title": "人を招待",
+    "step4Desc": "友達、同僚、業者 — 全員が自分のAIを接続し、自分のレンズでプロジェクトを見ます。"
+  },
+  "Revolution": {
+    "label": "なぜこれは違うウェブなのか",
+    "title": "ページはファイルではなく<accent>メモリ</accent>",
+    "subtitle": "通常のウェブサイトは全員に同じものを表示します。LoomKnotはあなたが誰か、何を決めたか、具体的に何が必要かを知っています。",
+    "card1Title": "一度だけ説明",
+    "card1Desc": "ヴィーガンだとAIに伝えれば — すべてのプロジェクトページで、レストラン、レシピ、ストアがフィルタリング済み。ずっと。",
+    "card2Title": "ロックインなし",
+    "card2Desc": "Claudeを使っている？いいですね。ChatGPTに乗り換えた？プロジェクトもメモリもそのまま。あなたのデータです。",
+    "card3Title": "AIがあなたの代わりに交渉",
+    "card3Desc": "好みが衝突した時 — 「予算重視」vs「プレミアム」 — チャットで議論する代わりにエージェントが妥協案を提案します。",
+    "card4Title": "1つのURL — 100万通りのバージョン",
+    "card4Desc": "バルセロナのリンクは、学生にはバーとビーチを、家族にはパークとレストランを表示。コンテンツは全員に合わせて変化します。",
+    "card5Title": "Claude Codeも使える",
+    "card5Desc": "開発者？CLI経由でプロジェクトを接続。エージェントが同じページに書き込みます — ターミナルから、API経由、お好みの方法で。",
+    "card6Title": "3段階のプライバシー",
+    "card6Desc": "個人の好み — あなたのAIだけに。プロジェクトの決定 — チームに。公開ページ — みんなに。"
+  },
+  "Structure": {
+    "title": "シンプル。すべてが一箇所に。",
+    "row1Desc": "ランディング、ドキュメント、情報",
+    "row2Desc": "あなたのダッシュボード：プロジェクト、AI設定、好み",
+    "row3Desc": "公開ページ — 友達と共有するもの"
+  },
+  "Cta": {
+    "title": "新しいウェブに<em>あなたの場所</em>を確保",
+    "subtitle": "loomknot.com/web/<strong>your-name</strong> を予約 — 取られる前に。",
+    "placeholder": "loomknot.com/web/  your-project",
+    "button": "予約する",
+    "note": "無料。2026年春ローンチ。"
+  },
+  "Footer": {
+    "copyright": "© 2026 LoomKnot · AI、人、ページを紡ぐ"
+  },
+  "Login": {
+    "tagline": "Pages as Memory",
+    "emailLabel": "メールアドレス",
+    "getCode": "コードを取得",
+    "sending": "送信中...",
+    "errorSend": "コードの送信に失敗しました。メールアドレスを確認してください。",
+    "codeSentTo": "<strong>{email}</strong> にコードを送信しました",
+    "pinLabel": "6桁のコード",
+    "signIn": "ログイン",
+    "verifying": "確認中...",
+    "errorVerify": "無効または期限切れのコードです。",
+    "useDifferentEmail": "別のメールアドレスを使う"
+  },
+  "App": {
+    "welcome": "ようこそ、<strong>{email}</strong>",
+    "logout": "ログアウト",
+    "loading": "読み込み中..."
+  },
+  "Common": {
+    "darkTheme": "ダークテーマ",
+    "lightTheme": "ライトテーマ"
+  },
+  "LanguageSwitcher": {
+    "label": "言語"
+  }
+}
