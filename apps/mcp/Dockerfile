@@ -35,6 +35,7 @@ COPY --from=builder --chown=mcpuser:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=mcpuser:nodejs /app/apps/mcp/node_modules ./apps/mcp/node_modules
 COPY --from=builder --chown=mcpuser:nodejs /app/apps/mcp/dist ./apps/mcp/dist
 COPY --from=builder --chown=mcpuser:nodejs /app/apps/mcp/package.json ./apps/mcp/
+COPY --from=builder --chown=mcpuser:nodejs /app/packages/shared/node_modules ./packages/shared/node_modules
 COPY --from=builder --chown=mcpuser:nodejs /app/packages/shared/dist ./packages/shared/dist
 COPY --from=builder --chown=mcpuser:nodejs /app/packages/shared/package.json ./packages/shared/
 
