@@ -43,6 +43,13 @@ export function AppSidebar() {
       {/* Logo */}
       <div className="flex h-14 items-center justify-between px-4 border-b border-border">
         <Link href="/app" className="flex items-center gap-2">
+          <svg viewBox="0 0 64 64" className="w-6 h-6 shrink-0">
+            <ellipse cx="32" cy="32" rx="28" ry="9" transform="rotate(-45 32 32)" fill="#4CAF50" />
+            <ellipse cx="32" cy="32" rx="28" ry="9" transform="rotate(45 32 32)" fill="#2196F3" />
+            <circle cx="32" cy="32" r="8" fill="#FFFFFF" />
+            <ellipse cx="32" cy="32" rx="28" ry="9" transform="rotate(-45 32 32)" fill="none" stroke="#2196F3" strokeWidth="5" />
+            <ellipse cx="32" cy="32" rx="28" ry="9" transform="rotate(45 32 32)" fill="none" stroke="#4CAF50" strokeWidth="5" />
+          </svg>
           <span className="text-lg font-semibold text-content">
             Loom<span className="text-thread">knot</span>
           </span>

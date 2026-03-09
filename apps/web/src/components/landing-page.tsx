@@ -15,9 +15,12 @@ const strongTag = (chunks: React.ReactNode) => <strong>{chunks}</strong>;
 
 function Logo() {
   return (
-    <svg viewBox="0 0 32 32" className="w-[30px] h-[30px]">
-      <ellipse cx="12" cy="16" rx="9" ry="13" fill="#4D9956" opacity="0.85" />
-      <ellipse cx="20" cy="16" rx="9" ry="13" fill="#5B8DEF" opacity="0.85" />
+    <svg viewBox="0 0 64 64" className="w-[30px] h-[30px]">
+      <ellipse cx="32" cy="32" rx="28" ry="9" transform="rotate(-45 32 32)" fill="#4CAF50" />
+      <ellipse cx="32" cy="32" rx="28" ry="9" transform="rotate(45 32 32)" fill="#2196F3" />
+      <circle cx="32" cy="32" r="8" fill="#FFFFFF" />
+      <ellipse cx="32" cy="32" rx="28" ry="9" transform="rotate(-45 32 32)" fill="none" stroke="#2196F3" strokeWidth="5" />
+      <ellipse cx="32" cy="32" rx="28" ry="9" transform="rotate(45 32 32)" fill="none" stroke="#4CAF50" strokeWidth="5" />
     </svg>
   );
 }
