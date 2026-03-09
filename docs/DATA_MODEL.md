@@ -311,21 +311,21 @@ The MCP server is not a "gateway to a single project", but a **personal data lay
 
 ```
 ── Projects ──
-projects/list              — list all user's projects
-projects/get               — data for a specific project
-projects/create            — create a new project
+projects_list              — list all user's projects
+projects_get               — data for a specific project
+projects_create            — create a new project
 
 ── Memory (always with projectId) ──
-memory/read                — read project memory
-memory/write               — write to project memory
-memory/search              — semantic search ACROSS ALL user's projects
-memory/delete              — delete a record
+memory_read                — read project memory
+memory_write               — write to project memory
+memory_search              — semantic search ACROSS ALL user's projects
+memory_delete              — delete a record
 
 ── Pages ──
-pages/list                 — list project pages
-pages/get                  — get a page
-pages/create               — create a page in the project
-pages/update               — update a page
+pages_list                 — list project pages
+pages_get                  — get a page
+pages_create               — create a page in the project
+pages_update               — update a page
 
 ```
 
@@ -333,7 +333,7 @@ pages/update               — update a page
 ```
 User: "Where should I go given my health conditions?"
 
-AI calls memory/search(query: "health contraindications medications")
+AI calls memory_search(query: "health contraindications medications")
   → Searches ACROSS ALL user's projects
   → Finds in the "Health" project: test results, medications, restrictions
   → Combines with private memories from other projects (budget, interests)
@@ -344,25 +344,25 @@ AI calls memory/search(query: "health contraindications medications")
 
 ```
 1. "Write up a long read about my test results"
-   → AI: projects/create("Health")
-   → AI: memory/write(projectId, test results as structured data)
-   → AI: pages/create(projectId, long read with visualizations)
+   → AI: projects_create("Health")
+   → AI: memory_write(projectId, test results as structured data)
+   → AI: pages_create(projectId, long read with visualizations)
 
 2. "What headache pill can I take given my current medications?"
-   → AI: memory/search("medications I'm taking")
+   → AI: memory_search("medications I'm taking")
    → Finds in the "Health" project → list of current medications
    → Responds considering contraindications (WITHOUT writing to MCP)
 
 3. "Where should I go on vacation?"
-   → AI: memory/search("health restrictions climate")
+   → AI: memory_search("health restrictions climate")
    → Finds: "no hot climates" (from "Health" project)
-   → AI: memory/search("budget interests travel preferences")
+   → AI: memory_search("budget interests travel preferences")
    → Finds private memories across projects
    → Suggests destinations considering ALL context
 
 4. "Plan a trip to Barcelona"
-   → AI: projects/create("Barcelona 2026")
-   → AI: memory/search("dietary food restrictions")
+   → AI: projects_create("Barcelona 2026")
+   → AI: memory_search("dietary food restrictions")
    → Finds: "vegetarian" + "nut allergy" (from "Health" project)
    → Generates an itinerary considering both restrictions
 ```
@@ -496,7 +496,7 @@ sessions
 
 ### Q1: How do permanent user traits work without a separate preferences table?
 
-All user data lives in `memories` inside projects. Permanent traits ("vegetarian", "nut allergy") are stored as private memories in relevant projects (e.g., "Health"). Cross-project search (`memory/search`) lets agents find these traits from any project context.
+All user data lives in `memories` inside projects. Permanent traits ("vegetarian", "nut allergy") are stored as private memories in relevant projects (e.g., "Health"). Cross-project search (`memory_search`) lets agents find these traits from any project context.
 
 This avoids duplication between a global preferences table and project memories. The agent reads private memories + project memories for the full picture.
 
@@ -543,7 +543,7 @@ Page request (human mode)
 ```
 
 **Who creates blocks?**
-- **Agent:** via MCP tool `page/suggest` → creates block draft
+- **Agent:** via MCP tool `page_suggest` → creates block draft
 - **User:** manually adds blocks (drag & drop editor)
 - **System:** auto-generation when creating a project (template blocks)
 
@@ -710,22 +710,22 @@ Batch 7 (Audit):
    → INSERT api_keys (userId: masha)
 
 2. Masha in Claude: "Write up a long read about my test results" (attaches PDF)
-   → Claude via MCP: projects/create("Health", vertical: "health")
+   → Claude via MCP: projects_create("Health", vertical: "health")
    → INSERT projects (ownerId: masha)
    → INSERT project_members (role: owner)
-   → Claude: memory/write × N (test results as structured data)
+   → Claude: memory_write × N (test results as structured data)
    → INSERT memories (level: private, category: "blood_test", ...)
-   → Claude: pages/create("Tests 2026", blocks with visualizations)
+   → Claude: pages_create("Tests 2026", blocks with visualizations)
    → INSERT pages + INSERT page_blocks
 
 3. A week later, Masha in Claude: "What headache pill can I take?"
-   → Claude: memory/search("medications I'm taking contraindications")
+   → Claude: memory_search("medications I'm taking contraindications")
    → SELECT memories WHERE userId = masha, embedding <=> query_vector
    → Finds in "Health" project: current medications
    → Claude responds considering contraindications (WITHOUT writing to MCP)
 
 4. Masha: "Note that I started taking Omega-3"
-   → Claude: memory/write(projectId: health, category: "supplements",
+   → Claude: memory_write(projectId: health, category: "supplements",
        key: "omega3", value: {name: "Omega-3", since: "2026-03-08"})
    → INSERT memories
 ```
@@ -734,21 +734,21 @@ Batch 7 (Audit):
 
 ```
 1. Masha (already has API key) in Claude: "Plan a trip to Barcelona"
-   → Claude: projects/create("Barcelona 2026", vertical: "travel")
-   → Claude: memory/search("health restrictions climate")
+   → Claude: projects_create("Barcelona 2026", vertical: "travel")
+   → Claude: memory_search("health restrictions climate")
      → Finds in "Health" project: no climate restrictions ✓
-   → Claude: memory/search("dietary budget travel style")
+   → Claude: memory_search("dietary budget travel style")
      → Finds across projects: vegetarian, budget: 100€, walking
-   → Claude: pages/create(itinerary considering all found context)
+   → Claude: pages_create(itinerary considering all found context)
 
 2. Masha invites Petya on the site
    → INSERT invites (email: petya@..., role: editor)
    → Petya accepts → INSERT project_members
 
 3. Petya connects HIS OWN Claude (his own api_key) → also sees the project
-   → Petya's Claude: projects/list → sees "Barcelona 2026"
-   → Petya's Claude: memory/read(projectId) → sees project memories
-   → Petya's Claude: memory/search("budget preferences") → budget: 200€, nightlife
+   → Petya's Claude: projects_list → sees "Barcelona 2026"
+   → Petya's Claude: memory_read(projectId) → sees project memories
+   → Petya's Claude: memory_search("budget preferences") → budget: 200€, nightlife
 
 4. System detects a memory conflict
    → INSERT negotiations (budget: 100€ vs 200€)
@@ -757,7 +757,7 @@ Batch 7 (Audit):
    → INSERT memories (level: project, key: budget_decision, value: 150€)
 
 5. Either agent updates the page
-   → Claude (Masha's or Petya's): pages/update → new blocks considering the decision
+   → Claude (Masha's or Petya's): pages_update → new blocks considering the decision
    → INSERT activity_log (apiKeyId → we know whose agent wrote it)
 
 6. Masha shares
@@ -769,16 +769,16 @@ Batch 7 (Audit):
 ```
 Masha: "Where should I go on vacation considering my health and budget?"
 
-→ Claude: memory/search("health restrictions")
+→ Claude: memory_search("health restrictions")
    → "Health" project: no high altitude, taking antihistamines
-→ Claude: memory/search("budget finances")
+→ Claude: memory_search("budget finances")
    → "Finances" project (if exists): 2000€ set aside for vacation
-→ Claude: memory/search("food travel style budget")
+→ Claude: memory_search("food travel style budget")
    → Finds across projects: vegetarian, walking, budget 100€/night
 
 → Claude combines everything → suggests: Croatia, coast, no mountains
 → Masha: "Great, create a project"
-→ Claude: projects/create("Croatia 2026") → populates from context
+→ Claude: projects_create("Croatia 2026") → populates from context
 ```
 
 ---

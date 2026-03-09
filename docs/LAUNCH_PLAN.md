@@ -221,15 +221,15 @@
 - [ ] Audit log for all agent operations
 
 ### 4.2 MCP Tools Implementation
-- [ ] `memory/read` — read memory (private: own only, project: if member)
-- [ ] `memory/write` — write to memory (level check + permission check)
-- [ ] `memory/search` — semantic search across project memory
-- [ ] `page/get` — get page in agent-friendly format
-- [ ] `page/suggest` — suggest a page change (creates a suggestion, does not apply)
-- [ ] `preferences/get` — get current user's preferences
-- [ ] `preferences/set` — set a preference on behalf of the user
-- [ ] `project/info` — project information
-- [ ] `project/members` — list of members
+- [ ] `memory_read` — read memory (private: own only, project: if member)
+- [ ] `memory_write` — write to memory (level check + permission check)
+- [ ] `memory_search` — semantic search across project memory
+- [ ] `page_get` — get page in agent-friendly format
+- [ ] `page_suggest` — suggest a page change (creates a suggestion, does not apply)
+- [ ] `preferences_get` — get current user's preferences
+- [ ] `preferences_set` — set a preference on behalf of the user
+- [ ] `project_info` — project information
+- [ ] `project_members` — list of members
 
 ### 4.3 MCP ↔ API Communication
 - [ ] Redis pub/sub for events between MCP and API

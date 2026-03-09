@@ -31,7 +31,7 @@ AI uses this to:
 
 ## 1. Projects
 
-### `projects/list`
+### `projects_list`
 All user's projects with summaries for routing.
 
 ```
@@ -42,7 +42,7 @@ Returns: Array<{
 }>
 ```
 
-### `projects/get`
+### `projects_get`
 Project details including full context.md — the main document AI reads before answering.
 
 ```
@@ -58,7 +58,7 @@ Returns: Project & {
 }
 ```
 
-### `projects/create`
+### `projects_create`
 Create a new project. AI can create projects autonomously.
 
 ```
@@ -74,7 +74,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `projects/update`
+### `projects_update`
 Update project settings.
 
 ```
@@ -95,7 +95,7 @@ Side effects:
 
 ## 2. Memory
 
-### `memory/write`
+### `memory_write`
 Save a fact, decision, or preference to project memory.
 
 ```
@@ -115,7 +115,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `memory/bulk-write`
+### `memory_bulk-write`
 Save multiple memories at once. For parsing documents, importing data, or saving multiple facts from a conversation.
 
 ```
@@ -137,7 +137,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `memory/read`
+### `memory_read`
 Read project memories with filtering and pagination.
 
 ```
@@ -159,7 +159,7 @@ Access:
   → public — everyone
 ```
 
-### `memory/search`
+### `memory_search`
 Search memories across one or all user's projects. Text-based matching by category, key, summary, and value fields.
 
 ```
@@ -180,7 +180,7 @@ Implementation:
   → Ordered by relevance (match quality) then updatedAt
 ```
 
-### `memory/update`
+### `memory_update`
 Update an existing memory record.
 
 ```
@@ -197,7 +197,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `memory/delete`
+### `memory_delete`
 Delete a memory record.
 
 ```
@@ -215,7 +215,7 @@ Side effects:
 
 ## 3. Pages
 
-### `pages/list`
+### `pages_list`
 List project pages (metadata only, no blocks).
 
 ```
@@ -227,7 +227,7 @@ Returns: Array<{
 }>
 ```
 
-### `pages/get`
+### `pages_get`
 Full page with all blocks.
 
 ```
@@ -237,7 +237,7 @@ Params:
 Returns: Page & { blocks: PageBlock[] }
 ```
 
-### `pages/create`
+### `pages_create`
 Create a page with blocks. AI can build full pages: itineraries, comparisons, maps.
 
 ```
@@ -260,7 +260,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `pages/update`
+### `pages_update`
 Update page title or specific blocks. Can add, update, or remove blocks.
 
 ```
@@ -282,7 +282,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `pages/delete`
+### `pages_delete`
 Delete a page and all its blocks.
 
 ```
@@ -304,7 +304,7 @@ Side effects:
 
 Tasks live outside projects — a task can reference a project, span multiple projects, or be project-independent.
 
-### `tasks/list`
+### `tasks_list`
 List tasks for the AI. On every connection, AI should check for pending tasks.
 
 ```
@@ -320,7 +320,7 @@ Returns: {
 }
 ```
 
-### `tasks/get`
+### `tasks_get`
 Task details with execution logs.
 
 ```
@@ -330,7 +330,7 @@ Params:
 Returns: Task & { logs: TaskLog[] }
 ```
 
-### `tasks/update`
+### `tasks_update`
 AI updates task status and writes progress logs.
 
 ```
@@ -348,7 +348,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `tasks/create`
+### `tasks_create`
 AI can create tasks for itself — scheduled work, reminders, follow-ups.
 
 ```
@@ -382,19 +382,19 @@ Priority: high
 **AI on connection:**
 ```
 1. bootstrap → sees pendingTasks
-2. tasks/update(taskId, status: "in_progress", log: "Starting hotel search")
-3. projects/get(projectId) → reads context.md → knows budget, dates, preferences
+2. tasks_update(taskId, status: "in_progress", log: "Starting hotel search")
+3. projects_get(projectId) → reads context.md → knows budget, dates, preferences
 4. Searches for hotels (AI knowledge or external tools)
-5. memory/bulk-write(projectId, hotel options × 5)
-6. pages/create(projectId, comparison page with place + budget blocks)
-7. tasks/update(taskId, status: "done",
+5. memory_bulk-write(projectId, hotel options × 5)
+6. pages_create(projectId, comparison page with place + budget blocks)
+7. tasks_update(taskId, status: "done",
      result: { hotelsFound: 5, pageCreated: "hotel-comparison" },
      log: "Found 5 hotels within budget. Created comparison page.")
 ```
 
 **AI creates a follow-up task for itself:**
 ```
-tasks/create(
+tasks_create(
   title: "Recheck Barcelona hotel prices",
   prompt: "Check if Hotel Arts price changed. Update memory if so.",
   projectId: "...",
@@ -420,7 +420,7 @@ tasks/create(
 
 ## 5. Negotiations (group projects)
 
-### `negotiations/list`
+### `negotiations_list`
 Active and resolved conflicts in a project.
 
 ```
@@ -431,7 +431,7 @@ Params:
 Returns: Negotiation[]
 ```
 
-### `negotiations/get`
+### `negotiations_get`
 Full negotiation details: conflict data, options, votes.
 
 ```
@@ -445,7 +445,7 @@ Returns: Negotiation & {
 }
 ```
 
-### `negotiations/propose`
+### `negotiations_propose`
 An agent proposes a compromise option.
 
 ```
@@ -467,7 +467,7 @@ Side effects:
 
 ## 6. Activity
 
-### `activity/recent`
+### `activity_recent`
 Recent changes in a project. AI can check "what happened since last visit".
 
 ```
@@ -514,7 +514,7 @@ AI connects via MCP (API key in Authorization header)
    → Get user info, all projects (with summaries), pending tasks
    │
    ├── Has pending tasks?
-   │   → Pick up and execute (tasks/update → work → tasks/update)
+   │   → Pick up and execute (tasks_update → work → tasks_update)
    │
    └── User sends a message?
        │
@@ -527,13 +527,13 @@ AI connects via MCP (API key in Authorization header)
    │
    ▼
 3. Load project context
-   → projects/get(projectId) → read context.md
+   → projects_get(projectId) → read context.md
    │
    ▼
 4. Work within project
-   → memory/read, memory/write — read/save facts
-   → pages/create, pages/update — build visual output
-   → memory/search — cross-project lookup if needed
+   → memory_read, memory_write — read/save facts
+   → pages_create, pages_update — build visual output
+   → memory_search — cross-project lookup if needed
    │
    ▼
 5. After changes
@@ -571,17 +571,17 @@ Common errors:
 
 | Removed | Reason |
 |---------|--------|
-| `preferences/get`, `preferences/set` | Everything is memories inside projects |
+| `preferences_get`, `preferences_set` | Everything is memories inside projects |
 | pgvector / embedding references | Routing via LLM + summaries, not vector search |
 
 | Added | Purpose |
 |-------|---------|
 | `bootstrap` | Single call to initialize AI session |
-| `memory/bulk-write` | Write multiple memories in one call |
-| `memory/read` pagination (cursor) | Handle projects with many memories |
-| `memory/search` text-based | Search without pgvector |
-| `pages/delete` | AI can clean up pages |
-| `tasks/create` | AI creates follow-up tasks for itself |
-| `negotiations/get` | View negotiation details with options and votes |
-| `activity/recent` | AI knows what changed since last visit |
+| `memory_bulk-write` | Write multiple memories in one call |
+| `memory_read` pagination (cursor) | Handle projects with many memories |
+| `memory_search` text-based | Search without pgvector |
+| `pages_delete` | AI can clean up pages |
+| `tasks_create` | AI creates follow-up tasks for itself |
+| `negotiations_get` | View negotiation details with options and votes |
+| `activity_recent` | AI knows what changed since last visit |
 | Error schema | Standard error format for all tools |

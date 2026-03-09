@@ -317,24 +317,24 @@ Agent gateway — implements Model Context Protocol for connecting external AI a
 
 ```typescript
 // Memory operations
-'memory/read'     — read memory (private/project/public) with filtering
-'memory/write'    — write to memory (respecting access level)
-'memory/search'   — semantic search across memory (pgvector)
-'memory/delete'   — delete memory entry
+'memory_read'     — read memory (private/project/public) with filtering
+'memory_write'    — write to memory (respecting access level)
+'memory_search'   — semantic search across memory (pgvector)
+'memory_delete'   — delete memory entry
 
 // Page operations
-'page/get'        — get page content (agent mode)
-'page/suggest'    — suggest page change
-'page/list'       — list project pages
+'page_get'        — get page content (agent mode)
+'page_suggest'    — suggest page change
+'page_list'       — list project pages
 
 // Negotiation operations
-'negotiations/list'    — list project negotiations
-'negotiations/get'     — get negotiation with options and votes
-'negotiations/propose' — propose option for open negotiation
+'negotiations_list'    — list project negotiations
+'negotiations_get'     — get negotiation with options and votes
+'negotiations_propose' — propose option for open negotiation
 
 // Project operations
-'project/info'    — project and member info
-'project/members' — list members and their agents
+'project_info'    — project and member info
+'project_members' — list members and their agents
 ```
 
 ### Transport
