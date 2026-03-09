@@ -306,7 +306,9 @@
     "revokeError": "Ошибка отзыва",
     "created": "Создан",
     "lastUsed": "Последнее использование",
-    "confirm": "Подтвердить"
+    "confirm": "Подтвердить",
+    "docsTitle": "Есть ключ? Смотрите полную инструкцию",
+    "docsDesc": "Пошаговые инструкции по подключению Claude, ChatGPT, Gemini, Cursor, VS Code и других AI-клиентов к вашим проектам."
   },
   "StatusBadge": {
     "pending": "Ожидание",

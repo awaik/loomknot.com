@@ -299,7 +299,9 @@
     "revokeError": "Failed to revoke",
     "created": "Created",
     "lastUsed": "Last used",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "docsTitle": "Got your key? See the full setup guide",
+    "docsDesc": "Step-by-step instructions for connecting Claude, ChatGPT, Gemini, Cursor, VS Code, and other AI clients to your projects."
   },
   "StatusBadge": {
     "pending": "Pending",

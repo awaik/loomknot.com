@@ -9,6 +9,8 @@ import {
   Copy,
   Check,
   Shield,
+  BookOpen,
+  ArrowRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -17,6 +19,7 @@ import {
   useRevokeApiKey,
   type ApiKeyCreateResponse,
 } from '@/hooks/use-api-keys';
+import { Link } from '@/i18n/navigation';
 import { PageHeader } from '@/components/page-header';
 import { EmptyState } from '@/components/empty-state';
 import { StatusBadge } from '@/components/status-badge';
@@ -264,6 +267,27 @@ export default function SettingsPage() {
             ))}
           </div>
         )}
+      </section>
+
+      {/* Docs link */}
+      <section className="mt-8">
+        <Link
+          href="/docs"
+          className="group flex items-start gap-4 rounded-md border border-border bg-surface-elevated p-5 transition-colors hover:border-thread/30"
+        >
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-thread/10">
+            <BookOpen className="h-5 w-5 text-thread" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-sm font-semibold text-content group-hover:text-thread transition-colors">
+              {t('docsTitle')}
+            </h3>
+            <p className="mt-1 text-sm text-content-secondary">
+              {t('docsDesc')}
+            </p>
+          </div>
+          <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-content-tertiary transition-transform group-hover:translate-x-0.5 group-hover:text-thread" />
+        </Link>
       </section>
     </>
   );
