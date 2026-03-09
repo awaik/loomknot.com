@@ -295,6 +295,8 @@
     "generate": "Generate",
     "noKeysTitle": "No API keys",
     "noKeysDesc": "Generate an API key to connect AI agents to your projects via MCP.",
+    "createError": "Failed to create API key. Please try again.",
+    "revokeError": "Failed to revoke",
     "created": "Created",
     "lastUsed": "Last used",
     "confirm": "Confirm"

@@ -1,4 +1,4 @@
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { getLocale } from 'next-intl/server';
 import { AuthInit } from '@/components/auth-init';
 import { RTL_LOCALES, type Locale } from '@/i18n/routing';
@@ -7,12 +7,6 @@ import './globals.css';
 const inter = Inter({
   subsets: ['latin', 'cyrillic', 'cyrillic-ext', 'greek', 'vietnamese'],
   variable: '--font-inter',
-  display: 'swap',
-});
-
-const playfair = Playfair_Display({
-  subsets: ['latin', 'cyrillic', 'vietnamese'],
-  variable: '--font-playfair',
   display: 'swap',
 });
 
@@ -28,7 +22,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       dir={dir}
-      className={`${inter.variable} ${playfair.variable}`}
+      className={inter.variable}
       suppressHydrationWarning
     >
       <head>

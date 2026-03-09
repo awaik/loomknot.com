@@ -28,7 +28,7 @@ export function EmptyState({
       <div className="flex h-12 w-12 items-center justify-center rounded-md bg-surface-alt">
         <Icon className="h-6 w-6 text-content-tertiary" />
       </div>
-      <h3 className="mt-4 font-serif text-lg font-semibold text-content">
+      <h3 className="mt-4 text-lg font-semibold text-content">
         {title}
       </h3>
       {description && (

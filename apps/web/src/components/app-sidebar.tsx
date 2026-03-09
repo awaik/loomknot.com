@@ -43,7 +43,7 @@ export function AppSidebar() {
       {/* Logo */}
       <div className="flex h-14 items-center justify-between px-4 border-b border-border">
         <Link href="/app" className="flex items-center gap-2">
-          <span className="font-serif text-lg font-semibold text-content">
+          <span className="text-lg font-semibold text-content">
             Loom<span className="text-thread">knot</span>
           </span>
         </Link>

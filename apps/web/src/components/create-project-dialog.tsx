@@ -56,7 +56,7 @@ export function CreateProjectDialog({
       />
       <div className="relative w-full max-w-md rounded-md bg-surface-elevated border border-border p-6 shadow-float animate-scale-in">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-serif text-xl font-semibold text-content">
+          <h2 className="text-xl font-semibold text-content">
             {t('dialogTitle')}
           </h2>
           <button

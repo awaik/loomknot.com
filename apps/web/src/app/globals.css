@@ -21,7 +21,6 @@
  *
  *  Fonts:
  *    font-sans   → Inter (UI, body)
- *    font-serif  → Playfair Display (display, headings)
  *    font-mono   → JetBrains Mono (code)
  */
 
@@ -99,7 +98,6 @@
 
   /* ── Typography ─────────────────────────────────────────────── */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-serif: var(--font-playfair), Georgia, 'Times New Roman', serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
 
   /* ── Shadows ────────────────────────────────────────────────── */

@@ -39,7 +39,7 @@ export default function DashboardPage() {
 
       {/* Projects */}
       <section>
-        <h2 className="font-serif text-lg font-semibold text-content mb-4">
+        <h2 className="text-lg font-semibold text-content mb-4">
           {tApp('projects')}
         </h2>
 
@@ -76,7 +76,7 @@ export default function DashboardPage() {
                 className="group rounded-md border border-border bg-surface-elevated p-4 shadow-sm transition-all duration-fast hover:border-thread/30 hover:shadow-md"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-serif text-base font-semibold text-content group-hover:text-thread transition-colors">
+                  <h3 className="text-base font-semibold text-content group-hover:text-thread transition-colors">
                     {project.title}
                   </h3>
                   <span className="shrink-0 rounded-pill bg-surface-alt px-2 py-0.5 text-xs text-content-tertiary">
@@ -123,7 +123,7 @@ export default function DashboardPage() {
       {/* Recent tasks */}
       <section className="mt-10">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-serif text-lg font-semibold text-content">
+          <h2 className="text-lg font-semibold text-content">
             {t('recentTasks')}
           </h2>
           <Link

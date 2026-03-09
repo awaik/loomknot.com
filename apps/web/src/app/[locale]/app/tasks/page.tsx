@@ -284,7 +284,7 @@ function CreateTaskForm({ onClose }: { onClose: () => void }) {
   return (
     <div className="mb-6 rounded-md border border-border bg-surface-elevated p-4">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-serif text-base font-semibold text-content">
+        <h3 className="text-base font-semibold text-content">
           {t('createTitle')}
         </h3>
         <button

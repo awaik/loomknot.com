@@ -59,7 +59,7 @@ function SectionLabel({ children, dark }: { children: React.ReactNode; dark?: bo
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="font-serif text-[clamp(1.8rem,4vw,2.7rem)] leading-tight text-center mb-12 reveal">
+    <h2 className="text-[clamp(1.8rem,4vw,2.7rem)] leading-tight text-center mb-12 reveal">
       {children}
     </h2>
   );
@@ -128,7 +128,7 @@ export function LandingPage() {
     <>
       {/* ━━━ NAV ━━━ */}
       <nav className="fixed top-0 inset-x-0 z-50 px-5 md:px-10 py-[18px] flex items-center justify-between glass border-b border-border">
-        <Link href="/" className="flex items-center gap-2.5 font-serif text-[1.45rem] text-content">
+        <Link href="/" className="flex items-center gap-2.5 text-[1.45rem] text-content">
           <Logo />
           LoomKnot
         </Link>
@@ -158,7 +158,7 @@ export function LandingPage() {
         />
 
         <h1
-          className="font-serif text-[clamp(2.2rem,5.5vw,3.8rem)] leading-[1.1] font-normal max-w-[780px] tracking-[-0.02em] relative"
+          className="text-[clamp(2.2rem,5.5vw,3.8rem)] leading-[1.1] font-normal max-w-[780px] tracking-[-0.02em] relative"
           style={{ animation: 'hero-fade-up 0.8s ease-out both' }}
         >
           {hero('title1')}
@@ -233,7 +233,7 @@ export function LandingPage() {
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
               <span className="text-[2rem] mb-4 block">{card.icon}</span>
-              <h3 className="font-serif text-lg font-medium mb-3">{cards(card.titleKey)}</h3>
+              <h3 className="text-lg font-medium mb-3">{cards(card.titleKey)}</h3>
               <p className="text-[0.88rem] text-muted leading-relaxed mb-3">{cards(card.descKey)}</p>
               <p className="text-[0.82rem] text-content-tertiary leading-relaxed">{cards(card.detailKey)}</p>
             </div>
@@ -258,11 +258,11 @@ export function LandingPage() {
               className="text-center p-8 rounded-xl border border-thread/10 bg-white/[0.02] transition-all duration-slow hover:bg-white/[0.04] hover:border-thread/20 hover:-translate-y-1 reveal"
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
-              <div className="w-10 h-10 rounded-xl bg-thread/10 flex items-center justify-center font-serif text-lg text-thread mx-auto mb-4">
+              <div className="w-10 h-10 rounded-xl bg-thread/10 flex items-center justify-center text-lg text-thread mx-auto mb-4">
                 {step.num}
               </div>
               <span className="text-[2rem] mb-3.5 block">{step.icon}</span>
-              <h3 className="font-serif text-lg font-medium mb-2">{how(step.titleKey)}</h3>
+              <h3 className="text-lg font-medium mb-2">{how(step.titleKey)}</h3>
               <p className="text-[0.84rem] text-cream/55 leading-relaxed">{how(step.descKey)}</p>
             </div>
           ))}
@@ -275,7 +275,7 @@ export function LandingPage() {
 
         {/* Travel */}
         <div className="mb-14 reveal">
-          <h3 className="font-serif text-[1.5rem] mb-4 flex items-center gap-2">
+          <h3 className="text-[1.5rem] mb-4 flex items-center gap-2">
             <span>✈️</span> {scenarios('travelTitle')}
           </h3>
           <blockquote className="border-s-[3px] border-thread ps-5 py-2 text-[0.95rem] text-muted leading-relaxed italic mb-5">
@@ -293,7 +293,7 @@ export function LandingPage() {
 
         {/* Health */}
         <div className="mb-14 reveal">
-          <h3 className="font-serif text-[1.5rem] mb-4 flex items-center gap-2">
+          <h3 className="text-[1.5rem] mb-4 flex items-center gap-2">
             <span>🏥</span> {scenarios('healthTitle')}
           </h3>
           <blockquote className="border-s-[3px] border-sage ps-5 py-2 text-[0.95rem] text-muted leading-relaxed italic mb-5">
@@ -312,7 +312,7 @@ export function LandingPage() {
         {/* Learning + Renovation — compact */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="reveal">
-            <h3 className="font-serif text-[1.5rem] mb-3 flex items-center gap-2">
+            <h3 className="text-[1.5rem] mb-3 flex items-center gap-2">
               <span>📚</span> {scenarios('learningTitle')}
             </h3>
             <blockquote className="border-s-[3px] border-accent ps-5 py-2 text-[0.9rem] text-muted leading-relaxed italic">
@@ -320,7 +320,7 @@ export function LandingPage() {
             </blockquote>
           </div>
           <div className="reveal">
-            <h3 className="font-serif text-[1.5rem] mb-3 flex items-center gap-2">
+            <h3 className="text-[1.5rem] mb-3 flex items-center gap-2">
               <span>🔨</span> {scenarios('renovationTitle')}
             </h3>
             <blockquote className="border-s-[3px] border-info ps-5 py-2 text-[0.9rem] text-muted leading-relaxed italic">
@@ -375,7 +375,7 @@ export function LandingPage() {
               style={{ transitionDelay: `${i * 0.06}s` }}
             >
               <span className="text-[1.5rem] mb-3 block">{item.icon}</span>
-              <h4 className="font-serif text-lg font-medium mb-2">{tools(item.titleKey)}</h4>
+              <h4 className="text-lg font-medium mb-2">{tools(item.titleKey)}</h4>
               <p className="text-[0.85rem] text-muted leading-relaxed">{tools(item.descKey)}</p>
             </div>
           ))}
@@ -452,7 +452,7 @@ export function LandingPage() {
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
               <span className="text-[1.8rem] mb-3 block">{p.icon}</span>
-              <h3 className="font-serif text-lg font-medium mb-2">{forWhom(p.titleKey)}</h3>
+              <h3 className="text-lg font-medium mb-2">{forWhom(p.titleKey)}</h3>
               <p className="text-[0.86rem] text-muted leading-relaxed">{forWhom(p.descKey)}</p>
             </div>
           ))}
@@ -475,7 +475,7 @@ export function LandingPage() {
               style={{ transitionDelay: `${(i % 2) * 0.1}s` }}
             >
               <span className="text-[1.5rem] mb-3 block">{card.icon}</span>
-              <h4 className="font-serif text-lg font-medium mb-1.5">{tech(card.titleKey)}</h4>
+              <h4 className="text-lg font-medium mb-1.5">{tech(card.titleKey)}</h4>
               <p className="text-[0.86rem] text-muted leading-relaxed">{tech(card.descKey)}</p>
             </div>
           ))}
@@ -489,7 +489,7 @@ export function LandingPage() {
         style={{ background: 'linear-gradient(180deg, var(--lk-surface) 0%, var(--lk-surface-alt) 100%)' }}
       >
         <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, var(--color-thread-light), transparent)' }} />
-        <h2 className="font-serif text-[clamp(2rem,5vw,3.2rem)] leading-[1.1] mb-5 max-w-[600px] mx-auto reveal">
+        <h2 className="text-[clamp(2rem,5vw,3.2rem)] leading-[1.1] mb-5 max-w-[600px] mx-auto reveal">
           {cta('title')}
         </h2>
         <p className="text-base text-muted mb-8 leading-relaxed reveal">{cta('subtitle')}</p>

@@ -60,7 +60,7 @@ export default function LoginPage() {
     <main className="flex min-h-screen items-center justify-center p-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <h1 className="font-serif text-4xl font-semibold tracking-tight">
+          <h1 className="text-4xl font-semibold tracking-tight">
             Loom<span className="text-thread">knot</span>
           </h1>
           <p className="mt-2 text-content-secondary text-sm">

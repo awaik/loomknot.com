@@ -16,7 +16,7 @@ export const apiKeys = pgTable(
       onDelete: 'cascade',
     }),
     keyHash: varchar('key_hash', { length: 255 }).notNull().unique(),
-    keyPrefix: varchar('key_prefix', { length: 8 }).notNull(),
+    keyPrefix: varchar('key_prefix', { length: 12 }).notNull(),
     label: varchar('label', { length: 255 }),
     status: apiKeyStatusEnum('status').notNull().default('active'),
     lastUsedAt: timestamp('last_used_at', { withTimezone: true }),

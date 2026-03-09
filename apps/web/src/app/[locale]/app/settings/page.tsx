@@ -34,12 +34,16 @@ export default function SettingsPage() {
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await createApiKey.mutateAsync(
-      label.trim() ? { label: label.trim() } : undefined,
-    );
-    setNewKey(result);
-    setLabel('');
-    setShowCreateForm(false);
+    try {
+      const result = await createApiKey.mutateAsync(
+        label.trim() ? { label: label.trim() } : undefined,
+      );
+      setNewKey(result);
+      setLabel('');
+      setShowCreateForm(false);
+    } catch {
+      // Error state available via createApiKey.error
+    }
   };
 
   const handleCopy = async (text: string) => {
@@ -49,8 +53,12 @@ export default function SettingsPage() {
   };
 
   const handleRevoke = async (id: string) => {
-    await revokeApiKey.mutateAsync(id);
-    setRevokeConfirm(null);
+    try {
+      await revokeApiKey.mutateAsync(id);
+      setRevokeConfirm(null);
+    } catch {
+      // Error state available via revokeApiKey.error
+    }
   };
 
   return (
@@ -64,7 +72,7 @@ export default function SettingsPage() {
       <section>
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="font-serif text-lg font-semibold text-content">
+            <h2 className="text-lg font-semibold text-content">
               {t('apiKeys')}
             </h2>
             <p className="mt-1 text-sm text-content-secondary">
@@ -72,7 +80,7 @@ export default function SettingsPage() {
             </p>
           </div>
           <button
-            onClick={() => setShowCreateForm(true)}
+            onClick={() => { createApiKey.reset(); setShowCreateForm(true); }}
             className="flex items-center gap-2 rounded-sm bg-thread px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-thread-dark"
           >
             <Plus className="h-4 w-4" />
@@ -122,42 +130,49 @@ export default function SettingsPage() {
         {/* Create form */}
         {showCreateForm && (
           <div className="mb-4 rounded-md border border-border bg-surface-elevated p-4">
-            <form onSubmit={handleCreate} className="flex items-end gap-3">
-              <div className="flex-1">
-                <label
-                  htmlFor="key-label"
-                  className="block text-sm font-medium text-content mb-1.5"
+            <form onSubmit={handleCreate} className="space-y-3">
+              <div className="flex items-end gap-3">
+                <div className="flex-1">
+                  <label
+                    htmlFor="key-label"
+                    className="block text-sm font-medium text-content mb-1.5"
+                  >
+                    {t('labelOptional')}
+                  </label>
+                  <input
+                    id="key-label"
+                    type="text"
+                    value={label}
+                    onChange={(e) => setLabel(e.target.value)}
+                    placeholder={t('labelPlaceholder')}
+                    autoFocus
+                    className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none"
+                  />
+                </div>
+                <button
+                  type="button"
+                  onClick={() => { setShowCreateForm(false); createApiKey.reset(); }}
+                  className="rounded-sm px-4 py-2 text-sm font-medium text-content-secondary transition-colors hover:bg-surface-alt"
                 >
-                  {t('labelOptional')}
-                </label>
-                <input
-                  id="key-label"
-                  type="text"
-                  value={label}
-                  onChange={(e) => setLabel(e.target.value)}
-                  placeholder={t('labelPlaceholder')}
-                  autoFocus
-                  className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none"
-                />
+                  {t('cancel')}
+                </button>
+                <button
+                  type="submit"
+                  disabled={createApiKey.isPending}
+                  className={cn(
+                    'rounded-sm bg-thread px-4 py-2 text-sm font-medium text-white transition-colors',
+                    'hover:bg-thread-dark',
+                    'disabled:opacity-50 disabled:cursor-not-allowed',
+                  )}
+                >
+                  {createApiKey.isPending ? t('generating') : t('generate')}
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setShowCreateForm(false)}
-                className="rounded-sm px-4 py-2 text-sm font-medium text-content-secondary transition-colors hover:bg-surface-alt"
-              >
-                {t('cancel')}
-              </button>
-              <button
-                type="submit"
-                disabled={createApiKey.isPending}
-                className={cn(
-                  'rounded-sm bg-thread px-4 py-2 text-sm font-medium text-white transition-colors',
-                  'hover:bg-thread-dark',
-                  'disabled:opacity-50 disabled:cursor-not-allowed',
-                )}
-              >
-                {createApiKey.isPending ? t('generating') : t('generate')}
-              </button>
+              {createApiKey.isError && (
+                <p className="text-sm text-error">
+                  {t('createError')}
+                </p>
+              )}
             </form>
           </div>
         )}
@@ -217,6 +232,9 @@ export default function SettingsPage() {
                   <>
                     {revokeConfirm === apiKey.id ? (
                       <div className="flex items-center gap-1.5">
+                        {revokeApiKey.isError && (
+                          <span className="text-xs text-error">{t('revokeError')}</span>
+                        )}
                         <button
                           onClick={() => handleRevoke(apiKey.id)}
                           disabled={revokeApiKey.isPending}
