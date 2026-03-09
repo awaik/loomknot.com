@@ -13,7 +13,7 @@ export function registerActivityTools(
 ): void {
   // --- activity/recent ---
   server.tool(
-    'activity/recent',
+    'activity_recent',
     'Loomknot: get recent activity log for a project — who did what and when.',
     {
       projectId: z.string().describe('Project ID'),
@@ -41,7 +41,7 @@ export function registerActivityTools(
         return toolResult({ activity: rows, count: rows.length });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('activity/recent error:', err);
+        console.error('activity_recent error:', err);
         return toolError('INTERNAL', 'Failed to get activity log');
       }
     },

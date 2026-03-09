@@ -19,7 +19,7 @@ export function registerMemoryTools(
 ): void {
   // --- memory/write ---
   server.tool(
-    'memory/write',
+    'memory_write',
     'Loomknot: save a memory entry to a project (preferences, decisions, constraints). Upserts by category + key. Levels: private (only you), project (all members), public (shareable via link).',
     {
       projectId: z.string().describe('Project ID'),
@@ -89,7 +89,7 @@ export function registerMemoryTools(
         return toolResult(memory);
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory/write error:', err);
+        console.error('memory_write error:', err);
         return toolError('INTERNAL', 'Failed to write memory');
       }
     },
@@ -97,7 +97,7 @@ export function registerMemoryTools(
 
   // --- memory/bulk-write ---
   server.tool(
-    'memory/bulk-write',
+    'memory_bulk-write',
     'Loomknot: save multiple memory entries at once (max 50). All items must belong to the same project.',
     {
       projectId: z.string().describe('Project ID'),
@@ -180,7 +180,7 @@ export function registerMemoryTools(
         return toolResult({ written: results.length, memories: results });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory/bulk-write error:', err);
+        console.error('memory_bulk-write error:', err);
         return toolError('INTERNAL', 'Failed to bulk-write memories');
       }
     },
@@ -188,7 +188,7 @@ export function registerMemoryTools(
 
   // --- memory/read ---
   server.tool(
-    'memory/read',
+    'memory_read',
     'Loomknot: read memories from a project with filtering by category and level. Supports cursor pagination. Private memories are only visible to their owner.',
     {
       projectId: z.string().describe('Project ID'),
@@ -252,7 +252,7 @@ export function registerMemoryTools(
         });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory/read error:', err);
+        console.error('memory_read error:', err);
         return toolError('INTERNAL', 'Failed to read memories');
       }
     },
@@ -260,7 +260,7 @@ export function registerMemoryTools(
 
   // --- memory/search ---
   server.tool(
-    'memory/search',
+    'memory_search',
     'Loomknot: search memories by text across key, summary, and category. Can search across all your projects or a specific one.',
     {
       query: z.string().min(1).max(500).describe('Search query text'),
@@ -327,7 +327,7 @@ export function registerMemoryTools(
         return toolResult({ memories: rows, total: rows.length });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory/search error:', err);
+        console.error('memory_search error:', err);
         return toolError('INTERNAL', 'Failed to search memories');
       }
     },
@@ -335,7 +335,7 @@ export function registerMemoryTools(
 
   // --- memory/update ---
   server.tool(
-    'memory/update',
+    'memory_update',
     'Loomknot: update an existing memory entry (value, summary, or visibility level). You must own the memory.',
     {
       memoryId: z.string().describe('Memory ID to update'),
@@ -400,7 +400,7 @@ export function registerMemoryTools(
         return toolResult(updated[0]);
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory/update error:', err);
+        console.error('memory_update error:', err);
         return toolError('INTERNAL', 'Failed to update memory');
       }
     },
@@ -408,7 +408,7 @@ export function registerMemoryTools(
 
   // --- memory/delete ---
   server.tool(
-    'memory/delete',
+    'memory_delete',
     'Loomknot: delete a memory entry. You must own the memory.',
     {
       memoryId: z.string().describe('Memory ID to delete'),
@@ -459,7 +459,7 @@ export function registerMemoryTools(
         return toolResult({ deleted: true, memoryId });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory/delete error:', err);
+        console.error('memory_delete error:', err);
         return toolError('INTERNAL', 'Failed to delete memory');
       }
     },

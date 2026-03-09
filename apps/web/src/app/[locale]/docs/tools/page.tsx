@@ -34,18 +34,18 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
     desc: 'Manage projects',
     tools: [
       {
-        name: 'projects/list',
+        name: 'projects_list',
         desc: 'List all projects you are a member of with summaries.',
       },
       {
-        name: 'projects/get',
+        name: 'projects_get',
         desc: 'Get project details including members and counts.',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },
         ],
       },
       {
-        name: 'projects/create',
+        name: 'projects_create',
         desc: 'Create a new project. You are automatically added as owner.',
         params: [
           { name: 'title', type: 'string', required: true, desc: 'Project title' },
@@ -64,7 +64,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
     desc: 'Read and write to the 3-level memory system',
     tools: [
       {
-        name: 'memory/write',
+        name: 'memory_write',
         desc: 'Create or update a memory. Upserts by projectId + userId + category + key.',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },
@@ -76,7 +76,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'memory/bulk-write',
+        name: 'memory_bulk-write',
         desc: 'Write multiple memories at once (max 50).',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },
@@ -84,7 +84,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'memory/read',
+        name: 'memory_read',
         desc: 'List memories with filtering and cursor pagination. Private memories only visible to owner.',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },
@@ -95,7 +95,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'memory/search',
+        name: 'memory_search',
         desc: 'Full-text search across memories (ILIKE on key, summary, category).',
         params: [
           { name: 'query', type: 'string', required: true, desc: 'Search query' },
@@ -105,7 +105,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'memory/update',
+        name: 'memory_update',
         desc: 'Update an existing memory. Must be the memory owner.',
         params: [
           { name: 'memoryId', type: 'string', required: true, desc: 'Memory ID' },
@@ -115,7 +115,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'memory/delete',
+        name: 'memory_delete',
         desc: 'Soft-delete a memory. Must be the memory owner.',
         params: [
           { name: 'memoryId', type: 'string', required: true, desc: 'Memory ID' },
@@ -128,21 +128,21 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
     desc: 'Manage project pages and content blocks',
     tools: [
       {
-        name: 'pages/list',
+        name: 'pages_list',
         desc: 'List all pages in a project (metadata only, no blocks).',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },
         ],
       },
       {
-        name: 'pages/get',
+        name: 'pages_get',
         desc: 'Get a page with all its content blocks.',
         params: [
           { name: 'pageId', type: 'string', required: true, desc: 'Page ID' },
         ],
       },
       {
-        name: 'pages/create',
+        name: 'pages_create',
         desc: 'Create a new page with optional content blocks. Slug "index" is reserved.',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },
@@ -154,7 +154,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'pages/update',
+        name: 'pages_update',
         desc: 'Update page metadata and/or content blocks. Block operations: include id to update, omit id to create, set action:"delete" to remove.',
         params: [
           { name: 'pageId', type: 'string', required: true, desc: 'Page ID' },
@@ -165,7 +165,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'pages/delete',
+        name: 'pages_delete',
         desc: 'Soft-delete a page. Cannot delete the index page.',
         params: [
           { name: 'pageId', type: 'string', required: true, desc: 'Page ID' },
@@ -178,7 +178,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
     desc: 'Manage personal tasks and logs',
     tools: [
       {
-        name: 'tasks/list',
+        name: 'tasks_list',
         desc: 'List your tasks with optional status and project filtering.',
         params: [
           { name: 'status', type: 'enum', desc: 'pending | in_progress | done | failed' },
@@ -188,14 +188,14 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'tasks/get',
+        name: 'tasks_get',
         desc: 'Get task details with log entries.',
         params: [
           { name: 'taskId', type: 'string', required: true, desc: 'Task ID' },
         ],
       },
       {
-        name: 'tasks/create',
+        name: 'tasks_create',
         desc: 'Create a task for yourself.',
         params: [
           { name: 'title', type: 'string', required: true, desc: 'Task title' },
@@ -206,7 +206,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'tasks/update',
+        name: 'tasks_update',
         desc: 'Update task status, result, or add a log entry.',
         params: [
           { name: 'taskId', type: 'string', required: true, desc: 'Task ID' },
@@ -222,7 +222,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
     desc: 'Resolve preference conflicts between project members',
     tools: [
       {
-        name: 'negotiations/list',
+        name: 'negotiations_list',
         desc: 'List project negotiations with optional status filter.',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },
@@ -230,14 +230,14 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
         ],
       },
       {
-        name: 'negotiations/get',
+        name: 'negotiations_get',
         desc: 'Get negotiation details with proposed options and votes.',
         params: [
           { name: 'negotiationId', type: 'string', required: true, desc: 'Negotiation ID' },
         ],
       },
       {
-        name: 'negotiations/propose',
+        name: 'negotiations_propose',
         desc: 'Propose an option for an open negotiation.',
         params: [
           { name: 'negotiationId', type: 'string', required: true, desc: 'Negotiation ID' },
@@ -254,7 +254,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
     desc: 'View project activity logs',
     tools: [
       {
-        name: 'activity/recent',
+        name: 'activity_recent',
         desc: 'Get recent activity log entries for a project.',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },

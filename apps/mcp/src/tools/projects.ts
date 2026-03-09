@@ -21,7 +21,7 @@ export function registerProjectTools(
 ): void {
   // --- projects/list ---
   server.tool(
-    'projects/list',
+    'projects_list',
     'Loomknot: list all your projects with summaries, member count, and memory count.',
     {},
     async () => {
@@ -53,7 +53,7 @@ export function registerProjectTools(
         return toolResult({ projects: rows });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('projects/list error:', err);
+        console.error('projects_list error:', err);
         return toolError('INTERNAL', 'Failed to list projects');
       }
     },
@@ -61,7 +61,7 @@ export function registerProjectTools(
 
   // --- projects/get ---
   server.tool(
-    'projects/get',
+    'projects_get',
     'Loomknot: get project details — full context, members, pages count, and memories count.',
     { projectId: z.string().describe('Project ID') },
     async ({ projectId }) => {
@@ -108,7 +108,7 @@ export function registerProjectTools(
         });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('projects/get error:', err);
+        console.error('projects_get error:', err);
         return toolError('INTERNAL', 'Failed to get project');
       }
     },
@@ -116,7 +116,7 @@ export function registerProjectTools(
 
   // --- projects/create ---
   server.tool(
-    'projects/create',
+    'projects_create',
     'Loomknot: create a new project (e.g. a trip, event, renovation). You become the owner. An index page is auto-created inside the project.',
     {
       title: z.string().min(1).max(255).describe('Project title'),
@@ -195,7 +195,7 @@ export function registerProjectTools(
         });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('projects/create error:', err);
+        console.error('projects_create error:', err);
         return toolError('INTERNAL', 'Failed to create project');
       }
     },
@@ -203,7 +203,7 @@ export function registerProjectTools(
 
   // --- projects/update ---
   server.tool(
-    'projects/update',
+    'projects_update',
     'Loomknot: update project settings (title, description, visibility). Requires project manager permission.',
     {
       projectId: z.string().describe('Project ID'),
@@ -252,7 +252,7 @@ export function registerProjectTools(
         return toolResult(updated[0]);
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('projects/update error:', err);
+        console.error('projects_update error:', err);
         return toolError('INTERNAL', 'Failed to update project');
       }
     },

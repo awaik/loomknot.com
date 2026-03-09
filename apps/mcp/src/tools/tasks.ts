@@ -18,7 +18,7 @@ export function registerTaskTools(
 ): void {
   // --- tasks/list ---
   server.tool(
-    'tasks/list',
+    'tasks_list',
     'Loomknot: list your tasks with optional filters by status (pending, in_progress, done, failed) and project.',
     {
       status: z
@@ -59,7 +59,7 @@ export function registerTaskTools(
         return toolResult({ tasks: data, nextCursor, hasMore });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('tasks/list error:', err);
+        console.error('tasks_list error:', err);
         return toolError('INTERNAL', 'Failed to list tasks');
       }
     },
@@ -67,7 +67,7 @@ export function registerTaskTools(
 
   // --- tasks/get ---
   server.tool(
-    'tasks/get',
+    'tasks_get',
     'Loomknot: get task details with execution logs.',
     {
       taskId: z.string().describe('Task ID'),
@@ -95,7 +95,7 @@ export function registerTaskTools(
         return toolResult({ ...task, logs });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('tasks/get error:', err);
+        console.error('tasks_get error:', err);
         return toolError('INTERNAL', 'Failed to get task');
       }
     },
@@ -103,7 +103,7 @@ export function registerTaskTools(
 
   // --- tasks/create ---
   server.tool(
-    'tasks/create',
+    'tasks_create',
     'Loomknot: create a task — reminders, to-dos, or scheduled actions within a project.',
     {
       title: z.string().min(1).max(500).describe('Task title'),
@@ -155,7 +155,7 @@ export function registerTaskTools(
         return toolResult(task);
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('tasks/create error:', err);
+        console.error('tasks_create error:', err);
         return toolError('INTERNAL', 'Failed to create task');
       }
     },
@@ -163,7 +163,7 @@ export function registerTaskTools(
 
   // --- tasks/update ---
   server.tool(
-    'tasks/update',
+    'tasks_update',
     'Loomknot: update task status, result, or add a log entry.',
     {
       taskId: z.string().describe('Task ID'),
@@ -240,7 +240,7 @@ export function registerTaskTools(
         return toolResult(updated);
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('tasks/update error:', err);
+        console.error('tasks_update error:', err);
         return toolError('INTERNAL', 'Failed to update task');
       }
     },

@@ -27,7 +27,7 @@ export function registerPageTools(
 ): void {
   // --- pages/list ---
   server.tool(
-    'pages/list',
+    'pages_list',
     'Loomknot: list all pages in a project (metadata only, no content blocks).',
     {
       projectId: z.string().describe('Project ID'),
@@ -55,7 +55,7 @@ export function registerPageTools(
         return toolResult({ pages: rows });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages/list error:', err);
+        console.error('pages_list error:', err);
         return toolError('INTERNAL', 'Failed to list pages');
       }
     },
@@ -63,7 +63,7 @@ export function registerPageTools(
 
   // --- pages/get ---
   server.tool(
-    'pages/get',
+    'pages_get',
     'Loomknot: get a page with all its content blocks (text, headings, images, maps, lists).',
     {
       pageId: z.string().describe('Page ID'),
@@ -92,7 +92,7 @@ export function registerPageTools(
         return toolResult({ ...page, blocks });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages/get error:', err);
+        console.error('pages_get error:', err);
         return toolError('INTERNAL', 'Failed to get page');
       }
     },
@@ -100,7 +100,7 @@ export function registerPageTools(
 
   // --- pages/create ---
   server.tool(
-    'pages/create',
+    'pages_create',
     'Loomknot: create a new page inside a project with content blocks. Use for travel plans, checklists, itineraries, notes, etc.',
     {
       projectId: z.string().describe('Project ID'),
@@ -170,7 +170,7 @@ export function registerPageTools(
         return toolResult({ ...page, blocks: insertedBlocks });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages/create error:', err);
+        console.error('pages_create error:', err);
         return toolError('INTERNAL', 'Failed to create page');
       }
     },
@@ -178,7 +178,7 @@ export function registerPageTools(
 
   // --- pages/update ---
   server.tool(
-    'pages/update',
+    'pages_update',
     'Loomknot: update a page and/or its content blocks. For blocks: include id to update existing, omit id to create new, set action:"delete" to remove.',
     {
       pageId: z.string().describe('Page ID'),
@@ -312,7 +312,7 @@ export function registerPageTools(
         return toolResult({ ...updatedPage[0], blocks: updatedBlocks });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages/update error:', err);
+        console.error('pages_update error:', err);
         return toolError('INTERNAL', 'Failed to update page');
       }
     },
@@ -320,7 +320,7 @@ export function registerPageTools(
 
   // --- pages/delete ---
   server.tool(
-    'pages/delete',
+    'pages_delete',
     'Loomknot: delete a page from a project. The index page cannot be deleted.',
     {
       pageId: z.string().describe('Page ID to delete'),
@@ -365,7 +365,7 @@ export function registerPageTools(
         return toolResult({ deleted: true, pageId });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages/delete error:', err);
+        console.error('pages_delete error:', err);
         return toolError('INTERNAL', 'Failed to delete page');
       }
     },

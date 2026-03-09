@@ -19,7 +19,7 @@ export function registerNegotiationTools(
 ): void {
   // --- negotiations/list ---
   server.tool(
-    'negotiations/list',
+    'negotiations_list',
     'Loomknot: list preference negotiations in a project. Used when members have conflicting preferences that need resolution.',
     {
       projectId: z.string().describe('Project ID'),
@@ -44,7 +44,7 @@ export function registerNegotiationTools(
         return toolResult({ negotiations: rows });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('negotiations/list error:', err);
+        console.error('negotiations_list error:', err);
         return toolError('INTERNAL', 'Failed to list negotiations');
       }
     },
@@ -52,7 +52,7 @@ export function registerNegotiationTools(
 
   // --- negotiations/get ---
   server.tool(
-    'negotiations/get',
+    'negotiations_get',
     'Loomknot: get a negotiation with all proposed options and votes from participants.',
     {
       negotiationId: z.string().describe('Negotiation ID'),
@@ -106,7 +106,7 @@ export function registerNegotiationTools(
         return toolResult({ ...negotiation, options: optionsWithVotes });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('negotiations/get error:', err);
+        console.error('negotiations_get error:', err);
         return toolError('INTERNAL', 'Failed to get negotiation');
       }
     },
@@ -114,7 +114,7 @@ export function registerNegotiationTools(
 
   // --- negotiations/propose ---
   server.tool(
-    'negotiations/propose',
+    'negotiations_propose',
     'Loomknot: propose a compromise option for an open negotiation with reasoning.',
     {
       negotiationId: z.string().describe('Negotiation ID'),
@@ -185,7 +185,7 @@ export function registerNegotiationTools(
         return toolResult(option);
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('negotiations/propose error:', err);
+        console.error('negotiations_propose error:', err);
         return toolError('INTERNAL', 'Failed to propose option');
       }
     },
