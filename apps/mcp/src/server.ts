@@ -10,6 +10,9 @@ import { createMcpServer } from '@/create-server.js';
 
 const app = express();
 
+// Trust Traefik reverse proxy (required for express-rate-limit behind proxy)
+app.set('trust proxy', 1);
+
 // Parse JSON body for all routes EXCEPT /mcp/messages.
 // SSEServerTransport.handlePostMessage reads the raw request stream,
 // so express.json() must not consume it first.
