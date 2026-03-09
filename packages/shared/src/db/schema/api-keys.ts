@@ -12,9 +12,9 @@ export const apiKeys = pgTable(
     userId: varchar('user_id', { length: 36 })
       .notNull()
       .references(() => users.id, { onDelete: 'cascade' }),
-    projectId: varchar('project_id', { length: 36 })
-      .notNull()
-      .references(() => projects.id, { onDelete: 'cascade' }),
+    projectId: varchar('project_id', { length: 36 }).references(() => projects.id, {
+      onDelete: 'cascade',
+    }),
     keyHash: varchar('key_hash', { length: 255 }).notNull().unique(),
     keyPrefix: varchar('key_prefix', { length: 8 }).notNull(),
     label: varchar('label', { length: 255 }),
@@ -24,8 +24,6 @@ export const apiKeys = pgTable(
   },
   (table) => [
     index('api_keys_user_id_idx').on(table.userId),
-    index('api_keys_project_id_idx').on(table.projectId),
-    index('api_keys_user_project_idx').on(table.userId, table.projectId),
   ],
 );
 

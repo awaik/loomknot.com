@@ -43,19 +43,6 @@ export const memorySourceEnum = pgEnum('memory_source', [
   'system',
 ]);
 
-// Preferences
-export const preferenceImportanceEnum = pgEnum('preference_importance', [
-  'must',
-  'prefer',
-  'nice_to_have',
-]);
-
-export const preferenceSourceEnum = pgEnum('preference_source', [
-  'explicit',
-  'inferred',
-  'agent',
-]);
-
 // API Keys
 export const apiKeyStatusEnum = pgEnum('api_key_status', [
   'active',

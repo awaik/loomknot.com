@@ -13,18 +13,19 @@
     "@loomknot/shared": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.12.0",
     "drizzle-orm": "^0.39.0",
-    "postgres": "^3.4.0",
+    "express": "^4.21.0",
+    "express-rate-limit": "^8.3.0",
     "ioredis": "^5.4.0",
     "jose": "^6.0.0",
-    "zod": "^3.24.0",
-    "express": "^4.21.0"
+    "postgres": "^3.4.0",
+    "zod": "^3.24.0"
   },
   "devDependencies": {
     "@loomknot/tsconfig": "workspace:*",
     "@types/express": "^4.17.0",
     "@types/node": "^22.0.0",
-    "typescript": "^5.7.0",
+    "tsc-alias": "^1.8.0",
     "tsx": "^4.19.0",
-    "tsc-alias": "^1.8.0"
+    "typescript": "^5.7.0"
   }
 }

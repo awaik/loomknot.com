@@ -16,9 +16,6 @@ export interface MemoryEntry {
   summary?: string;
   source: MemorySource;
   apiKeyId?: string;
-  confidence: number;
-  expiresAt?: string;
-  embedding?: number[];
   createdAt: string;
   updatedAt: string;
 }
@@ -44,7 +41,6 @@ export interface PageContext {
   userId?: string;
   renderMode: PageRenderMode;
   memories: MemoryEntry[];
-  preferences: UserPreference[];
 }
 
 // Project
@@ -57,23 +53,8 @@ export interface Project {
   vertical: string;
   isPublic: boolean;
   settings: Record<string, unknown>;
-  createdAt: string;
-  updatedAt: string;
-}
-
-// User preferences
-export type PreferenceImportance = 'must' | 'prefer' | 'nice_to_have';
-export type PreferenceSource = 'explicit' | 'inferred' | 'agent';
-
-export interface UserPreference {
-  id: string;
-  userId: string;
-  category: string;
-  key: string;
-  value: unknown;
-  importance: PreferenceImportance;
-  negotiable: boolean;
-  source: PreferenceSource;
+  context?: string;
+  summary?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -84,13 +65,22 @@ export type VoteType = 'approve' | 'reject' | 'neutral';
 
 // Activity log
 export type ActivityAction =
-  | 'project.create'
-  | 'memory.create' | 'memory.update' | 'memory.delete'
-  | 'page.create' | 'page.update' | 'page.suggest'
-  | 'preference.set'
+  | 'project.create' | 'project.update'
+  | 'memory.create' | 'memory.update' | 'memory.delete' | 'memory.upsert' | 'memory.bulk_write'
+  | 'page.create' | 'page.update' | 'page.suggest' | 'page.delete'
+  | 'page.created' | 'page.updated' | 'page.deleted'
   | 'negotiation.create' | 'negotiation.vote' | 'negotiation.resolve'
+  | 'negotiation.option_proposed' | 'negotiation.voted'
   | 'member.join' | 'member.leave'
-  | 'apikey.create' | 'apikey.revoke';
+  | 'apikey.create' | 'apikey.revoke'
+  | 'task.create' | 'task.update';
+
+// Paginated API response
+export interface PaginatedResponse<T> {
+  data: T[];
+  nextCursor: string | null;
+  hasMore: boolean;
+}
 
 // Socket.io events
 export const EVENTS = {
@@ -99,11 +89,17 @@ export const EVENTS = {
   MEMORY_UPDATED: 'memory:updated',
   MEMORY_DELETED: 'memory:deleted',
   // Page
+  PAGE_CREATED: 'page:created',
   PAGE_UPDATED: 'page:updated',
+  PAGE_DELETED: 'page:deleted',
   PAGE_REGENERATED: 'page:regenerated',
+  // Task
+  TASK_CREATED: 'task:created',
+  TASK_UPDATED: 'task:updated',
   // Negotiation
   NEGOTIATION_STARTED: 'negotiation:started',
   NEGOTIATION_PROPOSAL: 'negotiation:proposal',
+  NEGOTIATION_VOTED: 'negotiation:voted',
   NEGOTIATION_RESOLVED: 'negotiation:resolved',
   // Project
   PROJECT_UPDATED: 'project:updated',
@@ -115,4 +111,5 @@ export const ROOMS = {
   project: (id: string) => `project:${id}`,
   page: (id: string) => `page:${id}`,
   negotiation: (id: string) => `negotiation:${id}`,
+  user: (id: string) => `user:${id}`,
 } as const;

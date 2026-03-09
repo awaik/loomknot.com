@@ -92,3 +92,17 @@ export async function api<T = unknown>(
 
   return res.status === 204 ? (undefined as T) : res.json();
 }
+
+export async function projectApi<T = unknown>(
+  projectId: string,
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
+  return api<T>(path, {
+    ...options,
+    headers: {
+      ...((options.headers as Record<string, string>) ?? {}),
+      'x-project-id': projectId,
+    },
+  });
+}

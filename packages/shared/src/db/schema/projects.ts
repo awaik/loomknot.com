@@ -20,6 +20,8 @@ export const projects = pgTable('projects', {
     .references(() => users.id, { onDelete: 'restrict' }),
   isPublic: boolean('is_public').notNull().default(false),
   settings: jsonb('settings').notNull().default({}),
+  context: text('context'),
+  summary: text('summary'),
   ...timestamps,
   ...softDelete,
 });

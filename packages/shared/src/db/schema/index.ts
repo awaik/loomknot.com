@@ -7,7 +7,6 @@ export * from './invites';
 export * from './pages';
 export * from './page-blocks';
 export * from './memories';
-export * from './preferences';
 export * from './api-keys';
 export * from './tasks';
 export * from './task-logs';

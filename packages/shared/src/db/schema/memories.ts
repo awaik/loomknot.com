@@ -1,6 +1,6 @@
-import { index, jsonb, pgTable, real, text, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { relations, sql } from 'drizzle-orm';
-import { pk, softDelete, timestamps, versionColumn, vector } from '../helpers';
+import { index, jsonb, pgTable, text, uniqueIndex, varchar } from 'drizzle-orm/pg-core';
+import { relations } from 'drizzle-orm';
+import { pk, softDelete, timestamps, versionColumn } from '../helpers';
 import { memoryLevelEnum, memorySourceEnum } from './enums';
 import { projects } from './projects';
 import { users } from './users';
@@ -29,11 +29,6 @@ export const memories = pgTable(
     apiKeyId: varchar('api_key_id', { length: 36 }).references(() => apiKeys.id, {
       onDelete: 'set null',
     }),
-    confidence: real('confidence').notNull().default(1.0),
-    expiresAt: timestamp('expires_at', { withTimezone: true }),
-
-    // Vector
-    embedding: vector('embedding', { dimensions: 1536 }),
 
     ...timestamps,
     ...versionColumn,
@@ -44,9 +39,12 @@ export const memories = pgTable(
     index('memories_project_user_level_idx').on(table.projectId, table.userId, table.level),
     index('memories_project_category_idx').on(table.projectId, table.category),
     index('memories_user_level_idx').on(table.userId, table.level),
-    // HNSW index for vector similarity search (cosine distance)
-    index('memories_embedding_idx')
-      .using('hnsw', sql`embedding vector_cosine_ops`),
+    uniqueIndex('memories_project_user_category_key_idx').on(
+      table.projectId,
+      table.userId,
+      table.category,
+      table.key,
+    ),
   ],
 );
 

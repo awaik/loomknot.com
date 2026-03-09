@@ -4,6 +4,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 import fastifyCookie from '@fastify/cookie';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
@@ -32,9 +33,11 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
   app.setGlobalPrefix('api/v1');
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:43001',
+    origin: process.env.CORS_ORIGIN || 'http://localhost:8026',
     credentials: true,
   });
+
+  app.useWebSocketAdapter(new IoAdapter(app));
 
   const port = process.env.PORT || 43002;
   await app.listen(port, '0.0.0.0');

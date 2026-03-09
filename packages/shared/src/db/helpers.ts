@@ -1,5 +1,5 @@
 import { randomBytes } from 'node:crypto';
-import { customType, integer, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { integer, timestamp, varchar } from 'drizzle-orm/pg-core';
 
 /**
  * Time-sortable, collision-resistant ID (25 chars).
@@ -39,23 +39,3 @@ export const softDelete = {
 export const versionColumn = {
   version: integer('version').notNull().default(1),
 };
-
-// pgvector custom type
-export const vector = customType<{
-  data: number[];
-  driverData: string;
-  config: { dimensions: number };
-}>({
-  dataType(config) {
-    return `vector(${config?.dimensions ?? 1536})`;
-  },
-  fromDriver(value: string): number[] {
-    return value
-      .slice(1, -1)
-      .split(',')
-      .map(Number);
-  },
-  toDriver(value: number[]): string {
-    return `[${value.join(',')}]`;
-  },
-});

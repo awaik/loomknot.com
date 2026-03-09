@@ -29,15 +29,17 @@ export const ROLE_PERMISSIONS: Record<Role, {
   canManageProject: boolean;
   canManageMembers: boolean;
   canEditMemory: boolean;
-  canCreateApiKey: boolean;
+  canConnectAgent: boolean;
   canView: boolean;
 }> = {
-  owner:  { canManageProject: true,  canManageMembers: true,  canEditMemory: true,  canCreateApiKey: true,  canView: true },
-  admin:  { canManageProject: true,  canManageMembers: true,  canEditMemory: true,  canCreateApiKey: true,  canView: true },
-  editor: { canManageProject: false, canManageMembers: false, canEditMemory: true,  canCreateApiKey: true,  canView: true },
-  member: { canManageProject: false, canManageMembers: false, canEditMemory: false, canCreateApiKey: true,  canView: true },
-  viewer: { canManageProject: false, canManageMembers: false, canEditMemory: false, canCreateApiKey: false, canView: true },
+  owner:  { canManageProject: true,  canManageMembers: true,  canEditMemory: true,  canConnectAgent: true,  canView: true },
+  admin:  { canManageProject: true,  canManageMembers: true,  canEditMemory: true,  canConnectAgent: true,  canView: true },
+  editor: { canManageProject: false, canManageMembers: false, canEditMemory: true,  canConnectAgent: true,  canView: true },
+  member: { canManageProject: false, canManageMembers: false, canEditMemory: false, canConnectAgent: true,  canView: true },
+  viewer: { canManageProject: false, canManageMembers: false, canEditMemory: false, canConnectAgent: false, canView: true },
 } as const;
+
+export type Permission = keyof typeof ROLE_PERMISSIONS.owner;
 
 // Pagination
 export const DEFAULT_PAGE_SIZE = 20;
@@ -49,3 +51,15 @@ export const MAX_PROJECT_MEMORIES = 2000;
 
 // MCP
 export const MCP_PROTOCOL_VERSION = '2025-03-26';
+
+/**
+ * Generate a URL-friendly slug from a string.
+ * Lowercases, replaces non-alphanumeric chars with dashes, trims dashes.
+ */
+export function slugify(text: string, maxLength = 100): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, maxLength) || 'untitled';
+}

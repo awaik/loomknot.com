@@ -3,7 +3,6 @@ import { relations } from 'drizzle-orm';
 import { pk, softDelete, timestamps } from '../helpers';
 import { sessions } from './sessions';
 import { projectMembers } from './project-members';
-import { preferences } from './preferences';
 import { apiKeys } from './api-keys';
 import { tasks } from './tasks';
 
@@ -21,7 +20,6 @@ export const users = pgTable('users', {
 export const usersRelations = relations(users, ({ many }) => ({
   sessions: many(sessions),
   projectMembers: many(projectMembers),
-  preferences: many(preferences),
   apiKeys: many(apiKeys),
   tasks: many(tasks),
 }));

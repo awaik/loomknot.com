@@ -1,38 +1,71 @@
 # Loomknot MCP Tools — Specification
 
-One API key = one user = access to all their projects + tasks + preferences.
-The AI is linked once and receives the user's personal storage.
+One API key = one user = access to all user's projects, tasks, and memories.
+The AI connects once and receives the user's full workspace.
+
+---
+
+## 0. Bootstrap
+
+### `bootstrap`
+**First call after connection.** Returns everything AI needs to start working: user info, all projects with summaries (for routing), and pending tasks.
+
+```
+Params: —
+
+Returns: {
+  user: { id, name, email }
+  projects: Array<{
+    id, title, summary, vertical, memberCount, memoryCount, updatedAt
+  }>
+  pendingTasks: Task[]
+}
+```
+
+AI uses this to:
+1. Understand user's world (project list + summaries)
+2. Route user messages to the right project (by matching message to summaries)
+3. Pick up pending tasks immediately
 
 ---
 
 ## 1. Projects
 
 ### `projects/list`
-List of all user's projects.
+All user's projects with summaries for routing.
 
 ```
 Params: —
-Returns: Project[]
+
+Returns: Array<{
+  id, title, summary, vertical, isPublic, memberCount, memoryCount, updatedAt
+}>
 ```
 
 ### `projects/get`
-Project details: settings, members, stats.
+Project details including full context.md — the main document AI reads before answering.
 
 ```
 Params:
   projectId: string
 
-Returns: Project & { members: Member[], pageCount: number, memoryCount: number }
+Returns: Project & {
+  context: string              — full context.md (markdown, auto-generated)
+  summary: string              — one paragraph for routing
+  members: Member[]
+  pageCount: number
+  memoryCount: number
+}
 ```
 
 ### `projects/create`
-Create a new project. The AI can create projects on its own.
+Create a new project. AI can create projects autonomously.
 
 ```
 Params:
   title: string
   description?: string
-  vertical?: string          — travel, health, finance, education, general...
+  vertical?: string            — travel, health, finance, education, general...
 
 Returns: Project
 Side effects:
@@ -42,7 +75,7 @@ Side effects:
 ```
 
 ### `projects/update`
-Update a project.
+Update project settings.
 
 ```
 Params:
@@ -53,6 +86,9 @@ Params:
   settings?: Record<string, unknown>
 
 Returns: Project
+Side effects:
+  → Regenerate summary (if title or description changed)
+  → INSERT activity_log
 ```
 
 ---
@@ -60,36 +96,63 @@ Returns: Project
 ## 2. Memory
 
 ### `memory/write`
-Write data to project memory.
+Save a fact, decision, or preference to project memory.
 
 ```
 Params:
   projectId: string
-  category: string           — health, food, accommodation, finance, decision...
-  key: string                — medication_list, dietary_restriction, hotel_choice...
-  value: any                 — structured data (JSON)
-  summary?: string           — human-readable description
-  level?: private | project  — default: private for personal, project for group
+  category: string             — health, food, accommodation, finance, decision...
+  key: string                  — medication_list, dietary_restriction, hotel_choice...
+  value: any                   — structured data (JSON)
+  summary?: string             — human-readable description
+  level?: private | project    — default: private
 
 Returns: Memory
 Side effects:
-  → INSERT memories
-  → Generate embedding (async)
+  → INSERT memories (or UPSERT by projectId + category + key)
+  → Regenerate project context.md and summary (async)
+  → Socket.io → MEMORY_CREATED
+  → INSERT activity_log
+```
+
+### `memory/bulk-write`
+Save multiple memories at once. For parsing documents, importing data, or saving multiple facts from a conversation.
+
+```
+Params:
+  projectId: string
+  items: Array<{
+    category: string
+    key: string
+    value: any
+    summary?: string
+    level?: private | project
+  }>
+
+Returns: Memory[]
+Side effects:
+  → INSERT memories × N
+  → Regenerate context.md once (not per item)
   → Socket.io → MEMORY_CREATED
   → INSERT activity_log
 ```
 
 ### `memory/read`
-Read project memory with filtering.
+Read project memories with filtering and pagination.
 
 ```
 Params:
   projectId: string
-  category?: string          — filter by category
+  category?: string            — filter by category
   level?: private | project | public
-  limit?: number             — default 50
+  limit?: number               — default 50, max 200
+  cursor?: string              — pagination cursor (memory id)
 
-Returns: Memory[]
+Returns: {
+  items: Memory[]
+  nextCursor?: string          — null if no more results
+  total: number
+}
 Access:
   → private — own only
   → project — if project member
@@ -97,24 +160,28 @@ Access:
 ```
 
 ### `memory/search`
-**Semantic search across ALL user's projects.** Key tool.
+Search memories across one or all user's projects. Text-based matching by category, key, summary, and value fields.
 
 ```
 Params:
-  query: string              — "medications I take", "vacation budget"
-  projectId?: string         — limit to one project (optional)
+  query: string                — "medications I take", "vacation budget"
+  projectId?: string           — limit to one project (optional, searches all if omitted)
   category?: string
-  limit?: number             — default 10
+  limit?: number               — default 10
 
-Returns: (Memory & { projectTitle: string, score: number })[]
+Returns: Array<Memory & {
+  projectId: string
+  projectTitle: string
+}>
+
 Implementation:
-  → Embed query → pgvector cosine similarity
-  → Searches across ALL projects where userId = current user
-  → Returns with project title and relevance score
+  → Text search across summary + key + category fields
+  → Filter by userId (private) or project membership (project-level)
+  → Ordered by relevance (match quality) then updatedAt
 ```
 
 ### `memory/update`
-Update an existing record.
+Update an existing memory record.
 
 ```
 Params:
@@ -125,8 +192,9 @@ Params:
 
 Returns: Memory
 Side effects:
-  → Re-generate embedding (if value changed)
+  → Regenerate project context.md and summary (async)
   → Socket.io → MEMORY_UPDATED
+  → INSERT activity_log
 ```
 
 ### `memory/delete`
@@ -138,7 +206,9 @@ Params:
 
 Returns: { deleted: true }
 Side effects:
+  → Regenerate project context.md and summary (async)
   → Socket.io → MEMORY_DELETED
+  → INSERT activity_log
 ```
 
 ---
@@ -146,17 +216,19 @@ Side effects:
 ## 3. Pages
 
 ### `pages/list`
-List of project pages.
+List project pages (metadata only, no blocks).
 
 ```
 Params:
   projectId: string
 
-Returns: Page[] (without blocks, metadata only)
+Returns: Array<{
+  id, slug, title, status, sortOrder, updatedAt
+}>
 ```
 
 ### `pages/get`
-Page content with blocks.
+Full page with all blocks.
 
 ```
 Params:
@@ -166,96 +238,90 @@ Returns: Page & { blocks: PageBlock[] }
 ```
 
 ### `pages/create`
-Create a page with blocks. The AI can create full-featured pages.
+Create a page with blocks. AI can build full pages: itineraries, comparisons, maps.
 
 ```
 Params:
   projectId: string
   title: string
-  slug?: string              — auto-generate if not provided
+  slug?: string                — auto-generate from title if not provided
   blocks: Array<{
-    type: string             — text, map, itinerary, place, budget, gallery...
-    content: any             — block data
-    agentData?: any          — machine-readable data
-    sourceMemoryIds?: string[]
+    type: string               — text, map, itinerary, place, budget, gallery...
+    content: any               — block data (JSONB)
+    agentData?: any            — machine-readable structured data
+    sourceMemoryIds?: string[] — which memories this block was built from
   }>
 
 Returns: Page & { blocks: PageBlock[] }
 Side effects:
   → INSERT pages
   → INSERT page_blocks × N
-  → Socket.io → PAGE_UPDATED
+  → Socket.io → PAGE_CREATED
+  → INSERT activity_log
 ```
 
 ### `pages/update`
-Update a page: replace/add/remove blocks.
+Update page title or specific blocks. Can add, update, or remove blocks.
 
 ```
 Params:
   pageId: string
   title?: string
   blocks?: Array<{
-    id?: string              — if present, update existing
-    type: string
-    content: any
+    id?: string                — if present → update existing block
+    action?: "delete"          — if set → remove this block
+    type?: string
+    content?: any
     agentData?: any
     sourceMemoryIds?: string[]
   }>
 
 Returns: Page & { blocks: PageBlock[] }
-```
-
----
-
-## 4. Preferences
-
-### `preferences/get`
-All user preferences.
-
-```
-Params:
-  category?: string          — filter: food, travel, accommodation, schedule...
-
-Returns: Preference[]
-```
-
-### `preferences/set`
-Set or update a preference.
-
-```
-Params:
-  category: string
-  key: string
-  value: any
-  importance?: must | prefer | nice_to_have    — default: prefer
-  negotiable?: boolean                          — default: true
-
-Returns: Preference
 Side effects:
-  → UPSERT preferences (unique: userId + category + key)
+  → Socket.io → PAGE_UPDATED
+  → INSERT activity_log
+```
+
+### `pages/delete`
+Delete a page and all its blocks.
+
+```
+Params:
+  pageId: string
+
+Returns: { deleted: true }
+Side effects:
+  → CASCADE delete page_blocks
+  → Socket.io → PAGE_DELETED
+  → INSERT activity_log
 ```
 
 ---
 
-## 5. Tasks (CRM for the agent)
+## 4. Tasks (CRM for AI)
 
-**The user assigns tasks to their AI. The AI sees them on each connection, executes them, and reports back.**
+**Central feature, not scoped to a project.** The user assigns work to their AI. AI picks up tasks, executes them, reports progress. The user sees everything in a dashboard.
 
-User-facing UI: a "Your AI's Tasks" page — a list of tasks with statuses.
+Tasks live outside projects — a task can reference a project, span multiple projects, or be project-independent.
 
 ### `tasks/list`
-List of user's tasks for the AI.
+List tasks for the AI. On every connection, AI should check for pending tasks.
 
 ```
 Params:
   status?: pending | in_progress | done | failed
-  projectId?: string         — filter by project (optional)
+  projectId?: string           — filter by project (optional)
+  limit?: number               — default 20
+  cursor?: string
 
-Returns: Task[]
+Returns: {
+  items: Task[]
+  nextCursor?: string
+}
 ```
 
 ### `tasks/get`
-Task details.
+Task details with execution logs.
 
 ```
 Params:
@@ -265,55 +331,49 @@ Returns: Task & { logs: TaskLog[] }
 ```
 
 ### `tasks/update`
-The AI updates the task status and writes a report.
+AI updates task status and writes progress logs.
 
 ```
 Params:
   taskId: string
   status?: pending | in_progress | done | failed
-  result?: any               — execution result (JSON)
-  log?: string               — text log ("Found 3 hotels, saved to memory")
+  result?: any                 — execution result (JSON)
+  log?: string                 — progress message ("Found 3 hotels, saved to memory")
 
 Returns: Task
 Side effects:
-  → INSERT task_logs (if log is provided)
-  → Socket.io → TASK_UPDATED (UI updates in realtime)
+  → INSERT task_logs (if log provided)
+  → UPDATE tasks.completedAt (if status = done)
+  → Socket.io → TASK_UPDATED (realtime UI update)
+  → INSERT activity_log
 ```
 
-### Tables
+### `tasks/create`
+AI can create tasks for itself — scheduled work, reminders, follow-ups.
 
 ```
-tasks
-├── id              cuid2, PK
-├── userId          FK → users.id, CASCADE
-├── projectId       FK → projects.id, nullable   — project binding (optional)
-├── title           varchar(500), not null
-├── prompt          text, not null                — FULL prompt for the AI
-├── status          enum: pending | in_progress | done | failed
-├── priority        enum: low | normal | high | urgent
-├── result          jsonb, nullable               — execution result
-├── scheduledAt     timestamp, nullable           — deferred task
-├── completedAt     timestamp, nullable
-├── createdAt       timestamp
-└── updatedAt       timestamp
+Params:
+  title: string
+  prompt: string               — full prompt describing what to do
+  projectId?: string           — optional project binding
+  priority?: low | normal | high | urgent    — default: normal
+  scheduledAt?: string         — ISO datetime for deferred execution
 
-task_logs
-├── id              cuid2, PK
-├── taskId          FK → tasks.id, CASCADE
-├── message         text, not null                — "Started hotel search", "Saved 3 options"
-├── metadata        jsonb, nullable               — additional data
-├── createdAt       timestamp
+Returns: Task
+Side effects:
+  → INSERT tasks
+  → Socket.io → TASK_CREATED
 ```
 
-### How it works
+### How Tasks Work
 
 **User creates a task via UI:**
 ```
 Title: "Find hotels in Barcelona"
 Prompt: "Find 5 hotels in Barcelona for March 15-22, 2026.
-  Consider my preferences (budget, dietary).
-  Check the Health project for restrictions.
-  Save the options to the 'Barcelona 2026' project memory.
+  Consider my preferences from this project.
+  Budget up to 150€/night, quiet area.
+  Save options to project memory.
   Create a comparison page."
 Project: Barcelona 2026
 Priority: high
@@ -321,54 +381,47 @@ Priority: high
 
 **AI on connection:**
 ```
-1. tasks/list(status: "pending") → sees the task
-2. Reads task.prompt → understands what to do
-3. tasks/update(taskId, status: "in_progress", log: "Started search")
-4. memory/search("hotel budget") → preferences
-5. memory/search("health restrictions") → cross-project
-6. ... performs the work ...
-7. memory/write(projectId, hotels data)
-8. pages/create(projectId, comparison page)
-9. tasks/update(taskId, status: "done",
-     result: { hotelsFound: 5, pageCreated: "hotels-comparison" },
-     log: "Found 5 hotels, created comparison page")
+1. bootstrap → sees pendingTasks
+2. tasks/update(taskId, status: "in_progress", log: "Starting hotel search")
+3. projects/get(projectId) → reads context.md → knows budget, dates, preferences
+4. Searches for hotels (AI knowledge or external tools)
+5. memory/bulk-write(projectId, hotel options × 5)
+6. pages/create(projectId, comparison page with place + budget blocks)
+7. tasks/update(taskId, status: "done",
+     result: { hotelsFound: 5, pageCreated: "hotel-comparison" },
+     log: "Found 5 hotels within budget. Created comparison page.")
 ```
 
-**User sees in the UI:**
+**AI creates a follow-up task for itself:**
 ```
-✅ Find hotels in Barcelona            done    2 min ago
-   └── Found 5 hotels, created comparison page
-       → Open page
-
-⏳ Update my lab results summary       pending
-   └── Awaiting execution
-
-🔄 Monitor flight ticket prices        in_progress
-   └── Last check: 1 hour ago, price unchanged
+tasks/create(
+  title: "Recheck Barcelona hotel prices",
+  prompt: "Check if Hotel Arts price changed. Update memory if so.",
+  projectId: "...",
+  scheduledAt: "2026-03-10T09:00:00Z"
+)
 ```
 
-### Task examples
-
+**User sees in dashboard:**
 ```
-"Check Moscow-Barcelona flight prices for March 15 every day.
- If the price drops below 15,000₽ — save to memory and notify."
+✅ Find hotels in Barcelona            done    2m ago
+   Found 5 hotels. Created comparison page.
+   → Open page
 
-"Read my lab results (Health project) and update the page
- with vitamin recommendations."
+🔄 Monitor flight prices              running
+   Last check: 1h ago, price unchanged.
+   Current best: 14,500₽ (Aeroflot)
 
-"Find vegetarian restaurants near Hotel Arts.
- Add them to the itinerary page in the Barcelona project."
-
-"Compare 3 travel insurance options. Consider my medications from the Health project.
- Create a comparison page."
+⏳ Recheck hotel prices               scheduled Mar 10
+   Created by AI
 ```
 
 ---
 
-## 6. Negotiations (group projects)
+## 5. Negotiations (group projects)
 
 ### `negotiations/list`
-Active conflicts in the project.
+Active and resolved conflicts in a project.
 
 ```
 Params:
@@ -376,6 +429,20 @@ Params:
   status?: open | resolved | dismissed
 
 Returns: Negotiation[]
+```
+
+### `negotiations/get`
+Full negotiation details: conflict data, options, votes.
+
+```
+Params:
+  negotiationId: string
+
+Returns: Negotiation & {
+  options: Array<NegotiationOption & {
+    votes: NegotiationVote[]
+  }>
+}
 ```
 
 ### `negotiations/propose`
@@ -387,12 +454,37 @@ Params:
   title: string
   description: string
   proposedValue: any
-  reasoning: string
+  reasoning: string            — why this option is a good compromise
 
 Returns: NegotiationOption
 Side effects:
   → INSERT negotiation_options
   → Socket.io → NEGOTIATION_PROPOSAL
+  → INSERT activity_log
+```
+
+---
+
+## 6. Activity
+
+### `activity/recent`
+Recent changes in a project. AI can check "what happened since last visit".
+
+```
+Params:
+  projectId: string
+  since?: string               — ISO datetime (default: last 24 hours)
+  limit?: number               — default 20
+
+Returns: Array<{
+  action: string               — memory.create, page.update, task.done, negotiation.resolved...
+  targetType: string           — memory, page, task, negotiation
+  targetId: string
+  userId?: string
+  userName?: string
+  metadata: any
+  createdAt: string
+}>
 ```
 
 ---
@@ -401,12 +493,95 @@ Side effects:
 
 | Group | Tools | Count |
 |-------|-------|-------|
+| Bootstrap | bootstrap | 1 |
 | Projects | list, get, create, update | 4 |
-| Memory | write, read, search, update, delete | 5 |
-| Pages | list, get, create, update | 4 |
-| Preferences | get, set | 2 |
-| Tasks | list, get, update | 3 |
-| Negotiations | list, propose | 2 |
-| **Total** | | **20** |
+| Memory | write, bulk-write, read, search, update, delete | 6 |
+| Pages | list, get, create, update, delete | 5 |
+| Tasks | list, get, update, create | 4 |
+| Negotiations | list, get, propose | 3 |
+| Activity | recent | 1 |
+| **Total** | | **24** |
 
-Tasks are created by the user via UI (with a prompt). The AI sees tasks via MCP, executes them, and reports back. The user sees progress in realtime.
+---
+
+## AI Connection Lifecycle
+
+```
+AI connects via MCP (API key in Authorization header)
+  │
+  ▼
+1. bootstrap
+   → Get user info, all projects (with summaries), pending tasks
+   │
+   ├── Has pending tasks?
+   │   → Pick up and execute (tasks/update → work → tasks/update)
+   │
+   └── User sends a message?
+       │
+       ▼
+2. Route to project
+   → Match message against project summaries (from bootstrap)
+   → High confidence → auto-select
+   → Low confidence → ask user
+   → No match → offer to create new project
+   │
+   ▼
+3. Load project context
+   → projects/get(projectId) → read context.md
+   │
+   ▼
+4. Work within project
+   → memory/read, memory/write — read/save facts
+   → pages/create, pages/update — build visual output
+   → memory/search — cross-project lookup if needed
+   │
+   ▼
+5. After changes
+   → context.md regenerated automatically (server-side, async)
+   → summary updated (for future routing)
+   → Socket.io events → UI updates in realtime
+```
+
+---
+
+## Error Handling
+
+All tools return errors in a standard format:
+
+```
+Error response:
+{
+  error: {
+    code: string               — NOT_FOUND, FORBIDDEN, VALIDATION, RATE_LIMITED, INTERNAL
+    message: string            — human-readable error description
+  }
+}
+
+Common errors:
+  NOT_FOUND       — project/memory/page/task does not exist
+  FORBIDDEN       — no access (not a project member, or private memory of another user)
+  VALIDATION      — invalid params (missing required field, wrong type)
+  RATE_LIMITED    — too many requests (per API key, per minute)
+  INTERNAL        — server error (retry later)
+```
+
+---
+
+## Changes from Previous Version
+
+| Removed | Reason |
+|---------|--------|
+| `preferences/get`, `preferences/set` | Everything is memories inside projects |
+| pgvector / embedding references | Routing via LLM + summaries, not vector search |
+
+| Added | Purpose |
+|-------|---------|
+| `bootstrap` | Single call to initialize AI session |
+| `memory/bulk-write` | Write multiple memories in one call |
+| `memory/read` pagination (cursor) | Handle projects with many memories |
+| `memory/search` text-based | Search without pgvector |
+| `pages/delete` | AI can clean up pages |
+| `tasks/create` | AI creates follow-up tasks for itself |
+| `negotiations/get` | View negotiation details with options and votes |
+| `activity/recent` | AI knows what changed since last visit |
+| Error schema | Standard error format for all tools |
