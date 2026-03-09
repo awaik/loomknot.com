@@ -318,5 +318,29 @@
   },
   "LanguageSwitcher": {
     "label": "Language"
+  },
+  "Docs": {
+    "title": "Connect your AI Agent",
+    "subtitle": "Use any AI assistant with your LoomKnot projects via the Model Context Protocol (MCP). Get an API key, pick your client, and start collaborating.",
+    "quickStart": "Quick Start",
+    "step1": "Get an API Key",
+    "step1Desc": "Go to Settings and generate a new API key. Copy it — you'll only see it once.",
+    "step2": "Choose your Client",
+    "step2Desc": "Pick your AI assistant or developer tool from the guides below.",
+    "step3": "Configure & Connect",
+    "step3Desc": "Add LoomKnot as an MCP server using the config for your client.",
+    "guides": "Connection Guides",
+    "replaceKey": "Replace YOUR_API_KEY with your actual API key from Settings.",
+    "configPath": "Config file path",
+    "tools": "Available MCP Tools",
+    "toolsDesc": "25 tools across 7 categories that your AI agent can use to interact with your projects.",
+    "technicalDetails": "Technical Details",
+    "endpoint": "Endpoint",
+    "transport": "Transport",
+    "auth": "Authentication",
+    "rateLimit": "Rate Limits",
+    "needHelp": "Need Help?",
+    "needHelpDesc": "Make sure your API key is active and correctly copied. The key starts with the lk_ prefix. If issues persist, revoke and create a new key.",
+    "manageKeys": "Manage API Keys"
   }
 }
