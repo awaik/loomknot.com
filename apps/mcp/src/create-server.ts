@@ -13,7 +13,7 @@ import { registerActivityTools } from '@/tools/activity.js';
  */
 export function createMcpServer(userId: string, apiKeyId: string): McpServer {
   const server = new McpServer({
-    name: 'Loomknot — collaborative project platform',
+    name: 'loomknot',
     version: '0.1.0',
   });
 
