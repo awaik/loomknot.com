@@ -183,7 +183,12 @@
   "App": {
     "welcome": "مرحبًا، <strong>{email}</strong>",
     "logout": "تسجيل الخروج",
-    "loading": "جارٍ التحميل..."
+    "loading": "جارٍ التحميل...",
+    "projects": "المشاريع",
+    "newProject": "مشروع جديد",
+    "noProjects": "لا توجد مشاريع بعد",
+    "tasks": "المهام",
+    "settings": "الإعدادات"
   },
   "Common": {
     "darkTheme": "المظهر الداكن",

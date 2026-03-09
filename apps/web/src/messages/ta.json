@@ -183,7 +183,12 @@
   "App": {
     "welcome": "வரவேற்கிறோம், <strong>{email}</strong>",
     "logout": "வெளியேறு",
-    "loading": "ஏற்றுகிறது..."
+    "loading": "ஏற்றுகிறது...",
+    "projects": "திட்டங்கள்",
+    "newProject": "புதிய திட்டம்",
+    "noProjects": "இன்னும் திட்டங்கள் இல்லை",
+    "tasks": "பணிகள்",
+    "settings": "அமைப்புகள்"
   },
   "Common": {
     "darkTheme": "இருண்ட தீம்",

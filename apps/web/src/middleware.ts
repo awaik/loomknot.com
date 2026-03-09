@@ -1,36 +1,36 @@
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
-import { routing } from './i18n/routing';
+import { routing, locales, LOCALE_COOKIE_NAME, LOCALE_COOKIE_MAX_AGE } from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
+const localeSet = new Set<string>(locales);
 
 export function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Determine locale from URL path
-  const segments = pathname.split('/');
-  const possibleLocale = segments[1];
-  const isLocalePath = (routing.locales as readonly string[]).includes(possibleLocale);
-  const pathWithoutLocale = isLocalePath
-    ? '/' + segments.slice(2).join('/')
-    : pathname;
-  const locale = isLocalePath ? possibleLocale : routing.defaultLocale;
+  // Redirect legacy locale-prefixed URLs: /ru/app → /app (set cookie)
+  const secondSlash = pathname.indexOf('/', 1);
+  const possibleLocale = secondSlash === -1 ? pathname.slice(1) : pathname.slice(1, secondSlash);
+  if (possibleLocale && localeSet.has(possibleLocale)) {
+    const rest = secondSlash === -1 ? '/' : pathname.slice(secondSlash) || '/';
+    const response = NextResponse.redirect(new URL(rest, request.url));
+    response.cookies.set(LOCALE_COOKIE_NAME, possibleLocale, { path: '/', maxAge: LOCALE_COOKIE_MAX_AGE });
+    return response;
+  }
 
   const hasRefresh = request.cookies.has('lk_refresh');
 
   // Protected routes: require refresh cookie
-  if (pathWithoutLocale.startsWith('/app')) {
+  if (pathname.startsWith('/app')) {
     if (!hasRefresh) {
-      const loginPath = locale === routing.defaultLocale ? '/login' : `/${locale}/login`;
-      return NextResponse.redirect(new URL(loginPath, request.url));
+      return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
   // Login page: redirect to app if already authenticated
-  if (pathWithoutLocale === '/login' || pathWithoutLocale === '/login/') {
+  if (pathname === '/login' || pathname === '/login/') {
     if (hasRefresh) {
-      const appPath = locale === routing.defaultLocale ? '/app' : `/${locale}/app`;
-      return NextResponse.redirect(new URL(appPath, request.url));
+      return NextResponse.redirect(new URL('/app', request.url));
     }
   }
 

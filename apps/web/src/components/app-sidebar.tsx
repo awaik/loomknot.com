@@ -11,13 +11,16 @@ import {
   Menu,
   X,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { useAuthStore, logout } from '@/lib/auth';
 import { useProjects } from '@/hooks/use-projects';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { CreateProjectDialog } from './create-project-dialog';
+import { LanguageSwitcher } from './language-switcher';
 
 export function AppSidebar() {
+  const t = useTranslations('App');
   const { user } = useAuthStore();
   const { data: projects } = useProjects();
   const pathname = usePathname();
@@ -31,8 +34,8 @@ export function AppSidebar() {
   };
 
   const navItems = [
-    { href: '/app/tasks', label: 'Tasks', icon: ListTodo },
-    { href: '/app/settings', label: 'Settings', icon: Settings },
+    { href: '/app/tasks', label: t('tasks'), icon: ListTodo },
+    { href: '/app/settings', label: t('settings'), icon: Settings },
   ];
 
   const sidebarContent = (
@@ -57,12 +60,12 @@ export function AppSidebar() {
         <div className="px-3 mb-1">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-medium uppercase tracking-wider text-content-tertiary px-1">
-              Projects
+              {t('projects')}
             </span>
             <button
               onClick={() => setDialogOpen(true)}
               className="flex h-6 w-6 items-center justify-center rounded-sm text-content-secondary transition-colors hover:bg-surface-alt hover:text-thread"
-              title="New project"
+              title={t('newProject')}
             >
               <Plus className="h-3.5 w-3.5" />
             </button>
@@ -101,7 +104,7 @@ export function AppSidebar() {
             </div>
           ) : (
             <p className="px-2 py-3 text-xs text-content-tertiary">
-              No projects yet
+              {t('noProjects')}
             </p>
           )}
         </div>
@@ -144,10 +147,11 @@ export function AppSidebar() {
               {user?.email}
             </p>
           </div>
+          <LanguageSwitcher variant="compact" />
           <button
             onClick={handleLogout}
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm text-content-secondary transition-colors hover:bg-surface-alt hover:text-error"
-            title="Log out"
+            title={t('logout')}
           >
             <LogOut className="h-4 w-4" />
           </button>

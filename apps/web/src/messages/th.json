@@ -183,7 +183,12 @@
   "App": {
     "welcome": "ยินดีต้อนรับ <strong>{email}</strong>",
     "logout": "ออกจากระบบ",
-    "loading": "กำลังโหลด..."
+    "loading": "กำลังโหลด...",
+    "projects": "โครงการ",
+    "newProject": "โครงการใหม่",
+    "noProjects": "ยังไม่มีโครงการ",
+    "tasks": "งาน",
+    "settings": "การตั้งค่า"
   },
   "Common": {
     "darkTheme": "ธีมมืด",

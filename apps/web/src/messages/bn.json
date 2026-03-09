@@ -183,7 +183,12 @@
   "App": {
     "welcome": "স্বাগতম, <strong>{email}</strong>",
     "logout": "লগ আউট",
-    "loading": "লোড হচ্ছে..."
+    "loading": "লোড হচ্ছে...",
+    "projects": "প্রকল্প",
+    "newProject": "নতুন প্রকল্প",
+    "noProjects": "এখনো কোনো প্রকল্প নেই",
+    "tasks": "কাজ",
+    "settings": "সেটিংস"
   },
   "Common": {
     "darkTheme": "ডার্ক থিম",

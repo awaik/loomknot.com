@@ -11,8 +11,11 @@ export type Locale = (typeof locales)[number];
 
 export const RTL_LOCALES: Locale[] = ['ar', 'he', 'ur'];
 
+export const LOCALE_COOKIE_NAME = 'NEXT_LOCALE';
+export const LOCALE_COOKIE_MAX_AGE = 365 * 24 * 60 * 60; // 1 year in seconds
+
 export const routing = defineRouting({
   locales,
   defaultLocale: 'en',
-  localePrefix: 'as-needed',
+  localePrefix: 'never',
 });

@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Velkommen, <strong>{email}</strong>",
     "logout": "Log ud",
-    "loading": "Indlæser..."
+    "loading": "Indlæser...",
+    "projects": "Projekter",
+    "newProject": "Nyt projekt",
+    "noProjects": "Ingen projekter endnu",
+    "tasks": "Opgaver",
+    "settings": "Indstillinger"
   },
   "Common": {
     "darkTheme": "Mørkt tema",

@@ -183,7 +183,12 @@
   "App": {
     "welcome": "환영합니다, <strong>{email}</strong>",
     "logout": "로그아웃",
-    "loading": "로딩 중..."
+    "loading": "로딩 중...",
+    "projects": "프로젝트",
+    "newProject": "새 프로젝트",
+    "noProjects": "아직 프로젝트가 없습니다",
+    "tasks": "작업",
+    "settings": "설정"
   },
   "Common": {
     "darkTheme": "다크 테마",

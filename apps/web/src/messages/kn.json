@@ -183,7 +183,12 @@
   "App": {
     "welcome": "ಸ್ವಾಗತ, <strong>{email}</strong>",
     "logout": "ಲಾಗ್ ಔಟ್",
-    "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ..."
+    "loading": "ಲೋಡ್ ಆಗುತ್ತಿದೆ...",
+    "projects": "ಯೋಜನೆಗಳು",
+    "newProject": "ಹೊಸ ಯೋಜನೆ",
+    "noProjects": "ಇನ್ನೂ ಯಾವುದೇ ಯೋಜನೆಗಳಿಲ್ಲ",
+    "tasks": "ಕಾರ್ಯಗಳು",
+    "settings": "ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
   },
   "Common": {
     "darkTheme": "ಡಾರ್ಕ್ ಥೀಮ್",

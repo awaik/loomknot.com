@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Üdvözlünk, <strong>{email}</strong>",
     "logout": "Kijelentkezés",
-    "loading": "Betöltés..."
+    "loading": "Betöltés...",
+    "projects": "Projektek",
+    "newProject": "Új projekt",
+    "noProjects": "Még nincsenek projektek",
+    "tasks": "Feladatok",
+    "settings": "Beállítások"
   },
   "Common": {
     "darkTheme": "Sötét téma",

@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Chào mừng, <strong>{email}</strong>",
     "logout": "Đăng xuất",
-    "loading": "Đang tải..."
+    "loading": "Đang tải...",
+    "projects": "Dự án",
+    "newProject": "Dự án mới",
+    "noProjects": "Chưa có dự án nào",
+    "tasks": "Nhiệm vụ",
+    "settings": "Cài đặt"
   },
   "Common": {
     "darkTheme": "Giao diện tối",

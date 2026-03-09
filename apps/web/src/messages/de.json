@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Willkommen, <strong>{email}</strong>",
     "logout": "Abmelden",
-    "loading": "Wird geladen..."
+    "loading": "Wird geladen...",
+    "projects": "Projekte",
+    "newProject": "Neues Projekt",
+    "noProjects": "Noch keine Projekte",
+    "tasks": "Aufgaben",
+    "settings": "Einstellungen"
   },
   "Common": {
     "darkTheme": "Dunkles Design",

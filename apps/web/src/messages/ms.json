@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Selamat datang, <strong>{email}</strong>",
     "logout": "Log keluar",
-    "loading": "Memuatkan..."
+    "loading": "Memuatkan...",
+    "projects": "Projek",
+    "newProject": "Projek baharu",
+    "noProjects": "Belum ada projek",
+    "tasks": "Tugasan",
+    "settings": "Tetapan"
   },
   "Common": {
     "darkTheme": "Tema gelap",

@@ -2,8 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useLocale } from 'next-intl';
-import { useRouter, usePathname } from '@/i18n/navigation';
-import { locales, type Locale } from '@/i18n/routing';
+import { useRouter } from 'next/navigation';
+import { locales, type Locale, LOCALE_COOKIE_NAME, LOCALE_COOKIE_MAX_AGE } from '@/i18n/routing';
 import { Globe } from 'lucide-react';
 
 const LOCALE_NAMES: Record<Locale, string> = {
@@ -52,7 +52,6 @@ const LOCALE_NAMES: Record<Locale, string> = {
 export function LanguageSwitcher({ variant = 'default' }: { variant?: 'default' | 'compact' }) {
   const currentLocale = useLocale() as Locale;
   const router = useRouter();
-  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -68,7 +67,8 @@ export function LanguageSwitcher({ variant = 'default' }: { variant?: 'default' 
 
   function switchLocale(locale: Locale) {
     setOpen(false);
-    router.replace(pathname, { locale });
+    document.cookie = `${LOCALE_COOKIE_NAME}=${locale}; path=/; max-age=${LOCALE_COOKIE_MAX_AGE}; SameSite=Lax`;
+    router.refresh();
   }
 
   return (

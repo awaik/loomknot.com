@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Вітаю, <strong>{email}</strong>",
     "logout": "Вийти",
-    "loading": "Завантаження..."
+    "loading": "Завантаження...",
+    "projects": "Проєкти",
+    "newProject": "Новий проєкт",
+    "noProjects": "Поки немає проєктів",
+    "tasks": "Завдання",
+    "settings": "Налаштування"
   },
   "Common": {
     "darkTheme": "Темна тема",

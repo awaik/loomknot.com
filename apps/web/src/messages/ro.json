@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Bun venit, <strong>{email}</strong>",
     "logout": "Deconectare",
-    "loading": "Se încarcă..."
+    "loading": "Se încarcă...",
+    "projects": "Proiecte",
+    "newProject": "Proiect nou",
+    "noProjects": "Niciun proiect încă",
+    "tasks": "Sarcini",
+    "settings": "Setări"
   },
   "Common": {
     "darkTheme": "Temă întunecată",

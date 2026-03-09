@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Velkommen, <strong>{email}</strong>",
     "logout": "Logg ut",
-    "loading": "Laster..."
+    "loading": "Laster...",
+    "projects": "Prosjekter",
+    "newProject": "Nytt prosjekt",
+    "noProjects": "Ingen prosjekter ennå",
+    "tasks": "Oppgaver",
+    "settings": "Innstillinger"
   },
   "Common": {
     "darkTheme": "Mørkt tema",

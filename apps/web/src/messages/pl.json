@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Witaj, <strong>{email}</strong>",
     "logout": "Wyloguj",
-    "loading": "Ładowanie..."
+    "loading": "Ładowanie...",
+    "projects": "Projekty",
+    "newProject": "Nowy projekt",
+    "noProjects": "Brak projektów",
+    "tasks": "Zadania",
+    "settings": "Ustawienia"
   },
   "Common": {
     "darkTheme": "Ciemny motyw",

@@ -183,7 +183,12 @@
   "App": {
     "welcome": "स्वागत है, <strong>{email}</strong>",
     "logout": "लॉग आउट",
-    "loading": "लोड हो रहा है..."
+    "loading": "लोड हो रहा है...",
+    "projects": "प्रोजेक्ट",
+    "newProject": "नया प्रोजेक्ट",
+    "noProjects": "अभी तक कोई प्रोजेक्ट नहीं",
+    "tasks": "कार्य",
+    "settings": "सेटिंग्स"
   },
   "Common": {
     "darkTheme": "डार्क थीम",

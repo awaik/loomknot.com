@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Welkom, <strong>{email}</strong>",
     "logout": "Uitloggen",
-    "loading": "Laden..."
+    "loading": "Laden...",
+    "projects": "Projecten",
+    "newProject": "Nieuw project",
+    "noProjects": "Nog geen projecten",
+    "tasks": "Taken",
+    "settings": "Instellingen"
   },
   "Common": {
     "darkTheme": "Donker thema",

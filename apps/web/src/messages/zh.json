@@ -183,7 +183,12 @@
   "App": {
     "welcome": "欢迎，<strong>{email}</strong>",
     "logout": "退出登录",
-    "loading": "加载中..."
+    "loading": "加载中...",
+    "projects": "项目",
+    "newProject": "新建项目",
+    "noProjects": "暂无项目",
+    "tasks": "任务",
+    "settings": "设置"
   },
   "Common": {
     "darkTheme": "深色主题",

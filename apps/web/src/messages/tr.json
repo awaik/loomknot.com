@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Hoş geldiniz, <strong>{email}</strong>",
     "logout": "Çıkış yap",
-    "loading": "Yükleniyor..."
+    "loading": "Yükleniyor...",
+    "projects": "Projeler",
+    "newProject": "Yeni proje",
+    "noProjects": "Henüz proje yok",
+    "tasks": "Görevler",
+    "settings": "Ayarlar"
   },
   "Common": {
     "darkTheme": "Koyu tema",

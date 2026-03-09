@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Bienvenue, <strong>{email}</strong>",
     "logout": "Se déconnecter",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "projects": "Projets",
+    "newProject": "Nouveau projet",
+    "noProjects": "Aucun projet pour le moment",
+    "tasks": "Tâches",
+    "settings": "Paramètres"
   },
   "Common": {
     "darkTheme": "Thème sombre",

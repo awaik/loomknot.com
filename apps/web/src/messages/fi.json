@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Tervetuloa, <strong>{email}</strong>",
     "logout": "Kirjaudu ulos",
-    "loading": "Ladataan..."
+    "loading": "Ladataan...",
+    "projects": "Projektit",
+    "newProject": "Uusi projekti",
+    "noProjects": "Ei projekteja vielä",
+    "tasks": "Tehtävät",
+    "settings": "Asetukset"
   },
   "Common": {
     "darkTheme": "Tumma teema",

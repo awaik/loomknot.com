@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Καλώς ήρθες, <strong>{email}</strong>",
     "logout": "Αποσύνδεση",
-    "loading": "Φόρτωση..."
+    "loading": "Φόρτωση...",
+    "projects": "Έργα",
+    "newProject": "Νέο έργο",
+    "noProjects": "Δεν υπάρχουν έργα ακόμα",
+    "tasks": "Εργασίες",
+    "settings": "Ρυθμίσεις"
   },
   "Common": {
     "darkTheme": "Σκοτεινό θέμα",

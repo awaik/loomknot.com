@@ -183,7 +183,12 @@
   "App": {
     "welcome": "ကြိုဆိုပါတယ်, <strong>{email}</strong>",
     "logout": "ထွက်ရန်",
-    "loading": "ဖွင့်နေသည်..."
+    "loading": "ဖွင့်နေသည်...",
+    "projects": "ပရောဂျက်များ",
+    "newProject": "ပရောဂျက်အသစ်",
+    "noProjects": "ပရောဂျက်များ မရှိသေးပါ",
+    "tasks": "လုပ်ဆောင်ချက်များ",
+    "settings": "ဆက်တင်များ"
   },
   "Common": {
     "darkTheme": "အမှောင်သီမ်",

@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Vitajte, <strong>{email}</strong>",
     "logout": "Odhlásiť sa",
-    "loading": "Načítava sa..."
+    "loading": "Načítava sa...",
+    "projects": "Projekty",
+    "newProject": "Nový projekt",
+    "noProjects": "Zatiaľ žiadne projekty",
+    "tasks": "Úlohy",
+    "settings": "Nastavenia"
   },
   "Common": {
     "darkTheme": "Tmavá téma",

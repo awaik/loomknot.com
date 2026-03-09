@@ -183,7 +183,12 @@
   "App": {
     "welcome": "ברוך הבא, <strong>{email}</strong>",
     "logout": "התנתק",
-    "loading": "טוען..."
+    "loading": "טוען...",
+    "projects": "פרויקטים",
+    "newProject": "פרויקט חדש",
+    "noProjects": "אין פרויקטים עדיין",
+    "tasks": "משימות",
+    "settings": "הגדרות"
   },
   "Common": {
     "darkTheme": "ערכת נושא כהה",

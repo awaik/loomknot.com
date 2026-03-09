@@ -183,7 +183,12 @@
   "App": {
     "welcome": "స్వాగతం, <strong>{email}</strong>",
     "logout": "లాగ్ అవుట్",
-    "loading": "లోడ్ అవుతోంది..."
+    "loading": "లోడ్ అవుతోంది...",
+    "projects": "ప్రాజెక్టులు",
+    "newProject": "కొత్త ప్రాజెక్టు",
+    "noProjects": "ఇంకా ప్రాజెక్టులు లేవు",
+    "tasks": "పనులు",
+    "settings": "సెట్టింగ్‌లు"
   },
   "Common": {
     "darkTheme": "డార్క్ థీమ్",

@@ -183,7 +183,12 @@
   "App": {
     "welcome": "Sugeng rawuh, <strong>{email}</strong>",
     "logout": "Metu",
-    "loading": "Ngundhuh..."
+    "loading": "Ngundhuh...",
+    "projects": "Proyek",
+    "newProject": "Proyek anyar",
+    "noProjects": "Durung ana proyek",
+    "tasks": "Tugas",
+    "settings": "Pengaturan"
   },
   "Common": {
     "darkTheme": "Téma peteng",
