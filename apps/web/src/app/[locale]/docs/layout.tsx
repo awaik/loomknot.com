@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Link } from '@/i18n/navigation';
+import { DocsNav } from './docs-nav';
 
 export const metadata: Metadata = {
   title: 'Documentation — LoomKnot',
@@ -15,7 +16,7 @@ export default function DocsLayout({
   return (
     <div className="min-h-screen bg-surface">
       <header className="sticky top-0 z-50 border-b border-border bg-surface/80 backdrop-blur-lg">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-3">
             <Link
               href="/"
@@ -24,9 +25,12 @@ export default function DocsLayout({
               Loom<span className="text-thread">knot</span>
             </Link>
             <span className="text-content-tertiary">/</span>
-            <span className="text-sm font-medium text-content-secondary">
+            <Link
+              href="/docs"
+              className="text-sm font-medium text-content-secondary transition-colors hover:text-content"
+            >
               Docs
-            </span>
+            </Link>
           </div>
           <Link
             href="/app/settings"
@@ -36,7 +40,10 @@ export default function DocsLayout({
           </Link>
         </div>
       </header>
-      <main className="mx-auto max-w-4xl px-6 py-10">{children}</main>
+      <div className="mx-auto flex max-w-5xl gap-8 px-6 py-10">
+        <DocsNav />
+        <main className="min-w-0 flex-1">{children}</main>
+      </div>
     </div>
   );
 }
