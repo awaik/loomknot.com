@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   ListTodo,
   Plus,
@@ -9,7 +10,7 @@ import {
   ChevronUp,
   Clock,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, formatRelative } from '@/lib/utils';
 import { useTasks, useCreateTask, type TaskResponse } from '@/hooks/use-tasks';
 import { useSocketRoom } from '@/lib/socket';
 import { EVENTS } from '@loomknot/shared';
@@ -20,15 +21,16 @@ import { StatusBadge } from '@/components/status-badge';
 
 type StatusFilter = 'all' | 'pending' | 'in_progress' | 'done' | 'failed';
 
-const statusFilters: { key: StatusFilter; label: string }[] = [
-  { key: 'all', label: 'All' },
-  { key: 'pending', label: 'Pending' },
-  { key: 'in_progress', label: 'In Progress' },
-  { key: 'done', label: 'Done' },
-  { key: 'failed', label: 'Failed' },
+const statusFilters: { key: StatusFilter; labelKey: string }[] = [
+  { key: 'all', labelKey: 'filterAll' },
+  { key: 'pending', labelKey: 'filterPending' },
+  { key: 'in_progress', labelKey: 'filterInProgress' },
+  { key: 'done', labelKey: 'filterDone' },
+  { key: 'failed', labelKey: 'filterFailed' },
 ];
 
 export default function TasksPage() {
+  const t = useTranslations('Tasks');
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [expandedTask, setExpandedTask] = useState<string | null>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -48,15 +50,15 @@ export default function TasksPage() {
   return (
     <>
       <PageHeader
-        title="Tasks"
-        description="Agent tasks and background jobs"
+        title={t('title')}
+        description={t('description')}
         actions={
           <button
             onClick={() => setShowCreateForm(true)}
             className="flex items-center gap-2 rounded-sm bg-thread px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-thread-dark"
           >
             <Plus className="h-4 w-4" />
-            New Task
+            {t('newTask')}
           </button>
         }
       />
@@ -74,7 +76,7 @@ export default function TasksPage() {
                 : 'text-content-secondary hover:bg-surface-alt hover:text-content',
             )}
           >
-            {filter.label}
+            {t(filter.labelKey)}
           </button>
         ))}
       </div>
@@ -97,11 +99,11 @@ export default function TasksPage() {
       ) : !tasks || tasks.length === 0 ? (
         <EmptyState
           icon={ListTodo}
-          title="No tasks"
+          title={t('noTasksTitle')}
           description={
             statusFilter === 'all'
-              ? 'Create a task for your agents or start one yourself.'
-              : `No ${statusFilter.replace('_', ' ')} tasks found.`
+              ? t('noTasksAllDesc')
+              : t('noTasksFilterDesc', { status: t(statusFilters.find((f) => f.key === statusFilter)!.labelKey) })
           }
           action={
             statusFilter !== 'all' ? (
@@ -109,7 +111,7 @@ export default function TasksPage() {
                 onClick={() => setStatusFilter('all')}
                 className="text-sm text-thread transition-colors hover:text-thread-dark"
               >
-                Show all tasks
+                {t('showAll')}
               </button>
             ) : undefined
           }
@@ -141,6 +143,8 @@ function TaskItem({
   expanded: boolean;
   onToggle: () => void;
 }) {
+  const t = useTranslations('Tasks');
+
   return (
     <div className="rounded-md border border-border bg-surface-elevated overflow-hidden">
       <button
@@ -158,7 +162,7 @@ function TaskItem({
         <StatusBadge status={task.status} />
         <span className="shrink-0 flex items-center gap-1 text-xs text-content-tertiary">
           <Clock className="h-3 w-3" />
-          {formatRelative(task.createdAt)}
+          {formatRelative(task.createdAt, t)}
         </span>
         {expanded ? (
           <ChevronUp className="h-4 w-4 shrink-0 text-content-tertiary" />
@@ -172,19 +176,19 @@ function TaskItem({
           <div className="space-y-3">
             <div>
               <span className="text-xs font-medium text-content-secondary">
-                Prompt
+                {t('prompt')}
               </span>
               <p className="mt-1 text-sm text-content">{task.prompt}</p>
             </div>
 
             <div className="flex flex-wrap gap-4 text-xs text-content-tertiary">
               <span>
-                Priority:{' '}
+                {t('priority')}{' '}
                 <span className="text-content-secondary">{task.priority}</span>
               </span>
               {task.scheduledAt && (
                 <span>
-                  Scheduled:{' '}
+                  {t('scheduled')}{' '}
                   <span className="text-content-secondary">
                     {new Date(task.scheduledAt).toLocaleString()}
                   </span>
@@ -192,7 +196,7 @@ function TaskItem({
               )}
               {task.completedAt && (
                 <span>
-                  Completed:{' '}
+                  {t('completed')}{' '}
                   <span className="text-content-secondary">
                     {new Date(task.completedAt).toLocaleString()}
                   </span>
@@ -203,7 +207,7 @@ function TaskItem({
             {task.result != null && (
               <div>
                 <span className="text-xs font-medium text-content-secondary">
-                  Result
+                  {t('result')}
                 </span>
                 <pre className="mt-1 overflow-x-auto rounded-sm bg-surface p-2 text-xs text-content-secondary font-mono">
                   {JSON.stringify(task.result, null, 2)}
@@ -214,7 +218,7 @@ function TaskItem({
             {task.logs && task.logs.length > 0 && (
               <div>
                 <span className="text-xs font-medium text-content-secondary">
-                  Logs
+                  {t('logs')}
                 </span>
                 <div className="mt-1 space-y-1">
                   {task.logs.map((log) => (
@@ -253,6 +257,7 @@ function TaskItem({
 }
 
 function CreateTaskForm({ onClose }: { onClose: () => void }) {
+  const t = useTranslations('Tasks');
   const [title, setTitle] = useState('');
   const [prompt, setPrompt] = useState('');
   const [priority, setPriority] = useState<
@@ -280,7 +285,7 @@ function CreateTaskForm({ onClose }: { onClose: () => void }) {
     <div className="mb-6 rounded-md border border-border bg-surface-elevated p-4">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-serif text-base font-semibold text-content">
-          Create Task
+          {t('createTitle')}
         </h3>
         <button
           onClick={onClose}
@@ -295,7 +300,7 @@ function CreateTaskForm({ onClose }: { onClose: () => void }) {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Task title"
+          placeholder={t('taskTitlePlaceholder')}
           required
           autoFocus
           className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none"
@@ -304,7 +309,7 @@ function CreateTaskForm({ onClose }: { onClose: () => void }) {
         <textarea
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Describe what this task should accomplish..."
+          placeholder={t('taskPromptPlaceholder')}
           required
           rows={3}
           className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none resize-none"
@@ -320,10 +325,10 @@ function CreateTaskForm({ onClose }: { onClose: () => void }) {
             }
             className="rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content transition-colors focus:border-border-focus focus:outline-none"
           >
-            <option value="low">Low</option>
-            <option value="normal">Normal</option>
-            <option value="high">High</option>
-            <option value="urgent">Urgent</option>
+            <option value="low">{t('priorityLow')}</option>
+            <option value="normal">{t('priorityNormal')}</option>
+            <option value="high">{t('priorityHigh')}</option>
+            <option value="urgent">{t('priorityUrgent')}</option>
           </select>
 
           <div className="flex-1" />
@@ -333,7 +338,7 @@ function CreateTaskForm({ onClose }: { onClose: () => void }) {
             onClick={onClose}
             className="rounded-sm px-4 py-2 text-sm font-medium text-content-secondary transition-colors hover:bg-surface-alt"
           >
-            Cancel
+            {t('cancel')}
           </button>
           <button
             type="submit"
@@ -346,25 +351,10 @@ function CreateTaskForm({ onClose }: { onClose: () => void }) {
               'disabled:opacity-50 disabled:cursor-not-allowed',
             )}
           >
-            {createTask.isPending ? 'Creating...' : 'Create'}
+            {createTask.isPending ? t('creating') : t('create')}
           </button>
         </div>
       </form>
     </div>
   );
-}
-
-function formatRelative(dateStr: string): string {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / (1000 * 60));
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-  if (diffMins < 1) return 'just now';
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCreateProject } from '@/hooks/use-projects';
@@ -14,6 +15,7 @@ const verticalOptions = Object.entries(VERTICALS).map(([key, value]) => ({
 }));
 
 export default function NewProjectPage() {
+  const t = useTranslations('CreateProject');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [vertical, setVertical] = useState<string>(VERTICALS.travel);
@@ -36,14 +38,14 @@ export default function NewProjectPage() {
   return (
     <>
       <PageHeader
-        title="Create Project"
+        title={t('title')}
         actions={
           <Link
             href="/app"
             className="flex items-center gap-1.5 text-sm text-content-secondary transition-colors hover:text-content"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back
+            {t('back')}
           </Link>
         }
       />
@@ -55,14 +57,14 @@ export default function NewProjectPage() {
               htmlFor="title"
               className="block text-sm font-medium text-content mb-1.5"
             >
-              Title
+              {t('titleLabel')}
             </label>
             <input
               id="title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Barcelona Trip 2026"
+              placeholder={t('titlePlaceholder')}
               required
               autoFocus
               className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none"
@@ -74,13 +76,13 @@ export default function NewProjectPage() {
               htmlFor="description"
               className="block text-sm font-medium text-content mb-1.5"
             >
-              Description
+              {t('descriptionLabel')}
             </label>
             <textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="A trip to Barcelona with friends..."
+              placeholder={t('descriptionPlaceholder')}
               rows={4}
               className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none resize-none"
             />
@@ -91,7 +93,7 @@ export default function NewProjectPage() {
               htmlFor="vertical"
               className="block text-sm font-medium text-content mb-1.5"
             >
-              Category
+              {t('categoryLabel')}
             </label>
             <select
               id="vertical"
@@ -117,13 +119,13 @@ export default function NewProjectPage() {
                 'disabled:opacity-50 disabled:cursor-not-allowed',
               )}
             >
-              {createProject.isPending ? 'Creating...' : 'Create Project'}
+              {createProject.isPending ? t('creating') : t('create')}
             </button>
             <Link
               href="/app"
               className="rounded-sm px-4 py-2 text-sm font-medium text-content-secondary transition-colors hover:bg-surface-alt"
             >
-              Cancel
+              {t('cancel')}
             </Link>
           </div>
         </form>

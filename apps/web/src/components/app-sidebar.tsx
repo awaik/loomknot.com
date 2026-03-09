@@ -8,6 +8,7 @@ import {
   Settings,
   LogOut,
   ChevronRight,
+  Globe,
   Menu,
   X,
 } from 'lucide-react';
@@ -130,12 +131,21 @@ export function AppSidebar() {
               </Link>
             );
           })}
+
         </div>
       </div>
 
-      {/* User section */}
-      <div className="border-t border-border p-3">
-        <div className="flex items-center gap-2">
+      {/* Bottom section */}
+      <div className="border-t border-border p-3 space-y-1">
+        {/* Language switcher */}
+        <LanguageSwitcher
+          variant="sidebar"
+          icon={<Globe className="h-4 w-4" />}
+          label={t('language')}
+        />
+
+        {/* User */}
+        <div className="flex items-center gap-2 pt-1">
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-pill bg-thread/10 text-sm font-medium text-thread">
             {user?.name?.[0]?.toUpperCase() ?? user?.email?.[0]?.toUpperCase() ?? '?'}
           </div>
@@ -147,7 +157,6 @@ export function AppSidebar() {
               {user?.email}
             </p>
           </div>
-          <LanguageSwitcher variant="compact" />
           <button
             onClick={handleLogout}
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-sm text-content-secondary transition-colors hover:bg-surface-alt hover:text-error"

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Key,
   Plus,
@@ -21,6 +22,7 @@ import { EmptyState } from '@/components/empty-state';
 import { StatusBadge } from '@/components/status-badge';
 
 export default function SettingsPage() {
+  const t = useTranslations('Settings');
   const { data: apiKeys, isLoading } = useApiKeys();
   const createApiKey = useCreateApiKey();
   const revokeApiKey = useRevokeApiKey();
@@ -54,8 +56,8 @@ export default function SettingsPage() {
   return (
     <>
       <PageHeader
-        title="Settings"
-        description="Manage API keys and preferences"
+        title={t('title')}
+        description={t('description')}
       />
 
       {/* API Keys */}
@@ -63,10 +65,10 @@ export default function SettingsPage() {
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="font-serif text-lg font-semibold text-content">
-              API Keys
+              {t('apiKeys')}
             </h2>
             <p className="mt-1 text-sm text-content-secondary">
-              Generate API keys to connect your AI agents via MCP.
+              {t('apiKeysDesc')}
             </p>
           </div>
           <button
@@ -74,7 +76,7 @@ export default function SettingsPage() {
             className="flex items-center gap-2 rounded-sm bg-thread px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-thread-dark"
           >
             <Plus className="h-4 w-4" />
-            Generate Key
+            {t('generateKey')}
           </button>
         </div>
 
@@ -85,10 +87,10 @@ export default function SettingsPage() {
               <Shield className="h-5 w-5 shrink-0 text-sage mt-0.5" />
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-content">
-                  API key created successfully
+                  {t('keyCreated')}
                 </p>
                 <p className="mt-1 text-xs text-content-secondary">
-                  Copy your key now. You will not be able to see it again.
+                  {t('keyCreatedDesc')}
                 </p>
                 <div className="mt-2 flex items-center gap-2">
                   <code className="flex-1 rounded-sm bg-surface px-3 py-2 text-sm font-mono text-content break-all border border-border">
@@ -110,7 +112,7 @@ export default function SettingsPage() {
                   onClick={() => setNewKey(null)}
                   className="mt-2 text-xs text-content-tertiary transition-colors hover:text-content-secondary"
                 >
-                  Dismiss
+                  {t('dismiss')}
                 </button>
               </div>
             </div>
@@ -126,14 +128,14 @@ export default function SettingsPage() {
                   htmlFor="key-label"
                   className="block text-sm font-medium text-content mb-1.5"
                 >
-                  Label (optional)
+                  {t('labelOptional')}
                 </label>
                 <input
                   id="key-label"
                   type="text"
                   value={label}
                   onChange={(e) => setLabel(e.target.value)}
-                  placeholder="My Claude agent"
+                  placeholder={t('labelPlaceholder')}
                   autoFocus
                   className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none"
                 />
@@ -143,7 +145,7 @@ export default function SettingsPage() {
                 onClick={() => setShowCreateForm(false)}
                 className="rounded-sm px-4 py-2 text-sm font-medium text-content-secondary transition-colors hover:bg-surface-alt"
               >
-                Cancel
+                {t('cancel')}
               </button>
               <button
                 type="submit"
@@ -154,7 +156,7 @@ export default function SettingsPage() {
                   'disabled:opacity-50 disabled:cursor-not-allowed',
                 )}
               >
-                {createApiKey.isPending ? 'Generating...' : 'Generate'}
+                {createApiKey.isPending ? t('generating') : t('generate')}
               </button>
             </form>
           </div>
@@ -173,8 +175,8 @@ export default function SettingsPage() {
         ) : !apiKeys || apiKeys.length === 0 ? (
           <EmptyState
             icon={Key}
-            title="No API keys"
-            description="Generate an API key to connect AI agents to your projects via MCP."
+            title={t('noKeysTitle')}
+            description={t('noKeysDesc')}
           />
         ) : (
           <div className="space-y-2">
@@ -197,12 +199,12 @@ export default function SettingsPage() {
                   </div>
                   <div className="flex items-center gap-3 mt-0.5 text-xs text-content-tertiary">
                     <span>
-                      Created{' '}
+                      {t('created')}{' '}
                       {new Date(apiKey.createdAt).toLocaleDateString()}
                     </span>
                     {apiKey.lastUsedAt && (
                       <span>
-                        Last used{' '}
+                        {t('lastUsed')}{' '}
                         {new Date(apiKey.lastUsedAt).toLocaleDateString()}
                       </span>
                     )}
@@ -220,13 +222,13 @@ export default function SettingsPage() {
                           disabled={revokeApiKey.isPending}
                           className="rounded-sm bg-error px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-error/90 disabled:opacity-50"
                         >
-                          Confirm
+                          {t('confirm')}
                         </button>
                         <button
                           onClick={() => setRevokeConfirm(null)}
                           className="rounded-sm px-3 py-1.5 text-xs font-medium text-content-secondary transition-colors hover:bg-surface-alt"
                         >
-                          Cancel
+                          {t('cancel')}
                         </button>
                       </div>
                     ) : (

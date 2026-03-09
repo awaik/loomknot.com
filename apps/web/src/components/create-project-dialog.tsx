@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCreateProject } from '@/hooks/use-projects';
@@ -21,6 +22,7 @@ export function CreateProjectDialog({
   open,
   onClose,
 }: CreateProjectDialogProps) {
+  const t = useTranslations('CreateProject');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [vertical, setVertical] = useState<string>(VERTICALS.travel);
@@ -55,7 +57,7 @@ export function CreateProjectDialog({
       <div className="relative w-full max-w-md rounded-md bg-surface-elevated border border-border p-6 shadow-float animate-scale-in">
         <div className="flex items-center justify-between mb-6">
           <h2 className="font-serif text-xl font-bold text-content">
-            New Project
+            {t('dialogTitle')}
           </h2>
           <button
             onClick={onClose}
@@ -71,14 +73,14 @@ export function CreateProjectDialog({
               htmlFor="project-title"
               className="block text-sm font-medium text-content mb-1.5"
             >
-              Title
+              {t('titleLabel')}
             </label>
             <input
               id="project-title"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Barcelona Trip 2026"
+              placeholder={t('titlePlaceholder')}
               required
               autoFocus
               className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none"
@@ -90,13 +92,13 @@ export function CreateProjectDialog({
               htmlFor="project-description"
               className="block text-sm font-medium text-content mb-1.5"
             >
-              Description
+              {t('descriptionLabel')}
             </label>
             <textarea
               id="project-description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="A trip to Barcelona with friends..."
+              placeholder={t('descriptionPlaceholder')}
               rows={3}
               className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none resize-none"
             />
@@ -107,7 +109,7 @@ export function CreateProjectDialog({
               htmlFor="project-vertical"
               className="block text-sm font-medium text-content mb-1.5"
             >
-              Category
+              {t('categoryLabel')}
             </label>
             <select
               id="project-vertical"
@@ -129,7 +131,7 @@ export function CreateProjectDialog({
               onClick={onClose}
               className="rounded-sm px-4 py-2 text-sm font-medium text-content-secondary transition-colors hover:bg-surface-alt"
             >
-              Cancel
+              {t('cancel')}
             </button>
             <button
               type="submit"
@@ -140,7 +142,7 @@ export function CreateProjectDialog({
                 'disabled:opacity-50 disabled:cursor-not-allowed',
               )}
             >
-              {createProject.isPending ? 'Creating...' : 'Create Project'}
+              {createProject.isPending ? t('creating') : t('create')}
             </button>
           </div>
         </form>

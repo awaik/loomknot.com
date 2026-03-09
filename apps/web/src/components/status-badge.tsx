@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 
 type StatusVariant =
@@ -25,24 +26,14 @@ const variantStyles: Record<StatusVariant, string> = {
   revoked: 'bg-error-soft text-error',
 };
 
-const variantLabels: Record<StatusVariant, string> = {
-  pending: 'Pending',
-  in_progress: 'In Progress',
-  done: 'Done',
-  failed: 'Failed',
-  draft: 'Draft',
-  published: 'Published',
-  archived: 'Archived',
-  active: 'Active',
-  revoked: 'Revoked',
-};
-
 interface StatusBadgeProps {
   status: StatusVariant;
   className?: string;
 }
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
+  const t = useTranslations('StatusBadge');
+
   return (
     <span
       className={cn(
@@ -51,7 +42,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
         className,
       )}
     >
-      {variantLabels[status]}
+      {t(status)}
     </span>
   );
 }

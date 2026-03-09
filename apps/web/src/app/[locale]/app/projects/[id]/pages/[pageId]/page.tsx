@@ -1,6 +1,7 @@
 'use client';
 
 import { use } from 'react';
+import { useTranslations } from 'next-intl';
 import { ArrowLeft, FileText } from 'lucide-react';
 import { useProjectPage, type PageBlock } from '@/hooks/use-pages';
 import { useSocketRoom } from '@/lib/socket';
@@ -15,6 +16,7 @@ export default function PageViewerPage({
 }: {
   params: Promise<{ id: string; pageId: string }>;
 }) {
+  const t = useTranslations('PageViewer');
   const { id, pageId } = use(params);
   const { data: page, isLoading } = useProjectPage(id, pageId);
 
@@ -38,15 +40,15 @@ export default function PageViewerPage({
     return (
       <EmptyState
         icon={FileText}
-        title="Page not found"
-        description="This page may have been deleted or you don't have access."
+        title={t('notFound')}
+        description={t('notFoundDesc')}
         action={
           <Link
             href={`/app/projects/${id}`}
             className="flex items-center gap-1.5 text-sm text-thread transition-colors hover:text-thread-dark"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to project
+            {t('backToProject')}
           </Link>
         }
       />
@@ -66,7 +68,7 @@ export default function PageViewerPage({
               className="flex items-center gap-1.5 text-sm text-content-secondary transition-colors hover:text-content"
             >
               <ArrowLeft className="h-4 w-4" />
-              Back
+              {t('back')}
             </Link>
           </div>
         }
@@ -84,8 +86,8 @@ export default function PageViewerPage({
       ) : (
         <EmptyState
           icon={FileText}
-          title="No content blocks"
-          description="This page doesn't have any content blocks yet."
+          title={t('noBlocksTitle')}
+          description={t('noBlocksDesc')}
           className="py-8"
         />
       )}

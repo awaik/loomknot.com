@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { FolderKanban, Plus, ListTodo, Users, Brain, Clock } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { formatRelative } from '@/lib/utils';
 import { useProjects } from '@/hooks/use-projects';
 import { useTasks } from '@/hooks/use-tasks';
 import { Link } from '@/i18n/navigation';
@@ -12,6 +13,8 @@ import { StatusBadge } from '@/components/status-badge';
 import { CreateProjectDialog } from '@/components/create-project-dialog';
 
 export default function DashboardPage() {
+  const t = useTranslations('Dashboard');
+  const tApp = useTranslations('App');
   const { data: projects, isLoading: projectsLoading } = useProjects();
   const { data: tasksData, isLoading: tasksLoading } = useTasks({ limit: 5 });
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -21,15 +24,15 @@ export default function DashboardPage() {
   return (
     <>
       <PageHeader
-        title="Dashboard"
-        description="Your projects and recent activity"
+        title={t('title')}
+        description={t('description')}
         actions={
           <button
             onClick={() => setDialogOpen(true)}
             className="flex items-center gap-2 rounded-sm bg-thread px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-thread-dark"
           >
             <Plus className="h-4 w-4" />
-            New Project
+            {tApp('newProject')}
           </button>
         }
       />
@@ -37,7 +40,7 @@ export default function DashboardPage() {
       {/* Projects */}
       <section>
         <h2 className="font-serif text-lg font-semibold text-content mb-4">
-          Projects
+          {tApp('projects')}
         </h2>
 
         {projectsLoading ? (
@@ -52,15 +55,15 @@ export default function DashboardPage() {
         ) : !projects || projects.length === 0 ? (
           <EmptyState
             icon={FolderKanban}
-            title="No projects yet"
-            description="Create your first project to start organizing memories and pages."
+            title={t('noProjectsTitle')}
+            description={t('noProjectsDesc')}
             action={
               <button
                 onClick={() => setDialogOpen(true)}
                 className="flex items-center gap-2 rounded-sm bg-thread px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-thread-dark"
               >
                 <Plus className="h-4 w-4" />
-                Create Project
+                {t('createProject')}
               </button>
             }
           />
@@ -108,7 +111,7 @@ export default function DashboardPage() {
                   )}
                   <span className="flex items-center gap-1 ml-auto">
                     <Clock className="h-3.5 w-3.5" />
-                    {formatRelative(project.updatedAt)}
+                    {formatRelative(project.updatedAt, t)}
                   </span>
                 </div>
               </Link>
@@ -121,13 +124,13 @@ export default function DashboardPage() {
       <section className="mt-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-serif text-lg font-semibold text-content">
-            Recent Tasks
+            {t('recentTasks')}
           </h2>
           <Link
             href="/app/tasks"
             className="text-sm text-thread transition-colors hover:text-thread-dark"
           >
-            View all
+            {t('viewAll')}
           </Link>
         </div>
 
@@ -143,8 +146,8 @@ export default function DashboardPage() {
         ) : !tasks || tasks.length === 0 ? (
           <EmptyState
             icon={ListTodo}
-            title="No tasks yet"
-            description="Tasks created by you or your agents will appear here."
+            title={t('noTasksTitle')}
+            description={t('noTasksDesc')}
             className="py-8"
           />
         ) : (
@@ -162,7 +165,7 @@ export default function DashboardPage() {
                 </div>
                 <StatusBadge status={task.status} />
                 <span className="shrink-0 text-xs text-content-tertiary">
-                  {formatRelative(task.createdAt)}
+                  {formatRelative(task.createdAt, t)}
                 </span>
               </Link>
             ))}
@@ -178,17 +181,3 @@ export default function DashboardPage() {
   );
 }
 
-function formatRelative(dateStr: string): string {
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / (1000 * 60));
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-  if (diffMins < 1) return 'just now';
-  if (diffMins < 60) return `${diffMins}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  if (diffDays < 7) return `${diffDays}d ago`;
-  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}

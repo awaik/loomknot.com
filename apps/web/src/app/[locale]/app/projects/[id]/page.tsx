@@ -12,6 +12,7 @@ import {
   FolderKanban,
   Pin,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { useProject } from '@/hooks/use-projects';
 import { useProjectPages } from '@/hooks/use-pages';
@@ -26,11 +27,11 @@ import { StatusBadge } from '@/components/status-badge';
 
 type Tab = 'pages' | 'memories' | 'activity' | 'members';
 
-const tabs: { key: Tab; label: string; icon: typeof FileText }[] = [
-  { key: 'pages', label: 'Pages', icon: FileText },
-  { key: 'memories', label: 'Memories', icon: Brain },
-  { key: 'activity', label: 'Activity', icon: Activity },
-  { key: 'members', label: 'Members', icon: Users },
+const tabs: { key: Tab; labelKey: 'tabPages' | 'tabMemories' | 'tabActivity' | 'tabMembers'; icon: typeof FileText }[] = [
+  { key: 'pages', labelKey: 'tabPages', icon: FileText },
+  { key: 'memories', labelKey: 'tabMemories', icon: Brain },
+  { key: 'activity', labelKey: 'tabActivity', icon: Activity },
+  { key: 'members', labelKey: 'tabMembers', icon: Users },
 ];
 
 export default function ProjectPage({
@@ -39,6 +40,7 @@ export default function ProjectPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+  const t = useTranslations('Project');
   const [activeTab, setActiveTab] = useState<Tab>('pages');
   const { data: project, isLoading } = useProject(id);
 
@@ -75,15 +77,15 @@ export default function ProjectPage({
     return (
       <EmptyState
         icon={FolderKanban}
-        title="Project not found"
-        description="This project may have been deleted or you don't have access."
+        title={t('notFound')}
+        description={t('notFoundDesc')}
         action={
           <Link
             href="/app"
             className="flex items-center gap-1.5 text-sm text-thread transition-colors hover:text-thread-dark"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to dashboard
+            {t('backToDashboard')}
           </Link>
         }
       />
@@ -101,7 +103,7 @@ export default function ProjectPage({
             className="flex items-center gap-1.5 text-sm text-content-secondary transition-colors hover:text-content"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back
+            {t('back')}
           </Link>
         }
       />
@@ -121,7 +123,7 @@ export default function ProjectPage({
               )}
             >
               <tab.icon className="h-4 w-4" />
-              {tab.label}
+              {t(tab.labelKey)}
             </button>
           ))}
         </nav>
@@ -137,6 +139,7 @@ export default function ProjectPage({
 }
 
 function PagesTab({ projectId }: { projectId: string }) {
+  const t = useTranslations('Project');
   const { data: pages, isLoading } = useProjectPages(projectId);
 
   if (isLoading) {
@@ -153,8 +156,8 @@ function PagesTab({ projectId }: { projectId: string }) {
     return (
       <EmptyState
         icon={FileText}
-        title="No pages yet"
-        description="Pages will be created as your project evolves with memories and agent contributions."
+        title={t('noPagesTitle')}
+        description={t('noPagesDesc')}
       />
     );
   }
@@ -208,6 +211,7 @@ function PagesTab({ projectId }: { projectId: string }) {
 }
 
 function MemoriesTab({ projectId }: { projectId: string }) {
+  const t = useTranslations('Project');
   const { data, isLoading } = useMemories(projectId);
   const memories = data?.data;
 
@@ -225,8 +229,8 @@ function MemoriesTab({ projectId }: { projectId: string }) {
     return (
       <EmptyState
         icon={Brain}
-        title="No memories yet"
-        description="Memories store preferences, decisions, and context for your project. They can be added by you or your agents."
+        title={t('noMemoriesTitle')}
+        description={t('noMemoriesDesc')}
       />
     );
   }
@@ -272,17 +276,20 @@ function MemoriesTab({ projectId }: { projectId: string }) {
 }
 
 function ActivityTab({ projectId }: { projectId: string }) {
+  const t = useTranslations('Project');
+
   return (
     <EmptyState
       icon={Activity}
-      title="Activity feed"
-      description="Recent activity for this project will appear here."
+      title={t('activityTitle')}
+      description={t('activityDesc')}
       className="py-8"
     />
   );
 }
 
 function MembersTab({ projectId }: { projectId: string }) {
+  const t = useTranslations('Project');
   const { data: members, isLoading } = useMembers(projectId);
 
   if (isLoading) {
@@ -299,8 +306,8 @@ function MembersTab({ projectId }: { projectId: string }) {
     return (
       <EmptyState
         icon={Users}
-        title="No members"
-        description="Invite people to collaborate on this project."
+        title={t('noMembersTitle')}
+        description={t('noMembersDesc')}
       />
     );
   }
