@@ -9,7 +9,16 @@ import { authenticateApiKey } from '@/auth/api-key-auth.js';
 import { createMcpServer } from '@/create-server.js';
 
 const app = express();
-app.use(express.json());
+
+// Parse JSON body for all routes EXCEPT /mcp/messages.
+// SSEServerTransport.handlePostMessage reads the raw request stream,
+// so express.json() must not consume it first.
+const jsonParser = express.json();
+
+app.use((req, res, next) => {
+  if (req.path === '/mcp/messages') return next();
+  jsonParser(req, res, next);
+});
 
 // --- Session Management ---
 
