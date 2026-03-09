@@ -20,7 +20,7 @@ export function registerMemoryTools(
   // --- memory/write ---
   server.tool(
     'memory/write',
-    'Create or update a memory entry (upsert by projectId + userId + category + key). Requires canEditMemory permission.',
+    'Loomknot: save a memory entry to a project (preferences, decisions, constraints). Upserts by category + key. Levels: private (only you), project (all members), public (shareable via link).',
     {
       projectId: z.string().describe('Project ID'),
       category: z.string().min(1).max(100).describe('Memory category (e.g. "preferences", "decisions", "constraints")'),
@@ -98,7 +98,7 @@ export function registerMemoryTools(
   // --- memory/bulk-write ---
   server.tool(
     'memory/bulk-write',
-    'Write multiple memory entries at once. All items must belong to the same project. Requires canEditMemory permission.',
+    'Loomknot: save multiple memory entries at once (max 50). All items must belong to the same project.',
     {
       projectId: z.string().describe('Project ID'),
       items: z
@@ -189,7 +189,7 @@ export function registerMemoryTools(
   // --- memory/read ---
   server.tool(
     'memory/read',
-    'List memories with filtering and cursor pagination. Private memories are only visible to their owner.',
+    'Loomknot: read memories from a project with filtering by category and level. Supports cursor pagination. Private memories are only visible to their owner.',
     {
       projectId: z.string().describe('Project ID'),
       category: z.string().optional().describe('Filter by category'),
@@ -261,7 +261,7 @@ export function registerMemoryTools(
   // --- memory/search ---
   server.tool(
     'memory/search',
-    'Search memories by text (ILIKE across key, summary, and category). If no projectId, searches across all your projects.',
+    'Loomknot: search memories by text across key, summary, and category. Can search across all your projects or a specific one.',
     {
       query: z.string().min(1).max(500).describe('Search query text'),
       projectId: z.string().optional().describe('Limit search to a specific project'),
@@ -336,7 +336,7 @@ export function registerMemoryTools(
   // --- memory/update ---
   server.tool(
     'memory/update',
-    'Update an existing memory entry. You must be the owner of the memory.',
+    'Loomknot: update an existing memory entry (value, summary, or visibility level). You must own the memory.',
     {
       memoryId: z.string().describe('Memory ID to update'),
       value: z.unknown().optional().describe('New value'),
@@ -409,7 +409,7 @@ export function registerMemoryTools(
   // --- memory/delete ---
   server.tool(
     'memory/delete',
-    'Soft-delete a memory entry. You must be the owner of the memory.',
+    'Loomknot: delete a memory entry. You must own the memory.',
     {
       memoryId: z.string().describe('Memory ID to delete'),
     },

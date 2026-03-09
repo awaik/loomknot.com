@@ -22,7 +22,7 @@ export function registerProjectTools(
   // --- projects/list ---
   server.tool(
     'projects/list',
-    'List all projects you are a member of, with summaries, member count, and memory count',
+    'Loomknot: list all your projects with summaries, member count, and memory count.',
     {},
     async () => {
       try {
@@ -62,7 +62,7 @@ export function registerProjectTools(
   // --- projects/get ---
   server.tool(
     'projects/get',
-    'Get project details including full context, members, page count, and memory count',
+    'Loomknot: get project details — full context, members, pages count, and memories count.',
     { projectId: z.string().describe('Project ID') },
     async ({ projectId }) => {
       try {
@@ -117,7 +117,7 @@ export function registerProjectTools(
   // --- projects/create ---
   server.tool(
     'projects/create',
-    'Create a new project. You will be automatically added as owner.',
+    'Loomknot: create a new project (e.g. a trip, event, renovation). You become the owner. An index page is auto-created inside the project.',
     {
       title: z.string().min(1).max(255).describe('Project title'),
       description: z.string().max(5000).optional().describe('Project description'),
@@ -204,7 +204,7 @@ export function registerProjectTools(
   // --- projects/update ---
   server.tool(
     'projects/update',
-    'Update project settings. Requires canManageProject permission.',
+    'Loomknot: update project settings (title, description, visibility). Requires project manager permission.',
     {
       projectId: z.string().describe('Project ID'),
       title: z.string().min(1).max(255).optional().describe('New project title'),

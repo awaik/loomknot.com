@@ -20,7 +20,7 @@ export function registerNegotiationTools(
   // --- negotiations/list ---
   server.tool(
     'negotiations/list',
-    'List negotiations in a project with optional status filter',
+    'Loomknot: list preference negotiations in a project. Used when members have conflicting preferences that need resolution.',
     {
       projectId: z.string().describe('Project ID'),
       status: z.enum(['open', 'resolved', 'dismissed']).optional().describe('Filter by status'),
@@ -53,7 +53,7 @@ export function registerNegotiationTools(
   // --- negotiations/get ---
   server.tool(
     'negotiations/get',
-    'Get a negotiation with all options and their votes',
+    'Loomknot: get a negotiation with all proposed options and votes from participants.',
     {
       negotiationId: z.string().describe('Negotiation ID'),
     },
@@ -115,7 +115,7 @@ export function registerNegotiationTools(
   // --- negotiations/propose ---
   server.tool(
     'negotiations/propose',
-    'Propose an option for an existing negotiation. The negotiation must be open.',
+    'Loomknot: propose a compromise option for an open negotiation with reasoning.',
     {
       negotiationId: z.string().describe('Negotiation ID'),
       title: z.string().min(1).max(500).describe('Option title'),

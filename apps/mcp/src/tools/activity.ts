@@ -14,7 +14,7 @@ export function registerActivityTools(
   // --- activity/recent ---
   server.tool(
     'activity/recent',
-    'Get recent activity log entries for a project',
+    'Loomknot: get recent activity log for a project — who did what and when.',
     {
       projectId: z.string().describe('Project ID'),
       since: z.string().optional().describe('ISO date string — only return activity after this time'),

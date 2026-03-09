@@ -19,7 +19,7 @@ export function registerTaskTools(
   // --- tasks/list ---
   server.tool(
     'tasks/list',
-    'List your tasks with optional filters by status and project',
+    'Loomknot: list your tasks with optional filters by status (pending, in_progress, done, failed) and project.',
     {
       status: z
         .enum(['pending', 'in_progress', 'done', 'failed'])
@@ -68,7 +68,7 @@ export function registerTaskTools(
   // --- tasks/get ---
   server.tool(
     'tasks/get',
-    'Get a task with its logs',
+    'Loomknot: get task details with execution logs.',
     {
       taskId: z.string().describe('Task ID'),
     },
@@ -104,7 +104,7 @@ export function registerTaskTools(
   // --- tasks/create ---
   server.tool(
     'tasks/create',
-    'Create a new task for yourself',
+    'Loomknot: create a task — reminders, to-dos, or scheduled actions within a project.',
     {
       title: z.string().min(1).max(500).describe('Task title'),
       prompt: z.string().min(1).describe('Task prompt/instructions'),
@@ -164,7 +164,7 @@ export function registerTaskTools(
   // --- tasks/update ---
   server.tool(
     'tasks/update',
-    'Update a task status, result, or add a log entry',
+    'Loomknot: update task status, result, or add a log entry.',
     {
       taskId: z.string().describe('Task ID'),
       status: z

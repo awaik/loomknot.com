@@ -8,12 +8,12 @@ import { registerNegotiationTools } from '@/tools/negotiations.js';
 import { registerActivityTools } from '@/tools/activity.js';
 
 /**
- * Create a fully configured MCP server instance with all 24 tools registered.
+ * Create a fully configured MCP server instance with all tools registered.
  * Each SSE session gets its own server instance, scoped to the authenticated user.
  */
 export function createMcpServer(userId: string, apiKeyId: string): McpServer {
   const server = new McpServer({
-    name: 'loomknot',
+    name: 'Loomknot — collaborative project platform',
     version: '0.1.0',
   });
 

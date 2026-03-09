@@ -28,7 +28,7 @@ export function registerPageTools(
   // --- pages/list ---
   server.tool(
     'pages/list',
-    'List all pages in a project (metadata only, no blocks)',
+    'Loomknot: list all pages in a project (metadata only, no content blocks).',
     {
       projectId: z.string().describe('Project ID'),
     },
@@ -64,7 +64,7 @@ export function registerPageTools(
   // --- pages/get ---
   server.tool(
     'pages/get',
-    'Get a page with all its blocks',
+    'Loomknot: get a page with all its content blocks (text, headings, images, maps, lists).',
     {
       pageId: z.string().describe('Page ID'),
     },
@@ -101,7 +101,7 @@ export function registerPageTools(
   // --- pages/create ---
   server.tool(
     'pages/create',
-    'Create a new page with blocks. Requires canEditMemory permission.',
+    'Loomknot: create a new page inside a project with content blocks. Use for travel plans, checklists, itineraries, notes, etc.',
     {
       projectId: z.string().describe('Project ID'),
       title: z.string().min(1).max(500).describe('Page title'),
@@ -179,7 +179,7 @@ export function registerPageTools(
   // --- pages/update ---
   server.tool(
     'pages/update',
-    'Update a page and/or its blocks. For blocks: include id to update, omit id to create new, set action:"delete" to remove.',
+    'Loomknot: update a page and/or its content blocks. For blocks: include id to update existing, omit id to create new, set action:"delete" to remove.',
     {
       pageId: z.string().describe('Page ID'),
       title: z.string().min(1).max(500).optional().describe('New page title'),
@@ -321,7 +321,7 @@ export function registerPageTools(
   // --- pages/delete ---
   server.tool(
     'pages/delete',
-    'Soft-delete a page. Requires canEditMemory permission.',
+    'Loomknot: delete a page from a project. The index page cannot be deleted.',
     {
       pageId: z.string().describe('Page ID to delete'),
     },

@@ -17,7 +17,7 @@ export function registerBootstrapTools(
 ): void {
   server.tool(
     'bootstrap',
-    'Get user info, all projects with summaries, and pending tasks. Call this first when starting a session.',
+    'Loomknot: start a session. Returns your user info, all projects with summaries, and pending tasks. Always call this first when connecting to Loomknot.',
     {},
     async () => {
       try {
