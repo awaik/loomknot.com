@@ -7,7 +7,7 @@ version: "3.8"
 services:
   # --- Frontend (Next.js 15) ---
   web:
-    image: ghcr.io/${GITHUB_REPO}/web:latest
+    image: ghcr.io/${GITHUB_REPO}/web:${IMAGE_TAG:-latest}
     environment:
       - NODE_ENV=production
     env_file:
@@ -48,7 +48,7 @@ services:
 
   # --- Backend API (NestJS + Fastify) ---
   api:
-    image: ghcr.io/${GITHUB_REPO}/api:latest
+    image: ghcr.io/${GITHUB_REPO}/api:${IMAGE_TAG:-latest}
     environment:
       - NODE_ENV=production
     env_file:
@@ -100,7 +100,7 @@ services:
 
   # --- MCP Server (Agent Gateway) ---
   mcp:
-    image: ghcr.io/${GITHUB_REPO}/mcp:latest
+    image: ghcr.io/${GITHUB_REPO}/mcp:${IMAGE_TAG:-latest}
     environment:
       - NODE_ENV=production
     env_file:

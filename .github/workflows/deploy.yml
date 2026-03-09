@@ -160,11 +160,6 @@ jobs:
             docker pull ${REGISTRY}/${REPO}/mcp:${SHA_TAG}
             docker pull ${REGISTRY}/${REPO}/migrate:${SHA_TAG}
 
-            # Tag as latest locally for compose compatibility
-            docker tag ${REGISTRY}/${REPO}/web:${SHA_TAG} ${REGISTRY}/${REPO}/web:latest
-            docker tag ${REGISTRY}/${REPO}/api:${SHA_TAG} ${REGISTRY}/${REPO}/api:latest
-            docker tag ${REGISTRY}/${REPO}/mcp:${SHA_TAG} ${REGISTRY}/${REPO}/mcp:latest
-
             echo "=== Running migrations ==="
             docker run --rm \
               --network loomknot-internal \
@@ -174,6 +169,7 @@ jobs:
             echo "=== Deploying Swarm stack (rolling update, start-first) ==="
             GITHUB_REPO=${{ github.repository }} \
             DOMAIN=${DOMAIN} \
+            IMAGE_TAG=${SHA_TAG} \
             docker stack deploy \
               --resolve-image always \
               --with-registry-auth \
