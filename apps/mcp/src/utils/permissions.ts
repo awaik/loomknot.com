@@ -1,7 +1,7 @@
 import { eq, and } from 'drizzle-orm';
 import { projectMembers } from '@loomknot/shared/db';
 import { ROLE_PERMISSIONS, type Role, type Permission } from '@loomknot/shared/constants';
-import { db } from '@/services/db';
+import { db } from '@/services/db.js';
 import { McpToolError } from './errors';
 
 /**

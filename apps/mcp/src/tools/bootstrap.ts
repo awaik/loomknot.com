@@ -7,8 +7,8 @@ import {
   memories,
   tasks,
 } from '@loomknot/shared/db';
-import { db } from '@/services/db';
-import { toolResult, toolError, McpToolError } from '@/utils/errors';
+import { db } from '@/services/db.js';
+import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
 
 export function registerBootstrapTools(
   server: McpServer,

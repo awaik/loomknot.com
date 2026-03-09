@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { eq, and } from 'drizzle-orm';
 import { apiKeys } from '@loomknot/shared/db';
 import { API_KEY_PREFIX } from '@loomknot/shared/constants';
-import { db } from '@/services/db';
+import { db } from '@/services/db.js';
 
 /**
  * Authenticate an API key from the Authorization header.

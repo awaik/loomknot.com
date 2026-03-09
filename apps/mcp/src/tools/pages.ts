@@ -8,9 +8,9 @@ import {
   createId,
 } from '@loomknot/shared/db';
 import { slugify, INDEX_PAGE_SLUG } from '@loomknot/shared/constants';
-import { db } from '@/services/db';
-import { toolResult, toolError, McpToolError } from '@/utils/errors';
-import { requireProjectMembership, requirePermission } from '@/utils/permissions';
+import { db } from '@/services/db.js';
+import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
 
 const blockSchema = z.object({
   type: z.string().min(1).max(50).describe('Block type (e.g. "text", "heading", "image", "map", "list")'),

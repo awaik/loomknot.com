@@ -7,9 +7,9 @@ import {
   activityLog,
   createId,
 } from '@loomknot/shared/db';
-import { db } from '@/services/db';
-import { toolResult, toolError, McpToolError } from '@/utils/errors';
-import { requireProjectMembership } from '@/utils/permissions';
+import { db } from '@/services/db.js';
+import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { requireProjectMembership } from '@/utils/permissions.js';
 
 export function registerTaskTools(
   server: McpServer,

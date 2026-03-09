@@ -1,11 +1,11 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { registerBootstrapTools } from '@/tools/bootstrap';
-import { registerProjectTools } from '@/tools/projects';
-import { registerMemoryTools } from '@/tools/memory';
-import { registerPageTools } from '@/tools/pages';
-import { registerTaskTools } from '@/tools/tasks';
-import { registerNegotiationTools } from '@/tools/negotiations';
-import { registerActivityTools } from '@/tools/activity';
+import { registerBootstrapTools } from '@/tools/bootstrap.js';
+import { registerProjectTools } from '@/tools/projects.js';
+import { registerMemoryTools } from '@/tools/memory.js';
+import { registerPageTools } from '@/tools/pages.js';
+import { registerTaskTools } from '@/tools/tasks.js';
+import { registerNegotiationTools } from '@/tools/negotiations.js';
+import { registerActivityTools } from '@/tools/activity.js';
 
 /**
  * Create a fully configured MCP server instance with all 24 tools registered.

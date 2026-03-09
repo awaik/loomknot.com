@@ -2,9 +2,9 @@ import { eq, and, desc, gt } from 'drizzle-orm';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { activityLog } from '@loomknot/shared/db';
-import { db } from '@/services/db';
-import { toolResult, toolError, McpToolError } from '@/utils/errors';
-import { requireProjectMembership } from '@/utils/permissions';
+import { db } from '@/services/db.js';
+import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { requireProjectMembership } from '@/utils/permissions.js';
 
 export function registerActivityTools(
   server: McpServer,

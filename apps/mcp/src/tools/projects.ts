@@ -10,9 +10,9 @@ import {
   createId,
 } from '@loomknot/shared/db';
 import { slugify, INDEX_PAGE_SLUG } from '@loomknot/shared/constants';
-import { db } from '@/services/db';
-import { toolResult, toolError, McpToolError } from '@/utils/errors';
-import { requireProjectMembership, requirePermission } from '@/utils/permissions';
+import { db } from '@/services/db.js';
+import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
 
 export function registerProjectTools(
   server: McpServer,
