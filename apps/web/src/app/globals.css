@@ -20,8 +20,8 @@
  *    glass             → @utility — backdrop-blur overlay
  *
  *  Fonts:
- *    font-sans   → DM Sans (UI, body)
- *    font-serif  → Instrument Serif (display, headings)
+ *    font-sans   → Inter (UI, body)
+ *    font-serif  → Playfair Display (display, headings)
  *    font-mono   → JetBrains Mono (code)
  */
 
@@ -98,8 +98,8 @@
   --radius-pill: 9999px;
 
   /* ── Typography ─────────────────────────────────────────────── */
-  --font-sans: 'DM Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-serif: 'Instrument Serif', Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, 'Times New Roman', serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
 
   /* ── Shadows ────────────────────────────────────────────────── */

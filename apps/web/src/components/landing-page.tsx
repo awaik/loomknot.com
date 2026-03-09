@@ -233,7 +233,7 @@ export function LandingPage() {
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
               <span className="text-[2rem] mb-4 block">{card.icon}</span>
-              <h3 className="font-serif text-lg mb-3">{cards(card.titleKey)}</h3>
+              <h3 className="font-serif text-lg font-medium mb-3">{cards(card.titleKey)}</h3>
               <p className="text-[0.88rem] text-muted leading-relaxed mb-3">{cards(card.descKey)}</p>
               <p className="text-[0.82rem] text-content-tertiary leading-relaxed">{cards(card.detailKey)}</p>
             </div>
@@ -262,7 +262,7 @@ export function LandingPage() {
                 {step.num}
               </div>
               <span className="text-[2rem] mb-3.5 block">{step.icon}</span>
-              <h3 className="font-serif text-lg mb-2">{how(step.titleKey)}</h3>
+              <h3 className="font-serif text-lg font-medium mb-2">{how(step.titleKey)}</h3>
               <p className="text-[0.84rem] text-cream/55 leading-relaxed">{how(step.descKey)}</p>
             </div>
           ))}
@@ -312,7 +312,7 @@ export function LandingPage() {
         {/* Learning + Renovation — compact */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="reveal">
-            <h3 className="font-serif text-[1.3rem] mb-3 flex items-center gap-2">
+            <h3 className="font-serif text-[1.5rem] mb-3 flex items-center gap-2">
               <span>📚</span> {scenarios('learningTitle')}
             </h3>
             <blockquote className="border-s-[3px] border-accent ps-5 py-2 text-[0.9rem] text-muted leading-relaxed italic">
@@ -320,7 +320,7 @@ export function LandingPage() {
             </blockquote>
           </div>
           <div className="reveal">
-            <h3 className="font-serif text-[1.3rem] mb-3 flex items-center gap-2">
+            <h3 className="font-serif text-[1.5rem] mb-3 flex items-center gap-2">
               <span>🔨</span> {scenarios('renovationTitle')}
             </h3>
             <blockquote className="border-s-[3px] border-info ps-5 py-2 text-[0.9rem] text-muted leading-relaxed italic">
@@ -375,7 +375,7 @@ export function LandingPage() {
               style={{ transitionDelay: `${i * 0.06}s` }}
             >
               <span className="text-[1.5rem] mb-3 block">{item.icon}</span>
-              <h4 className="font-serif text-lg mb-2">{tools(item.titleKey)}</h4>
+              <h4 className="font-serif text-lg font-medium mb-2">{tools(item.titleKey)}</h4>
               <p className="text-[0.85rem] text-muted leading-relaxed">{tools(item.descKey)}</p>
             </div>
           ))}
@@ -452,7 +452,7 @@ export function LandingPage() {
               style={{ transitionDelay: `${i * 0.1}s` }}
             >
               <span className="text-[1.8rem] mb-3 block">{p.icon}</span>
-              <h3 className="font-serif text-lg mb-2">{forWhom(p.titleKey)}</h3>
+              <h3 className="font-serif text-lg font-medium mb-2">{forWhom(p.titleKey)}</h3>
               <p className="text-[0.86rem] text-muted leading-relaxed">{forWhom(p.descKey)}</p>
             </div>
           ))}
@@ -475,7 +475,7 @@ export function LandingPage() {
               style={{ transitionDelay: `${(i % 2) * 0.1}s` }}
             >
               <span className="text-[1.5rem] mb-3 block">{card.icon}</span>
-              <h4 className="font-serif text-lg mb-1.5">{tech(card.titleKey)}</h4>
+              <h4 className="font-serif text-lg font-medium mb-1.5">{tech(card.titleKey)}</h4>
               <p className="text-[0.86rem] text-muted leading-relaxed">{tech(card.descKey)}</p>
             </div>
           ))}

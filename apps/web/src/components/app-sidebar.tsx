@@ -16,7 +16,7 @@ import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { useAuthStore, logout } from '@/lib/auth';
 import { useProjects } from '@/hooks/use-projects';
-import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { CreateProjectDialog } from './create-project-dialog';
 import { LanguageSwitcher } from './language-switcher';
 
@@ -25,13 +25,12 @@ export function AppSidebar() {
   const { user } = useAuthStore();
   const { data: projects } = useProjects();
   const pathname = usePathname();
-  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleLogout = async () => {
     await logout();
-    router.replace('/login');
+    window.location.href = '/login';
   };
 
   const navItems = [
@@ -44,7 +43,7 @@ export function AppSidebar() {
       {/* Logo */}
       <div className="flex h-14 items-center justify-between px-4 border-b border-border">
         <Link href="/app" className="flex items-center gap-2">
-          <span className="font-serif text-lg font-bold text-content">
+          <span className="font-serif text-lg font-semibold text-content">
             Loom<span className="text-thread">knot</span>
           </span>
         </Link>

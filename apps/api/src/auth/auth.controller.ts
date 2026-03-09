@@ -103,6 +103,7 @@ export class AuthController {
       await this.auth.logout(refreshToken);
     }
 
-    reply.clearCookie(REFRESH_COOKIE, { path: '/' });
+    const { maxAge: _, ...clearOptions } = COOKIE_OPTIONS;
+    reply.clearCookie(REFRESH_COOKIE, clearOptions);
   }
 }
