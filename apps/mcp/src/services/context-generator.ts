@@ -1,6 +1,6 @@
 import { eq, and, isNull } from 'drizzle-orm';
 import { memories, projects } from '@loomknot/shared/db';
-import { db } from './db';
+import { db } from './db.js';
 
 interface MemoryRow {
   category: string;
