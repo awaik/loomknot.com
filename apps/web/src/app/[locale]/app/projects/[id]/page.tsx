@@ -10,6 +10,7 @@ import {
   Lock,
   Globe,
   FolderKanban,
+  Pin,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useProject } from '@/hooks/use-projects';
@@ -17,7 +18,7 @@ import { useProjectPages } from '@/hooks/use-pages';
 import { useMemories } from '@/hooks/use-memories';
 import { useMembers } from '@/hooks/use-members';
 import { useSocketRoom } from '@/lib/socket';
-import { EVENTS, ROOMS } from '@loomknot/shared';
+import { EVENTS, ROOMS, INDEX_PAGE_SLUG } from '@loomknot/shared';
 import { Link } from '@/i18n/navigation';
 import { PageHeader } from '@/components/page-header';
 import { EmptyState } from '@/components/empty-state';
@@ -158,9 +159,31 @@ function PagesTab({ projectId }: { projectId: string }) {
     );
   }
 
+  const indexPage = pages.find((p) => p.slug === INDEX_PAGE_SLUG);
+  const otherPages = pages.filter((p) => p.slug !== INDEX_PAGE_SLUG);
+
   return (
     <div className="space-y-2">
-      {pages.map((page) => (
+      {indexPage && (
+        <Link
+          href={`/app/projects/${projectId}/pages/${indexPage.id}`}
+          className="flex items-center gap-3 rounded-md border border-thread/30 bg-thread/5 px-4 py-4 transition-colors hover:bg-thread/10"
+        >
+          <Pin className="h-5 w-5 shrink-0 text-thread" />
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold text-content">
+              {indexPage.title}
+            </p>
+            {indexPage.description && (
+              <p className="text-xs text-content-secondary truncate mt-0.5">
+                {indexPage.description}
+              </p>
+            )}
+          </div>
+          <StatusBadge status={indexPage.status} />
+        </Link>
+      )}
+      {otherPages.map((page) => (
         <Link
           key={page.id}
           href={`/app/projects/${projectId}/pages/${page.id}`}

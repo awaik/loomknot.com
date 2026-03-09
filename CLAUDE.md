@@ -252,6 +252,16 @@ Each page exists in two modes:
 - **Human mode** — beautiful UI, map, photos, buttons
 - **Agent mode** — structured data, preferences, constraints (WebMCP-compatible format)
 
+### Index Page Convention
+
+Every project has an auto-created **index page** (`slug === "index"`, constant `INDEX_PAGE_SLUG` from `@loomknot/shared/constants`). Created atomically in the same transaction as the project (both API and MCP).
+
+- **Cannot be deleted** (API returns 403, MCP returns `FORBIDDEN`)
+- **Slug "index" is reserved** — creating a page with this slug is rejected (400 / `VALIDATION`)
+- **UI treatment** — pinned at top of pages list with `Pin` icon and distinct styling
+- **Status** — `published` by default, `sortOrder: 0`
+- If project has a description, an initial `text` block is created with it
+
 ### Preference Negotiation
 
 When participant preferences conflict, agents don't just "see" each other's preferences — they propose compromises via constraint satisfaction. This is the core technical moat.
@@ -317,10 +327,10 @@ Agent gateway — implements Model Context Protocol for connecting external AI a
 'page/suggest'    — suggest page change
 'page/list'       — list project pages
 
-// Preference operations
-'preferences/get' — get user preferences
-'preferences/set' — set preference
-'preferences/negotiate' — start negotiation with other agents
+// Negotiation operations
+'negotiations/list'    — list project negotiations
+'negotiations/get'     — get negotiation with options and votes
+'negotiations/propose' — propose option for open negotiation
 
 // Project operations
 'project/info'    — project and member info
@@ -347,8 +357,7 @@ AppModule
 ├── ProjectsModule (CRUD, members, invites)
 ├── PagesModule (CRUD, content blocks, rendering)
 ├── MemoryModule (3-level memory CRUD + vector search)
-├── PreferencesModule (user preferences)
-├── NegotiationModule (preference conflict resolution)
+├── NegotiationModule (memory conflict resolution, voting)
 ├── AgentModule (agent connections, API keys)
 ├── HealthModule (@nestjs/terminus)
 └── SocketModule (WebSocketGateway — auth, presence, rooms)
@@ -526,6 +535,6 @@ docker compose down               # Stop
 ---
 
 **Version**: 1.0
-**Last updated**: 2026-03-08
+**Last updated**: 2026-03-09
 **Architecture**: Turborepo + NestJS 11/Fastify + Next.js 15 + PostgreSQL 16/pgvector + Redis 7 + Drizzle ORM + MCP (@modelcontextprotocol/sdk) + JWT (jose) + Socket.io + Traefik v3 (swarm provider) + Docker Swarm
 **Local port**: 8026

@@ -8,7 +8,6 @@
 │                                                                  │
 │  User ──1:M──> Session (refresh tokens)                          │
 │    │                                                             │
-│    ├──1:M──> Preference (personal preferences)                   │
 │    ├──1:M──> ApiKey (key = access to all user's projects)        │
 │    └──M:M──> Project (through ProjectMember)                     │
 │                                                                  │
@@ -266,34 +265,6 @@ INDEXES:
 
 ---
 
-### 2.7 preferences
-
-**Separate from memories — because preferences participate in negotiation.**
-
-```
-preferences
-├── id              cuid2, PK
-├── userId          FK → users.id, CASCADE
-├── category        varchar(100)          — travel, food, accommodation, activity, budget, schedule
-├── key             varchar(255)          — budget_per_night, wake_up_time, dietary...
-├── value           jsonb, not null
-├── importance      enum: must | prefer | nice_to_have    — weight for negotiation
-├── negotiable      boolean, default true                  — open to compromise
-├── source          enum: explicit | inferred | agent
-├── createdAt       timestamp
-└── updatedAt       timestamp
-
-UNIQUE(userId, category, key)
-```
-
-**Question: preferences — global or per-project?**
-
-- **Option A — Global (current):** User fills in "I'm vegetarian" once — and it works across all projects
-- **Option B — Per-project:** Each project has its own set. Can copy from global
-- **Option C — Hybrid:** Global + project-level overrides (in this project the budget is higher than usual)
-
-**Recommendation:** Option C — global preferences + ability to override in a specific project via `project_preference_overrides` or simply through memories level=private.
-
 ---
 
 ### 2.8 api_keys
@@ -356,9 +327,6 @@ pages/get                  — get a page
 pages/create               — create a page in the project
 pages/update               — update a page
 
-── Preferences (global) ──
-preferences/get            — get user preferences
-preferences/set            — set a preference
 ```
 
 **Key feature — cross-project search:**
@@ -368,7 +336,7 @@ User: "Where should I go given my health conditions?"
 AI calls memory/search(query: "health contraindications medications")
   → Searches ACROSS ALL user's projects
   → Finds in the "Health" project: test results, medications, restrictions
-  → Combines with preferences (budget, interests)
+  → Combines with private memories from other projects (budget, interests)
   → Responds with full context taken into account
 ```
 
@@ -388,13 +356,14 @@ AI calls memory/search(query: "health contraindications medications")
 3. "Where should I go on vacation?"
    → AI: memory/search("health restrictions climate")
    → Finds: "no hot climates" (from "Health" project)
-   → AI: preferences/get → budget, interests
+   → AI: memory/search("budget interests travel preferences")
+   → Finds private memories across projects
    → Suggests destinations considering ALL context
 
 4. "Plan a trip to Barcelona"
    → AI: projects/create("Barcelona 2026")
    → AI: memory/search("dietary food restrictions")
-   → Finds: "vegetarian" (preferences) + "nut allergy" (from "Health" project)
+   → Finds: "vegetarian" + "nut allergy" (from "Health" project)
    → Generates an itinerary considering both restrictions
 ```
 
@@ -525,37 +494,29 @@ sessions
 
 ## 3. Key Questions for Discussion
 
-### Q1: Memory vs Preferences — isn't this duplication?
+### Q1: How do permanent user traits work without a separate preferences table?
 
-Currently there are both `memories` (level=private) and `preferences`. Both store user data.
+All user data lives in `memories` inside projects. Permanent traits ("vegetarian", "nut allergy") are stored as private memories in relevant projects (e.g., "Health"). Cross-project search (`memory/search`) lets agents find these traits from any project context.
 
-| | memories (private) | preferences |
-|---|---|---|
-| **Scope** | per project | global (user-wide) |
-| **Purpose** | project context ("I want a beach on this trip") | permanent traits ("vegetarian") |
-| **Participation in negotiation** | not directly | yes, key input |
-| **Vector search** | yes (embedding) | no |
-| **Mutability** | changes frequently | changes rarely |
-
-**Conclusion:** Not duplication. Preferences are "who I am". Memories are "what has been decided in this project". The agent reads the user's preferences + project memories for the full picture.
+This avoids duplication between a global preferences table and project memories. The agent reads private memories + project memories for the full picture.
 
 ---
 
 ### Q2: How does an agent see others' private memories for negotiation?
 
-**Problem:** Private memories are private by definition. But negotiation requires comparing different people's preferences.
+**Problem:** Private memories are private by definition. But negotiation requires comparing different people's members' preferences.
 
 **Solution:** The agent does NOT see others' private memories. The negotiation engine works server-side:
 
 ```
-1. Server collects all members' preferences (preferences — not private memories)
+1. Server collects all members' project-level memories (NOT private memories)
 2. Server detects conflict (Masha: budget 80€, Petya: budget 200€)
 3. Server calls LLM to generate compromises
 4. LLM sees only categories + values, NOT user names (anonymization)
 5. Options are published in negotiation → everyone votes
 ```
 
-**Alternative:** Preferences with the `negotiable=true` flag are automatically available to the negotiation engine. Preferences with `negotiable=false` (medical restrictions) are only must-constraints, not subject to negotiation.
+Private memories with sensitive data (medical restrictions) act as must-constraints for the owner's agent but are never exposed to other members or the negotiation engine.
 
 ---
 
@@ -694,8 +655,7 @@ Page request (human mode)
 GET /p/{slug}
   │
   ├── Authenticated?
-  │     ├── Yes → load user preferences
-  │     │         → load private memories in this project
+  │     ├── Yes → load private memories in this project
   │     │         → render with personalization (sorting, filtering, highlights)
   │     │
   │     └── No → show public version (project memories + public memories)
@@ -709,7 +669,7 @@ GET /p/{slug}
 - "Budget" block shows "your share" vs "total"
 - "Itinerary" block highlights "suits you" / "compromise"
 
-**These are NOT different pages.** It's one page + one set of blocks + client-side personalization based on preferences.
+**These are NOT different pages.** It's one page + one set of blocks + client-side personalization based on private memories.
 
 ---
 
@@ -726,7 +686,7 @@ Batch 3 (Content):
   pages → page_blocks
 
 Batch 4 (Memory):
-  memories → preferences
+  memories
 
 Batch 5 (API Keys):
   api_keys
@@ -777,9 +737,9 @@ Batch 7 (Audit):
    → Claude: projects/create("Barcelona 2026", vertical: "travel")
    → Claude: memory/search("health restrictions climate")
      → Finds in "Health" project: no climate restrictions ✓
-   → Claude: preferences/get
-     → vegetarian, budget: 100€, walking
-   → Claude: pages/create(itinerary considering preferences + health)
+   → Claude: memory/search("dietary budget travel style")
+     → Finds across projects: vegetarian, budget: 100€, walking
+   → Claude: pages/create(itinerary considering all found context)
 
 2. Masha invites Petya on the site
    → INSERT invites (email: petya@..., role: editor)
@@ -788,9 +748,9 @@ Batch 7 (Audit):
 3. Petya connects HIS OWN Claude (his own api_key) → also sees the project
    → Petya's Claude: projects/list → sees "Barcelona 2026"
    → Petya's Claude: memory/read(projectId) → sees project memories
-   → Petya's Claude: preferences/get → budget: 200€, nightlife
+   → Petya's Claude: memory/search("budget preferences") → budget: 200€, nightlife
 
-4. System detects a preferences conflict
+4. System detects a memory conflict
    → INSERT negotiations (budget: 100€ vs 200€)
    → LLM → INSERT negotiation_options ×3
    → Masha and Petya vote → resolved
@@ -813,8 +773,8 @@ Masha: "Where should I go on vacation considering my health and budget?"
    → "Health" project: no high altitude, taking antihistamines
 → Claude: memory/search("budget finances")
    → "Finances" project (if exists): 2000€ set aside for vacation
-→ Claude: preferences/get
-   → vegetarian, walking, budget 100€/night
+→ Claude: memory/search("food travel style budget")
+   → Finds across projects: vegetarian, walking, budget 100€/night
 
 → Claude combines everything → suggests: Croatia, coast, no mountains
 → Masha: "Great, create a project"
@@ -828,12 +788,12 @@ Masha: "Where should I go on vacation considering my health and budget?"
 | # | Question | Options | Impact |
 |---|----------|---------|--------|
 | 1 | Page blocks: separate table or JSONB? | Table (recommended) / JSONB | Content architecture |
-| 2 | Preferences: global or per-project? | Global + overrides (recommended) / Per-project | User flow, onboarding |
+| 2 | ~~Preferences~~ | ~~Decided: all data lives in memories inside projects, cross-project search~~ | ~~Decided~~ |
 | 3 | ~~API key~~ | ~~Decided: per-user, one key = all projects~~ | ~~Decided~~ |
 | 4 | Do we need memory versioning? | No for MVP (recommended) / Yes | Complexity |
 | 5 | Travel entities: JSONB or separate tables? | JSONB (recommended) / Tables | Flexibility vs type safety |
 | 6 | Negotiation: majority vote or consensus? | Majority (recommended) / Consensus | Negotiation UX |
 | 7 | Memory TTL (expiresAt): needed? | Yes — useful for "consider until..." | Cron job |
-| 8 | locale/timezone: in users or preferences? | Preferences (recommended) | users schema |
+| 8 | locale/timezone: in users or memories? | Private memory (recommended) | users schema |
 | 9 | Activity log: all actions or only important ones? | All mutations (recommended) | DB volume |
 | 10 | sessions: in DB or Redis? | Redis (recommended) / DB | Performance |

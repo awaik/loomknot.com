@@ -4,10 +4,12 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
   projects,
   projectMembers,
+  pages,
+  pageBlocks,
   activityLog,
   createId,
 } from '@loomknot/shared/db';
-import { slugify } from '@loomknot/shared/constants';
+import { slugify, INDEX_PAGE_SLUG } from '@loomknot/shared/constants';
 import { db } from '@/services/db';
 import { toolResult, toolError, McpToolError } from '@/utils/errors';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions';
@@ -128,8 +130,9 @@ export function registerProjectTools(
       try {
         const projectId = createId();
         const slug = slugify(title);
+        const indexPageId = createId();
 
-        // Insert project + member in a transaction
+        // Insert project + member + index page in a transaction
         await db.transaction(async (tx) => {
           await tx.insert(projects).values({
             id: projectId,
@@ -145,6 +148,27 @@ export function registerProjectTools(
             userId,
             role: 'owner',
           });
+
+          // Create index page (project overview)
+          await tx.insert(pages).values({
+            id: indexPageId,
+            projectId,
+            slug: INDEX_PAGE_SLUG,
+            title,
+            status: 'published',
+            sortOrder: 0,
+            createdBy: userId,
+          });
+
+          if (description) {
+            await tx.insert(pageBlocks).values({
+              id: createId(),
+              pageId: indexPageId,
+              type: 'text',
+              content: { text: description },
+              sortOrder: 0,
+            });
+          }
         });
 
         // Log activity (fire-and-forget)
@@ -167,6 +191,7 @@ export function registerProjectTools(
           description: description ?? null,
           vertical: vertical ?? 'general',
           role: 'owner',
+          indexPageId,
         });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
