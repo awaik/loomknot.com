@@ -254,18 +254,34 @@ export class ProjectsService {
    * List members of a project with user info.
    */
   async listMembers(projectId: string) {
-    return this.db
+    const rows = await this.db
       .select({
-        id: users.id,
-        name: users.name,
-        email: users.email,
-        avatarUrl: users.avatarUrl,
+        id: projectMembers.id,
+        userId: projectMembers.userId,
+        projectId: projectMembers.projectId,
         role: projectMembers.role,
         joinedAt: projectMembers.joinedAt,
+        userName: users.name,
+        userEmail: users.email,
+        userAvatarUrl: users.avatarUrl,
       })
       .from(projectMembers)
       .innerJoin(users, eq(users.id, projectMembers.userId))
       .where(eq(projectMembers.projectId, projectId));
+
+    return rows.map((row) => ({
+      id: row.id,
+      userId: row.userId,
+      projectId: row.projectId,
+      role: row.role,
+      joinedAt: row.joinedAt,
+      user: {
+        id: row.userId,
+        email: row.userEmail,
+        name: row.userName,
+        avatarUrl: row.userAvatarUrl,
+      },
+    }));
   }
 
   /**
