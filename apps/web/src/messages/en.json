@@ -222,7 +222,31 @@
     "activityTitle": "Activity feed",
     "activityDesc": "Recent activity for this project will appear here.",
     "noMembersTitle": "No members",
-    "noMembersDesc": "Invite people to collaborate on this project."
+    "noMembersDesc": "Invite people to collaborate on this project.",
+    "invitePlaceholder": "colleague@example.com",
+    "inviteSend": "Invite",
+    "inviteSending": "Sending...",
+    "inviteSuccess": "Invitation sent to {email}",
+    "inviteErrorAlreadyMember": "This user is already a member of the project.",
+    "inviteErrorPending": "A pending invitation already exists for this email.",
+    "inviteError": "Failed to send invitation. Please try again.",
+    "roleEditor": "Editor",
+    "roleMember": "Member",
+    "roleViewer": "Viewer"
+  },
+  "Invite": {
+    "title": "Project Invitation",
+    "accepting": "Accepting invitation...",
+    "accepted": "You have joined the project!",
+    "acceptedDesc": "Redirecting to the project...",
+    "expired": "This invitation has expired.",
+    "alreadyMember": "You are already a member of this project.",
+    "emailMismatch": "This invitation was sent to a different email address. Please log in with the correct account.",
+    "invalid": "Invalid or expired invitation link.",
+    "error": "Something went wrong. Please try again.",
+    "goToProject": "Go to project",
+    "goToLogin": "Log in with a different account",
+    "backToApp": "Back to dashboard"
   },
   "PageViewer": {
     "notFound": "Page not found",

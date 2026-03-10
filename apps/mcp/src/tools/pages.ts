@@ -7,7 +7,7 @@ import {
   activityLog,
   createId,
 } from '@loomknot/shared/db';
-import { slugify, INDEX_PAGE_SLUG } from '@loomknot/shared/constants';
+import { slugify } from '@loomknot/shared/constants';
 import { db } from '@/services/db.js';
 import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
@@ -118,9 +118,6 @@ export function registerPageTools(
         await requirePermission(userId, projectId, 'canEditMemory');
 
         const pageSlug = slug ?? slugify(title);
-        if (pageSlug === INDEX_PAGE_SLUG || slugify(pageSlug) === INDEX_PAGE_SLUG) {
-          return toolError('VALIDATION', 'The slug "index" is reserved for the project overview page');
-        }
 
         const pageId = createId();
 
@@ -342,10 +339,6 @@ export function registerPageTools(
 
         const page = pageRows[0];
         await requirePermission(userId, page.projectId, 'canEditMemory');
-
-        if (page.slug === INDEX_PAGE_SLUG) {
-          return toolError('FORBIDDEN', 'Cannot delete the project index page');
-        }
 
         await db
           .update(pages)

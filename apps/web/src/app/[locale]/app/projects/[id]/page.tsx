@@ -10,21 +10,24 @@ import {
   Lock,
   Globe,
   FolderKanban,
-  Pin,
+  Send,
+  Check,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { useProject } from '@/hooks/use-projects';
 import { useProjectPages } from '@/hooks/use-pages';
 import { useMemories } from '@/hooks/use-memories';
-import { useMembers } from '@/hooks/use-members';
+import { useMembers, useInviteMember } from '@/hooks/use-members';
+import { useAuthStore } from '@/lib/auth';
 import { useSocketRoom } from '@/lib/socket';
-import { EVENTS, ROOMS, INDEX_PAGE_SLUG } from '@loomknot/shared';
+import { EVENTS, ROOMS, ROLE_PERMISSIONS } from '@loomknot/shared';
 import { Link } from '@/i18n/navigation';
 import { PageHeader } from '@/components/page-header';
 import { EmptyState } from '@/components/empty-state';
 import { StatusBadge } from '@/components/status-badge';
 import { Markdown } from '@/components/markdown';
+import { ApiError } from '@/lib/api';
 
 type Tab = 'pages' | 'memories' | 'activity' | 'members';
 
@@ -163,31 +166,9 @@ function PagesTab({ projectId }: { projectId: string }) {
     );
   }
 
-  const indexPage = pages.find((p) => p.slug === INDEX_PAGE_SLUG);
-  const otherPages = pages.filter((p) => p.slug !== INDEX_PAGE_SLUG);
-
   return (
     <div className="space-y-2">
-      {indexPage && (
-        <Link
-          href={`/app/projects/${projectId}/pages/${indexPage.id}`}
-          className="flex items-center gap-3 rounded-md border border-thread/30 bg-thread/5 px-4 py-4 transition-colors hover:bg-thread/10"
-        >
-          <Pin className="h-5 w-5 shrink-0 text-thread" />
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-content">
-              {indexPage.title}
-            </p>
-            {indexPage.description && (
-              <p className="text-xs text-content-secondary truncate mt-0.5">
-                {indexPage.description}
-              </p>
-            )}
-          </div>
-          <StatusBadge status={indexPage.status} />
-        </Link>
-      )}
-      {otherPages.map((page) => (
+      {pages.map((page) => (
         <Link
           key={page.id}
           href={`/app/projects/${projectId}/pages/${page.id}`}
@@ -296,6 +277,14 @@ function ActivityTab({ projectId }: { projectId: string }) {
 function MembersTab({ projectId }: { projectId: string }) {
   const t = useTranslations('Project');
   const { data: members, isLoading } = useMembers(projectId);
+  const currentUser = useAuthStore((s) => s.user);
+
+  // Determine if current user can manage members
+  const myMembership = members?.find((m) => m.userId === currentUser?.id);
+  const canManageMembers =
+    myMembership?.role
+      ? ROLE_PERMISSIONS[myMembership.role as keyof typeof ROLE_PERMISSIONS]?.canManageMembers ?? false
+      : false;
 
   if (isLoading) {
     return (
@@ -307,42 +296,127 @@ function MembersTab({ projectId }: { projectId: string }) {
     );
   }
 
-  if (!members || members.length === 0) {
-    return (
-      <EmptyState
-        icon={Users}
-        title={t('noMembersTitle')}
-        description={t('noMembersDesc')}
-      />
-    );
-  }
+  return (
+    <div className="space-y-4">
+      {canManageMembers && <InviteForm projectId={projectId} />}
+
+      {!members || members.length === 0 ? (
+        <EmptyState
+          icon={Users}
+          title={t('noMembersTitle')}
+          description={t('noMembersDesc')}
+        />
+      ) : (
+        <div className="space-y-2">
+          {members.map((member) => (
+            <div
+              key={member.id}
+              className="flex items-center gap-3 rounded-md border border-border bg-surface-elevated px-4 py-3"
+            >
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-pill bg-thread/10 text-sm font-medium text-thread">
+                {member.user.name?.[0]?.toUpperCase() ??
+                  member.user.email[0].toUpperCase()}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-content truncate">
+                  {member.user.name ?? member.user.email}
+                </p>
+                {member.user.name && (
+                  <p className="text-xs text-content-tertiary truncate">
+                    {member.user.email}
+                  </p>
+                )}
+              </div>
+              <span className="rounded-pill bg-surface-alt px-2 py-0.5 text-xs font-medium text-content-secondary">
+                {member.role}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function InviteForm({ projectId }: { projectId: string }) {
+  const t = useTranslations('Project');
+  const [email, setEmail] = useState('');
+  const [role, setRole] = useState<string>('member');
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const inviteMember = useInviteMember(projectId);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) return;
+
+    setFeedback(null);
+
+    try {
+      await inviteMember.mutateAsync({ email: trimmedEmail, role });
+      setFeedback({ type: 'success', message: t('inviteSuccess', { email: trimmedEmail }) });
+      setEmail('');
+      setRole('member');
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 409) {
+        const msg = ((err.data as { message?: string })?.message ?? '').toLowerCase();
+        const errorMessage = msg.includes('already a member')
+          ? t('inviteErrorAlreadyMember')
+          : t('inviteErrorPending');
+        setFeedback({ type: 'error', message: errorMessage });
+      } else {
+        setFeedback({ type: 'error', message: t('inviteError') });
+      }
+    }
+  };
 
   return (
-    <div className="space-y-2">
-      {members.map((member) => (
-        <div
-          key={member.id}
-          className="flex items-center gap-3 rounded-md border border-border bg-surface-elevated px-4 py-3"
-        >
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-pill bg-thread/10 text-sm font-medium text-thread">
-            {member.user.name?.[0]?.toUpperCase() ??
-              member.user.email[0].toUpperCase()}
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-content truncate">
-              {member.user.name ?? member.user.email}
-            </p>
-            {member.user.name && (
-              <p className="text-xs text-content-tertiary truncate">
-                {member.user.email}
-              </p>
-            )}
-          </div>
-          <span className="rounded-pill bg-surface-alt px-2 py-0.5 text-xs font-medium text-content-secondary">
-            {member.role}
-          </span>
+    <div className="rounded-md border border-border bg-surface-elevated p-4">
+      <form onSubmit={handleSubmit} className="flex items-end gap-3">
+        <div className="flex-1">
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setFeedback(null);
+            }}
+            placeholder={t('invitePlaceholder')}
+            className="w-full rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content placeholder:text-content-tertiary transition-colors focus:border-border-focus focus:outline-none"
+          />
         </div>
-      ))}
+        <select
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
+          className="rounded-sm border border-border bg-surface px-3 py-2 text-sm text-content transition-colors focus:border-border-focus focus:outline-none"
+        >
+          <option value="editor">{t('roleEditor')}</option>
+          <option value="member">{t('roleMember')}</option>
+          <option value="viewer">{t('roleViewer')}</option>
+        </select>
+        <button
+          type="submit"
+          disabled={!email.trim() || inviteMember.isPending}
+          className={cn(
+            'flex cursor-pointer items-center gap-1.5 rounded-sm bg-thread px-4 py-2 text-sm font-medium text-white transition-colors',
+            'hover:bg-thread-dark',
+            'disabled:opacity-50 disabled:cursor-not-allowed',
+          )}
+        >
+          <Send className="h-3.5 w-3.5" />
+          {inviteMember.isPending ? t('inviteSending') : t('inviteSend')}
+        </button>
+      </form>
+      {feedback && (
+        <div className={cn(
+          'mt-3 flex items-center gap-2 text-sm',
+          feedback.type === 'success' ? 'text-sage' : 'text-accent',
+        )}>
+          {feedback.type === 'success' && <Check className="h-4 w-4" />}
+          {feedback.message}
+        </div>
+      )}
     </div>
   );
 }

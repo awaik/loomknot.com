@@ -10,12 +10,11 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { randomBytes } from 'node:crypto';
 import { and, count, eq, inArray, isNull, or } from 'drizzle-orm';
-import { slugify, INDEX_PAGE_SLUG } from '@loomknot/shared/constants';
+import { slugify } from '@loomknot/shared/constants';
 import {
   createId,
   invites,
   memories,
-  pageBlocks,
   pages,
   projectMembers,
   projects,
@@ -60,28 +59,6 @@ export class ProjectsService {
         userId,
         role: 'owner',
       });
-
-      // Create index page (project overview)
-      const indexPageId = createId();
-      await tx.insert(pages).values({
-        id: indexPageId,
-        projectId,
-        slug: INDEX_PAGE_SLUG,
-        title: dto.title,
-        status: 'published',
-        sortOrder: 0,
-        createdBy: userId,
-      });
-
-      if (dto.description) {
-        await tx.insert(pageBlocks).values({
-          id: createId(),
-          pageId: indexPageId,
-          type: 'text',
-          content: { text: dto.description },
-          sortOrder: 0,
-        });
-      }
     });
 
     return this.findById(projectId);

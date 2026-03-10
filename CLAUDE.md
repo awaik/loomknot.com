@@ -252,16 +252,6 @@ Each page exists in two modes:
 - **Human mode** — beautiful UI, map, photos, buttons
 - **Agent mode** — structured data, preferences, constraints (WebMCP-compatible format)
 
-### Index Page Convention
-
-Every project has an auto-created **index page** (`slug === "index"`, constant `INDEX_PAGE_SLUG` from `@loomknot/shared/constants`). Created atomically in the same transaction as the project (both API and MCP).
-
-- **Cannot be deleted** (API returns 403, MCP returns `FORBIDDEN`)
-- **Slug "index" is reserved** — creating a page with this slug is rejected (400 / `VALIDATION`)
-- **UI treatment** — pinned at top of pages list with `Pin` icon and distinct styling
-- **Status** — `published` by default, `sortOrder: 0`
-- If project has a description, an initial `text` block is created with it
-
 ### Preference Negotiation
 
 When participant preferences conflict, agents don't just "see" each other's preferences — they propose compromises via constraint satisfaction. This is the core technical moat.

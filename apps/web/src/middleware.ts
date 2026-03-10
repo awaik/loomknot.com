@@ -21,9 +21,13 @@ export function middleware(request: NextRequest) {
   const hasRefresh = request.cookies.has('lk_refresh');
 
   // Protected routes: require refresh cookie
-  if (pathname.startsWith('/app')) {
+  if (pathname.startsWith('/app') || pathname.startsWith('/invites')) {
     if (!hasRefresh) {
-      return NextResponse.redirect(new URL('/login', request.url));
+      const loginUrl = new URL('/login', request.url);
+      if (pathname.startsWith('/invites')) {
+        loginUrl.searchParams.set('redirect', pathname);
+      }
+      return NextResponse.redirect(loginUrl);
     }
   }
 

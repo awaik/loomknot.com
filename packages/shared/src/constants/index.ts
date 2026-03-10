@@ -41,9 +41,6 @@ export const ROLE_PERMISSIONS: Record<Role, {
 
 export type Permission = keyof typeof ROLE_PERMISSIONS.owner;
 
-// Pages
-export const INDEX_PAGE_SLUG = 'index';
-
 // Pagination
 export const DEFAULT_PAGE_SIZE = 20;
 export const MAX_PAGE_SIZE = 100;
