@@ -13,6 +13,9 @@ const app = express();
 // Trust Traefik reverse proxy (required for express-rate-limit behind proxy)
 app.set('trust proxy', 1);
 
+// --- SSE keepalive interval (prevents proxy idle timeouts) ---
+const SSE_KEEPALIVE_MS = 30_000;
+
 // Parse JSON body for all routes EXCEPT /mcp/messages.
 // SSEServerTransport.handlePostMessage reads the raw request stream,
 // so express.json() must not consume it first.
@@ -30,6 +33,20 @@ interface McpSession {
   server: McpServer;
   userId: string;
   apiKeyId: string;
+  stopKeepalive: (() => void) | null;
+}
+
+/**
+ * Attach an SSE keepalive timer to a response stream.
+ * Returns a stop function. Also auto-clears on response close.
+ */
+function startSseKeepalive(res: express.Response): () => void {
+  const timer = setInterval(() => {
+    if (!res.writableEnded) res.write(':keepalive\n\n');
+  }, SSE_KEEPALIVE_MS);
+  const stop = () => clearInterval(timer);
+  res.on('close', stop);
+  return stop;
 }
 
 const sessions = new Map<string, McpSession>();
@@ -95,10 +112,15 @@ app.post('/mcp/sse', connectionLimiter, async (req, res) => {
         server,
         userId: auth.userId,
         apiKeyId: auth.apiKeyId,
+        stopKeepalive: null,
       });
+      console.log(`[MCP] session created (streamable) id=${sessionId.slice(0, 8)}… sessions=${sessions.size}`);
 
       transport.onclose = () => {
+        const s = sessions.get(sessionId);
+        s?.stopKeepalive?.();
         sessions.delete(sessionId);
+        console.log(`[MCP] session closed (streamable) id=${sessionId.slice(0, 8)}… remaining=${sessions.size}`);
       };
 
       await transport.handleRequest(req, res, req.body);
@@ -142,7 +164,7 @@ app.get('/mcp/sse', connectionLimiter, async (req, res) => {
       return;
     }
 
-    // With mcp-session-id → Streamable HTTP SSE notification stream
+    // With mcp-session-id → Streamable HTTP SSE notification stream (long-lived)
     const sessionId = req.headers['mcp-session-id'] as string | undefined;
     if (sessionId) {
       const session = sessions.get(sessionId);
@@ -150,6 +172,10 @@ app.get('/mcp/sse', connectionLimiter, async (req, res) => {
         res.status(404).json({ error: 'Session not found' });
         return;
       }
+
+      // Keepalive for the Streamable HTTP SSE stream (stored on session for DELETE cleanup)
+      session.stopKeepalive = startSseKeepalive(res);
+
       await session.transport.handleRequest(req, res);
       return;
     }
@@ -163,16 +189,22 @@ app.get('/mcp/sse', connectionLimiter, async (req, res) => {
     const server = createMcpServer(auth.userId, auth.apiKeyId);
     const transport = new SSEServerTransport('/mcp/messages', res);
 
+    const stopKeepalive = startSseKeepalive(res);
+
     sessions.set(transport.sessionId, {
       transport,
       server,
       userId: auth.userId,
       apiKeyId: auth.apiKeyId,
+      stopKeepalive,
     });
+    console.log(`[MCP] session created (legacy SSE) id=${transport.sessionId.slice(0, 8)}… sessions=${sessions.size}`);
 
     res.on('close', () => {
-      server.close().catch(() => {});
+      stopKeepalive();
       sessions.delete(transport.sessionId);
+      console.log(`[MCP] session closed (legacy SSE) id=${transport.sessionId.slice(0, 8)}… remaining=${sessions.size}`);
+      server.close().catch(() => {});
     });
 
     await server.connect(transport);
@@ -196,6 +228,7 @@ app.delete('/mcp/sse', async (req, res) => {
 
     const session = sessions.get(sessionId);
     if (session) {
+      session.stopKeepalive?.();
       await session.server.close();
       sessions.delete(sessionId);
     }
@@ -213,16 +246,18 @@ app.delete('/mcp/sse', async (req, res) => {
 
 app.post('/mcp/messages', messageLimiter, async (req, res) => {
   try {
-    const sessionId = req.query.sessionId as string;
-    const session = sessions.get(sessionId);
+    const sessionId = req.query.sessionId as string | undefined;
+    const session = sessionId ? sessions.get(sessionId) : undefined;
 
     if (!session || !(session.transport instanceof SSEServerTransport)) {
+      console.warn(`POST /mcp/messages: session not found (sessionId=${sessionId})`);
       res.status(404).json({ error: 'Session not found' });
       return;
     }
 
     const auth = await authenticateApiKey(req.headers.authorization ?? '');
     if (!auth || auth.apiKeyId !== session.apiKeyId) {
+      console.warn(`POST /mcp/messages: auth mismatch (sessionId=${sessionId})`);
       res.status(401).json({ error: 'Unauthorized: API key does not match session owner' });
       return;
     }
