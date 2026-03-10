@@ -24,6 +24,7 @@ import { Link } from '@/i18n/navigation';
 import { PageHeader } from '@/components/page-header';
 import { EmptyState } from '@/components/empty-state';
 import { StatusBadge } from '@/components/status-badge';
+import { Markdown } from '@/components/markdown';
 
 type Tab = 'pages' | 'memories' | 'activity' | 'members';
 
@@ -261,9 +262,13 @@ function MemoriesTab({ projectId }: { projectId: string }) {
                   {memory.category}
                 </span>
               </div>
-              <p className="mt-1 text-sm text-content-secondary">
-                {memory.summary ?? JSON.stringify(memory.value)}
-              </p>
+              {memory.summary ? (
+                <Markdown className="mt-1">{memory.summary}</Markdown>
+              ) : (
+                <pre className="mt-1 overflow-x-auto text-xs text-content-secondary font-mono whitespace-pre-wrap">
+                  {JSON.stringify(memory.value, null, 2)}
+                </pre>
+              )}
             </div>
             <span className="shrink-0 text-xs text-content-tertiary">
               {memory.source}

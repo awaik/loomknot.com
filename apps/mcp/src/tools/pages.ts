@@ -11,6 +11,7 @@ import { slugify, INDEX_PAGE_SLUG } from '@loomknot/shared/constants';
 import { db } from '@/services/db.js';
 import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
+import { pageUrl } from '@/utils/urls.js';
 
 const blockSchema = z.object({
   type: z.string().min(1).max(50).describe('Block type (e.g. "text", "heading", "image", "map", "list")'),
@@ -52,7 +53,9 @@ export function registerPageTools(
           .where(and(eq(pages.projectId, projectId), isNull(pages.deletedAt)))
           .orderBy(asc(pages.sortOrder), asc(pages.createdAt));
 
-        return toolResult({ pages: rows });
+        return toolResult({
+          pages: rows.map((row) => ({ ...row, url: pageUrl(projectId, row.id) })),
+        });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
         console.error('pages_list error:', err);
@@ -89,7 +92,7 @@ export function registerPageTools(
           .where(eq(pageBlocks.pageId, pageId))
           .orderBy(asc(pageBlocks.sortOrder));
 
-        return toolResult({ ...page, blocks });
+        return toolResult({ ...page, blocks, url: pageUrl(page.projectId, pageId) });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
         console.error('pages_get error:', err);
@@ -167,7 +170,7 @@ export function registerPageTools(
           })
           .catch(() => {});
 
-        return toolResult({ ...page, blocks: insertedBlocks });
+        return toolResult({ ...page, blocks: insertedBlocks, url: pageUrl(projectId, pageId) });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
         console.error('pages_create error:', err);
@@ -309,7 +312,7 @@ export function registerPageTools(
           })
           .catch(() => {});
 
-        return toolResult({ ...updatedPage[0], blocks: updatedBlocks });
+        return toolResult({ ...updatedPage[0], blocks: updatedBlocks, url: pageUrl(page.projectId, pageId) });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
         console.error('pages_update error:', err);

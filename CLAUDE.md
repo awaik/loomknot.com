@@ -538,3 +538,7 @@ docker compose down               # Stop
 **Last updated**: 2026-03-09
 **Architecture**: Turborepo + NestJS 11/Fastify + Next.js 15 + PostgreSQL 16/pgvector + Redis 7 + Drizzle ORM + MCP (@modelcontextprotocol/sdk) + JWT (jose) + Socket.io + Traefik v3 (swarm provider) + Docker Swarm
 **Local port**: 8026
+
+## Code Navigation Rules
+
+When tracing where a symbol is defined or finding all references to it, use LSP (goToDefinition, findReferences, hover) instead of Grep. LSP gives exact results; Grep gives text matches. Use Grep/Glob for discovery (finding files, searching patterns). Use LSP for understanding (definitions, references, type info). After locating a file with Grep/Glob, use LSP to navigate within it rather than reading the whole file.

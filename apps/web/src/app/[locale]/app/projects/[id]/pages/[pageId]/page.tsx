@@ -10,6 +10,7 @@ import { Link } from '@/i18n/navigation';
 import { PageHeader } from '@/components/page-header';
 import { EmptyState } from '@/components/empty-state';
 import { StatusBadge } from '@/components/status-badge';
+import { Markdown } from '@/components/markdown';
 
 export default function PageViewerPage({
   params,
@@ -104,7 +105,7 @@ function BlockRenderer({ block }: { block: PageBlock }) {
 
     return (
       <div className="rounded-md border border-border bg-surface-elevated p-4">
-        <p className="whitespace-pre-wrap text-sm text-content">{text}</p>
+        <Markdown>{text}</Markdown>
       </div>
     );
   }

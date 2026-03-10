@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { Markdown } from '@/components/markdown';
 
 interface PageHeaderProps {
   title: string;
@@ -27,7 +28,7 @@ export function PageHeader({
           {title}
         </h1>
         {description && (
-          <p className="mt-1 text-sm text-content-secondary">{description}</p>
+          <Markdown className="mt-1 prose-p:text-content-secondary">{description}</Markdown>
         )}
       </div>
       {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}

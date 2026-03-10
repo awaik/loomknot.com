@@ -13,6 +13,7 @@ import { slugify, INDEX_PAGE_SLUG } from '@loomknot/shared/constants';
 import { db } from '@/services/db.js';
 import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
+import { projectUrl, pageUrl } from '@/utils/urls.js';
 
 export function registerProjectTools(
   server: McpServer,
@@ -50,7 +51,9 @@ export function registerProjectTools(
           .innerJoin(projects, and(eq(projects.id, projectMembers.projectId), isNull(projects.deletedAt)))
           .where(eq(projectMembers.userId, userId));
 
-        return toolResult({ projects: rows });
+        return toolResult({
+          projects: rows.map((r) => ({ ...r, url: projectUrl(r.projectId) })),
+        });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
         console.error('projects_list error:', err);
@@ -105,6 +108,7 @@ export function registerProjectTools(
           members,
           pageCount: counts.page_count,
           memoryCount: counts.memory_count,
+          url: projectUrl(projectId),
         });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
@@ -192,6 +196,8 @@ export function registerProjectTools(
           vertical: vertical ?? 'general',
           role: 'owner',
           indexPageId,
+          url: projectUrl(projectId),
+          indexPageUrl: pageUrl(projectId, indexPageId),
         });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
@@ -249,7 +255,7 @@ export function registerProjectTools(
           })
           .catch(() => {});
 
-        return toolResult(updated[0]);
+        return toolResult({ ...updated[0], url: projectUrl(projectId) });
       } catch (err) {
         if (err instanceof McpToolError) return toolError(err.code, err.message);
         console.error('projects_update error:', err);
