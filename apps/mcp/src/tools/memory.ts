@@ -8,7 +8,7 @@ import {
   createId,
 } from '@loomknot/shared/db';
 import { db } from '@/services/db.js';
-import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
 import { regenerateContext } from '@/services/context-generator.js';
 
@@ -88,9 +88,7 @@ export function registerMemoryTools(
 
         return toolResult(memory);
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory_write error:', err);
-        return toolError('INTERNAL', 'Failed to write memory');
+        return classifyError(err, 'memory_write');
       }
     },
   );
@@ -179,9 +177,7 @@ export function registerMemoryTools(
 
         return toolResult({ written: results.length, memories: results });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory_bulk-write error:', err);
-        return toolError('INTERNAL', 'Failed to bulk-write memories');
+        return classifyError(err, 'memory_bulk-write');
       }
     },
   );
@@ -251,9 +247,7 @@ export function registerMemoryTools(
           hasMore,
         });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory_read error:', err);
-        return toolError('INTERNAL', 'Failed to read memories');
+        return classifyError(err, 'memory_read');
       }
     },
   );
@@ -326,9 +320,7 @@ export function registerMemoryTools(
 
         return toolResult({ memories: rows, total: rows.length });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory_search error:', err);
-        return toolError('INTERNAL', 'Failed to search memories');
+        return classifyError(err, 'memory_search');
       }
     },
   );
@@ -399,9 +391,7 @@ export function registerMemoryTools(
 
         return toolResult(updated[0]);
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory_update error:', err);
-        return toolError('INTERNAL', 'Failed to update memory');
+        return classifyError(err, 'memory_update');
       }
     },
   );
@@ -458,9 +448,7 @@ export function registerMemoryTools(
 
         return toolResult({ deleted: true, memoryId });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('memory_delete error:', err);
-        return toolError('INTERNAL', 'Failed to delete memory');
+        return classifyError(err, 'memory_delete');
       }
     },
   );

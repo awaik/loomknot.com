@@ -9,7 +9,7 @@ import {
   createId,
 } from '@loomknot/shared/db';
 import { db } from '@/services/db.js';
-import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership } from '@/utils/permissions.js';
 
 export function registerNegotiationTools(
@@ -43,9 +43,7 @@ export function registerNegotiationTools(
 
         return toolResult({ negotiations: rows });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('negotiations_list error:', err);
-        return toolError('INTERNAL', 'Failed to list negotiations');
+        return classifyError(err, 'negotiations_list');
       }
     },
   );
@@ -105,9 +103,7 @@ export function registerNegotiationTools(
 
         return toolResult({ ...negotiation, options: optionsWithVotes });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('negotiations_get error:', err);
-        return toolError('INTERNAL', 'Failed to get negotiation');
+        return classifyError(err, 'negotiations_get');
       }
     },
   );
@@ -184,9 +180,7 @@ export function registerNegotiationTools(
 
         return toolResult(option);
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('negotiations_propose error:', err);
-        return toolError('INTERNAL', 'Failed to propose option');
+        return classifyError(err, 'negotiations_propose');
       }
     },
   );

@@ -16,7 +16,7 @@ app.set('trust proxy', 1);
 // Parse JSON body for all routes EXCEPT /mcp/messages.
 // SSEServerTransport.handlePostMessage reads the raw request stream,
 // so express.json() must not consume it first.
-const jsonParser = express.json();
+const jsonParser = express.json({ limit: '5mb' });
 
 app.use((req, res, next) => {
   if (req.path === '/mcp/messages') return next();

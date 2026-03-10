@@ -8,7 +8,7 @@ import {
   createId,
 } from '@loomknot/shared/db';
 import { db } from '@/services/db.js';
-import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership } from '@/utils/permissions.js';
 
 export function registerTaskTools(
@@ -58,9 +58,7 @@ export function registerTaskTools(
 
         return toolResult({ tasks: data, nextCursor, hasMore });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('tasks_list error:', err);
-        return toolError('INTERNAL', 'Failed to list tasks');
+        return classifyError(err, 'tasks_list');
       }
     },
   );
@@ -94,9 +92,7 @@ export function registerTaskTools(
 
         return toolResult({ ...task, logs });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('tasks_get error:', err);
-        return toolError('INTERNAL', 'Failed to get task');
+        return classifyError(err, 'tasks_get');
       }
     },
   );
@@ -154,9 +150,7 @@ export function registerTaskTools(
 
         return toolResult(task);
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('tasks_create error:', err);
-        return toolError('INTERNAL', 'Failed to create task');
+        return classifyError(err, 'tasks_create');
       }
     },
   );
@@ -239,9 +233,7 @@ export function registerTaskTools(
 
         return toolResult(updated);
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('tasks_update error:', err);
-        return toolError('INTERNAL', 'Failed to update task');
+        return classifyError(err, 'tasks_update');
       }
     },
   );

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { activityLog } from '@loomknot/shared/db';
 import { db } from '@/services/db.js';
-import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { toolResult, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership } from '@/utils/permissions.js';
 
 export function registerActivityTools(
@@ -40,9 +40,7 @@ export function registerActivityTools(
 
         return toolResult({ activity: rows, count: rows.length });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('activity_recent error:', err);
-        return toolError('INTERNAL', 'Failed to get activity log');
+        return classifyError(err, 'activity_recent');
       }
     },
   );

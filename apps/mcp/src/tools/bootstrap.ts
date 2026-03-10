@@ -4,11 +4,10 @@ import {
   users,
   projects,
   projectMembers,
-  memories,
   tasks,
 } from '@loomknot/shared/db';
 import { db } from '@/services/db.js';
-import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 
 export function registerBootstrapTools(
   server: McpServer,
@@ -98,9 +97,7 @@ export function registerBootstrapTools(
           pendingTasks,
         });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('bootstrap error:', err);
-        return toolError('INTERNAL', 'Failed to load bootstrap data');
+        return classifyError(err, 'bootstrap');
       }
     },
   );

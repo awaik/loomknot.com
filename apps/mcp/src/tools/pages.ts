@@ -9,7 +9,7 @@ import {
 } from '@loomknot/shared/db';
 import { slugify } from '@loomknot/shared/constants';
 import { db } from '@/services/db.js';
-import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
 import { pageUrl } from '@/utils/urls.js';
 
@@ -57,9 +57,7 @@ export function registerPageTools(
           pages: rows.map((row) => ({ ...row, url: pageUrl(projectId, row.id) })),
         });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages_list error:', err);
-        return toolError('INTERNAL', 'Failed to list pages');
+        return classifyError(err, 'pages_list');
       }
     },
   );
@@ -94,9 +92,7 @@ export function registerPageTools(
 
         return toolResult({ ...page, blocks, url: pageUrl(page.projectId, pageId) });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages_get error:', err);
-        return toolError('INTERNAL', 'Failed to get page');
+        return classifyError(err, 'pages_get');
       }
     },
   );
@@ -169,9 +165,7 @@ export function registerPageTools(
 
         return toolResult({ ...page, blocks: insertedBlocks, url: pageUrl(projectId, pageId) });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages_create error:', err);
-        return toolError('INTERNAL', 'Failed to create page');
+        return classifyError(err, 'pages_create');
       }
     },
   );
@@ -311,9 +305,7 @@ export function registerPageTools(
 
         return toolResult({ ...updatedPage[0], blocks: updatedBlocks, url: pageUrl(page.projectId, pageId) });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages_update error:', err);
-        return toolError('INTERNAL', 'Failed to update page');
+        return classifyError(err, 'pages_update');
       }
     },
   );
@@ -360,9 +352,7 @@ export function registerPageTools(
 
         return toolResult({ deleted: true, pageId });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('pages_delete error:', err);
-        return toolError('INTERNAL', 'Failed to delete page');
+        return classifyError(err, 'pages_delete');
       }
     },
   );

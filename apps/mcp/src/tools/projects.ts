@@ -9,7 +9,7 @@ import {
 } from '@loomknot/shared/db';
 import { slugify } from '@loomknot/shared/constants';
 import { db } from '@/services/db.js';
-import { toolResult, toolError, McpToolError } from '@/utils/errors.js';
+import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
 import { projectUrl } from '@/utils/urls.js';
 
@@ -53,9 +53,7 @@ export function registerProjectTools(
           projects: rows.map((r) => ({ ...r, url: projectUrl(r.projectId) })),
         });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('projects_list error:', err);
-        return toolError('INTERNAL', 'Failed to list projects');
+        return classifyError(err, 'projects_list');
       }
     },
   );
@@ -109,9 +107,7 @@ export function registerProjectTools(
           url: projectUrl(projectId),
         });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('projects_get error:', err);
-        return toolError('INTERNAL', 'Failed to get project');
+        return classifyError(err, 'projects_get');
       }
     },
   );
@@ -174,9 +170,7 @@ export function registerProjectTools(
           url: projectUrl(projectId),
         });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('projects_create error:', err);
-        return toolError('INTERNAL', 'Failed to create project');
+        return classifyError(err, 'projects_create');
       }
     },
   );
@@ -231,9 +225,7 @@ export function registerProjectTools(
 
         return toolResult({ ...updated[0], url: projectUrl(projectId) });
       } catch (err) {
-        if (err instanceof McpToolError) return toolError(err.code, err.message);
-        console.error('projects_update error:', err);
-        return toolError('INTERNAL', 'Failed to update project');
+        return classifyError(err, 'projects_update');
       }
     },
   );
