@@ -41,6 +41,22 @@ export const ROLE_PERMISSIONS: Record<Role, {
 
 export type Permission = keyof typeof ROLE_PERMISSIONS.owner;
 
+// Block types (typed catalog for page content blocks)
+export const BLOCK_TYPES = {
+  text: 'text',
+  heading: 'heading',
+  image: 'image',
+  map: 'map',
+  list: 'list',
+  itinerary: 'itinerary',
+  place: 'place',
+  budget: 'budget',
+  gallery: 'gallery',
+} as const;
+
+export type BlockType = (typeof BLOCK_TYPES)[keyof typeof BLOCK_TYPES];
+export const BLOCK_TYPE_VALUES = Object.values(BLOCK_TYPES);
+
 // Pagination
 export const DEFAULT_PAGE_SIZE = 20;
 export const MAX_PAGE_SIZE = 100;

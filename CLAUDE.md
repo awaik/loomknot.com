@@ -14,7 +14,7 @@ AI Assistant Instructions for Loomknot — Pages as Memory Platform (Turborepo M
 
 **Launch vertical:** Travel. Architecture is domain-agnostic.
 
-**Project documentation:** `docs/` — [DATA_MODEL.md](./docs/DATA_MODEL.md), [LAUNCH_PLAN.md](./docs/LAUNCH_PLAN.md), [MCP_TOOLS.md](./docs/MCP_TOOLS.md)
+**Project documentation:** `docs/` — [DATA_MODEL.md](./docs/DATA_MODEL.md), [LAUNCH_PLAN.md](./docs/LAUNCH_PLAN.md), [MCP_TOOLS.md](./docs/MCP_TOOLS.md), [BLOCKS_PROTOCOL.md](./docs/BLOCKS_PROTOCOL.md)
 
 ---
 
@@ -509,6 +509,7 @@ docker compose down               # Stop
   - **Runner stage must preserve pnpm monorepo structure** — copy root `node_modules`, workspace `node_modules`, and `packages/shared/{dist,node_modules,package.json}`
   - **Next.js standalone** in monorepo outputs `server.js` at `apps/web/server.js` (not root)
   - **Migrate container** runs from `packages/shared` (where drizzle config lives)
+- **Use BLOCK_TYPES constants** for block type references — defined in `@loomknot/shared/constants`
 
 ---
 

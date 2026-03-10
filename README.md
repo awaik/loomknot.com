@@ -106,3 +106,4 @@ Local app: http://localhost:8026
 - [docs/DATA_MODEL.md](./docs/DATA_MODEL.md) — database schema and data model
 - [docs/LAUNCH_PLAN.md](./docs/LAUNCH_PLAN.md) — launch plan
 - [docs/MCP_TOOLS.md](./docs/MCP_TOOLS.md) — MCP tools reference
+- [docs/BLOCKS_PROTOCOL.md](./docs/BLOCKS_PROTOCOL.md) — block type catalog and content schemas

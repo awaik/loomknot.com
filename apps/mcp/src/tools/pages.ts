@@ -8,13 +8,14 @@ import {
   createId,
 } from '@loomknot/shared/db';
 import { slugify } from '@loomknot/shared/constants';
+import { validateBlockContent, KNOWN_TYPES_DESCRIPTION } from '@loomknot/shared/blocks';
 import { db } from '@/services/db.js';
 import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
 import { pageUrl } from '@/utils/urls.js';
 
 const blockSchema = z.object({
-  type: z.string().min(1).max(50).describe('Block type (e.g. "text", "heading", "image", "map", "list")'),
+  type: z.string().min(1).max(50).describe(`Block type. ${KNOWN_TYPES_DESCRIPTION}`),
   content: z.record(z.unknown()).describe('Block content data'),
   agentData: z.record(z.unknown()).optional().describe('Agent-specific structured data'),
   sourceMemoryIds: z.array(z.string()).optional().describe('IDs of memories this block was generated from'),
@@ -131,9 +132,15 @@ export function registerPageTools(
           })
           .returning();
 
-        // Insert blocks if provided
+        // Validate blocks and collect warnings
+        const warnings: string[] = [];
         let insertedBlocks: typeof pageBlocks.$inferSelect[] = [];
         if (blocks && blocks.length > 0) {
+          for (const block of blocks) {
+            const validation = validateBlockContent(block.type, block.content);
+            warnings.push(...validation.warnings);
+          }
+
           insertedBlocks = await db
             .insert(pageBlocks)
             .values(
@@ -163,7 +170,10 @@ export function registerPageTools(
           })
           .catch(() => {});
 
-        return toolResult({ ...page, blocks: insertedBlocks, url: pageUrl(projectId, pageId) });
+        return toolResult({
+          ...page, blocks: insertedBlocks, url: pageUrl(projectId, pageId),
+          ...(warnings.length > 0 ? { _warnings: warnings } : {}),
+        });
       } catch (err) {
         return classifyError(err, 'pages_create');
       }
@@ -209,6 +219,16 @@ export function registerPageTools(
 
         const page = pageRows[0];
         await requirePermission(userId, page.projectId, 'canEditMemory');
+
+        // Validate blocks and collect warnings
+        const warnings: string[] = [];
+        if (blocks) {
+          for (const block of blocks) {
+            if (block.action === 'delete' || !block.type || !block.content) continue;
+            const validation = validateBlockContent(block.type, block.content);
+            warnings.push(...validation.warnings);
+          }
+        }
 
         // All mutations in a transaction for atomicity
         const pageUpdates: Record<string, unknown> = {};
@@ -303,7 +323,10 @@ export function registerPageTools(
           })
           .catch(() => {});
 
-        return toolResult({ ...updatedPage[0], blocks: updatedBlocks, url: pageUrl(page.projectId, pageId) });
+        return toolResult({
+          ...updatedPage[0], blocks: updatedBlocks, url: pageUrl(page.projectId, pageId),
+          ...(warnings.length > 0 ? { _warnings: warnings } : {}),
+        });
       } catch (err) {
         return classifyError(err, 'pages_update');
       }

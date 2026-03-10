@@ -1,8 +1,9 @@
 import { z } from 'zod';
+import { KNOWN_TYPES_DESCRIPTION } from '@loomknot/shared/blocks';
 
 // --- Block schema (used inside create/update) ---
 const blockSchema = z.object({
-  type: z.string().min(1).max(50),
+  type: z.string().min(1).max(50).describe(`Block type. ${KNOWN_TYPES_DESCRIPTION}`),
   content: z.record(z.unknown()).default({}),
   agentData: z.record(z.unknown()).optional(),
   sourceMemoryIds: z.array(z.string()).optional(),
@@ -22,7 +23,7 @@ export type CreatePageDto = z.infer<typeof createPageSchema>;
 const updateBlockSchema = z.object({
   id: z.string().optional(),
   action: z.enum(['delete']).optional(),
-  type: z.string().min(1).max(50).optional(),
+  type: z.string().min(1).max(50).describe(`Block type. ${KNOWN_TYPES_DESCRIPTION}`).optional(),
   content: z.record(z.unknown()).optional(),
   agentData: z.record(z.unknown()).nullable().optional(),
   sourceMemoryIds: z.array(z.string()).nullable().optional(),
