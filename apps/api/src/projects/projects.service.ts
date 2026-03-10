@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { randomBytes } from 'node:crypto';
-import { and, count, eq, inArray, isNull, or } from 'drizzle-orm';
-import { slugify } from '@loomknot/shared/constants';
+import { and, count, desc, eq, gte, inArray, isNull, or } from 'drizzle-orm';
+import { slugify, INVITE_STATUSES, INVITE_RESEND_COOLDOWN_MS, INVITE_EXPIRY_MS } from '@loomknot/shared/constants';
 import {
   createId,
   invites,
@@ -341,7 +341,7 @@ export class ProjectsService {
         and(
           eq(invites.projectId, projectId),
           eq(invites.email, dto.email),
-          eq(invites.status, 'pending'),
+          eq(invites.status, INVITE_STATUSES.pending),
         ),
       )
       .limit(1);
@@ -351,7 +351,7 @@ export class ProjectsService {
     }
 
     const token = randomBytes(32).toString('hex');
-    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    const expiresAt = new Date(Date.now() + INVITE_EXPIRY_MS);
 
     const [invite] = await this.db
       .insert(invites)
@@ -365,32 +365,8 @@ export class ProjectsService {
       })
       .returning();
 
-    // Send email if RESEND_API_KEY is configured
-    if (process.env.RESEND_API_KEY) {
-      try {
-        const project = await this.findById(projectId);
-        const { Resend } = await import('resend');
-        const resend = new Resend(process.env.RESEND_API_KEY);
-
-        const acceptUrl = `https://loomknot.com/invites/${token}`;
-        const safeTitle = this.escapeHtml(project?.title ?? 'Unknown');
-
-        await resend.emails.send({
-          from: 'Loomknot <noreply@loomknot.com>',
-          to: dto.email,
-          subject: `You're invited to join "${project?.title}" on Loomknot`,
-          html: `
-            <p>You've been invited to join the project <strong>${safeTitle}</strong> on Loomknot.</p>
-            <p><a href="${acceptUrl}">Accept invitation</a></p>
-            <p>This invitation expires in 7 days.</p>
-          `,
-        });
-      } catch (err) {
-        this.logger.error(`Failed to send invite email to ${dto.email}`, err);
-      }
-    } else {
-      this.logger.warn(`[DEV] Invite token for ${dto.email}: ${token}`);
-    }
+    const project = await this.findById(projectId);
+    await this.sendInviteEmail(dto.email, token, project?.title ?? null);
 
     return {
       id: invite!.id,
@@ -435,7 +411,7 @@ export class ProjectsService {
       // Mark as expired
       await this.db
         .update(invites)
-        .set({ status: 'expired' })
+        .set({ status: INVITE_STATUSES.expired })
         .where(eq(invites.id, invite.id));
 
       throw new BadRequestException('Invite has expired');
@@ -483,7 +459,7 @@ export class ProjectsService {
       await tx
         .update(invites)
         .set({
-          status: 'accepted',
+          status: INVITE_STATUSES.accepted,
           acceptedAt: new Date(),
         })
         .where(eq(invites.id, invite.id));
@@ -498,6 +474,87 @@ export class ProjectsService {
       projectId: invite.projectId,
       role: invite.role,
     };
+  }
+
+  /**
+   * List pending invites for a project.
+   */
+  async listInvites(projectId: string) {
+    const rows = await this.db
+      .select({
+        id: invites.id,
+        email: invites.email,
+        role: invites.role,
+        status: invites.status,
+        expiresAt: invites.expiresAt,
+        createdAt: invites.createdAt,
+        updatedAt: invites.updatedAt,
+      })
+      .from(invites)
+      .where(
+        and(
+          eq(invites.projectId, projectId),
+          eq(invites.status, INVITE_STATUSES.pending),
+          gte(invites.expiresAt, new Date()),
+        ),
+      )
+      .orderBy(desc(invites.createdAt));
+
+    return rows;
+  }
+
+  /**
+   * Resend an invite email. Enforces 2-hour cooldown.
+   */
+  async resendInvite(projectId: string, inviteId: string) {
+    const [invite] = await this.db
+      .select()
+      .from(invites)
+      .where(
+        and(
+          eq(invites.id, inviteId),
+          eq(invites.projectId, projectId),
+        ),
+      )
+      .limit(1);
+
+    if (!invite) {
+      throw new NotFoundException('Invite not found');
+    }
+
+    if (invite.status !== INVITE_STATUSES.pending) {
+      throw new BadRequestException('Only pending invites can be resent');
+    }
+
+    // Cooldown since last send (creation or last resend)
+    const cooldownThreshold = new Date(Date.now() - INVITE_RESEND_COOLDOWN_MS);
+    const lastSentAt = invite.updatedAt ?? invite.createdAt;
+    if (lastSentAt > cooldownThreshold) {
+      throw new BadRequestException('Please wait at least 2 hours between resending invitations');
+    }
+
+    // Generate new token and reset expiration
+    const token = randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + INVITE_EXPIRY_MS);
+
+    const [updated] = await this.db
+      .update(invites)
+      .set({ token, expiresAt })
+      .where(eq(invites.id, invite.id))
+      .returning({
+        id: invites.id,
+        email: invites.email,
+        role: invites.role,
+        status: invites.status,
+        expiresAt: invites.expiresAt,
+        createdAt: invites.createdAt,
+        updatedAt: invites.updatedAt,
+      });
+
+    const project = await this.findById(projectId);
+    await this.sendInviteEmail(invite.email, token, project?.title ?? null);
+
+    return updated!;
   }
 
   // --- Private helpers ---
@@ -515,6 +572,34 @@ export class ProjectsService {
       .limit(1);
 
     return project ?? null;
+  }
+
+  private async sendInviteEmail(email: string, token: string, projectTitle: string | null): Promise<void> {
+    if (process.env.RESEND_API_KEY) {
+      try {
+        const { Resend } = await import('resend');
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+        const acceptUrl = `https://loomknot.com/invites/${token}`;
+        const title = projectTitle ?? 'Unknown';
+        const safeTitle = this.escapeHtml(title);
+
+        await resend.emails.send({
+          from: 'Loomknot <noreply@send.loomknot.com>',
+          to: email,
+          subject: `You're invited to join "${title}" on Loomknot`,
+          html: `
+            <p>You've been invited to join the project <strong>${safeTitle}</strong> on Loomknot.</p>
+            <p><a href="${acceptUrl}">Accept invitation</a></p>
+            <p>This invitation expires in 7 days.</p>
+          `,
+        });
+      } catch (err) {
+        this.logger.error(`Failed to send invite email to ${email}`, err);
+      }
+    } else {
+      this.logger.warn(`[DEV] Invite token for ${email}: ${token}`);
+    }
   }
 
   private escapeHtml(text: string): string {

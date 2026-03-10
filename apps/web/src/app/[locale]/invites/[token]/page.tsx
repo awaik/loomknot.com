@@ -7,7 +7,7 @@ import { api, ApiError } from '@/lib/api';
 import { initAuth } from '@/lib/auth';
 import { Link, useRouter } from '@/i18n/navigation';
 
-type Status = 'loading' | 'accepted' | 'expired' | 'email_mismatch' | 'already_member' | 'invalid' | 'error';
+type Status = 'loading' | 'accepted' | 'expired' | 'email_mismatch' | 'already_member' | 'invalid' | 'auth_failed' | 'error';
 
 interface AcceptResult {
   projectId: string;
@@ -44,7 +44,13 @@ export default function InviteAcceptPage({
     let cancelled = false;
 
     async function accept() {
-      await initAuth();
+      const authed = await initAuth();
+
+      if (!authed) {
+        if (cancelled) return;
+        setStatus('auth_failed');
+        return;
+      }
 
       try {
         const result = await api<AcceptResult>(`/invites/${token}/accept`, {
@@ -114,22 +120,15 @@ export default function InviteAcceptPage({
         )}
 
         {status === 'email_mismatch' && (
-          <div className="flex flex-col items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
-              <AlertCircle className="h-6 w-6 text-accent" />
-            </div>
-            <p className="text-sm text-content">{t('emailMismatch')}</p>
-            <Link
-              href="/login"
-              className="mt-2 text-sm text-thread hover:text-thread-dark transition-colors"
-            >
-              {t('goToLogin')}
-            </Link>
-          </div>
+          <InviteLoginPrompt message={t('emailMismatch')} href="/login" />
         )}
 
         {status === 'invalid' && (
           <InviteError message={t('invalid')} />
+        )}
+
+        {status === 'auth_failed' && (
+          <InviteLoginPrompt message={t('authFailed')} href={`/login?redirect=/invites/${token}`} />
         )}
 
         {status === 'error' && (
@@ -156,6 +155,24 @@ function InviteError({ message }: { message: string }) {
         <AlertCircle className="h-6 w-6 text-accent" />
       </div>
       <p className="text-sm text-content">{message}</p>
+    </div>
+  );
+}
+
+function InviteLoginPrompt({ message, href }: { message: string; href: string }) {
+  const t = useTranslations('Invite');
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent/10">
+        <AlertCircle className="h-6 w-6 text-accent" />
+      </div>
+      <p className="text-sm text-content">{message}</p>
+      <Link
+        href={href}
+        className="mt-2 text-sm text-thread hover:text-thread-dark transition-colors"
+      >
+        {t('goToLogin')}
+      </Link>
     </div>
   );
 }

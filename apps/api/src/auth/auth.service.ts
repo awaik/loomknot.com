@@ -33,7 +33,7 @@ export class AuthService {
       const { Resend } = await import('resend');
       const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
-        from: 'Loomknot <noreply@loomknot.com>',
+        from: 'Loomknot <noreply@send.loomknot.com>',
         to: dto.email,
         subject: `${pin} — your Loomknot sign-in code`,
         html: `<p>Your sign-in code: <strong>${pin}</strong></p><p>This code is valid for 10 minutes.</p>`,

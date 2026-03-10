@@ -63,6 +63,40 @@ export function useInviteMember(projectId: string) {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['members', projectId] });
+      queryClient.invalidateQueries({ queryKey: ['invites', projectId] });
+    },
+  });
+}
+
+export interface PendingInvite {
+  id: string;
+  email: string;
+  role: string;
+  status: string;
+  expiresAt: string;
+  createdAt: string;
+  updatedAt: string | null;
+}
+
+export function useProjectInvites(projectId: string | undefined, enabled: boolean) {
+  return useQuery<PendingInvite[]>({
+    queryKey: ['invites', projectId],
+    queryFn: () =>
+      projectApi<PendingInvite[]>(projectId!, `/projects/${projectId}/invites`),
+    enabled: !!projectId && enabled,
+  });
+}
+
+export function useResendInvite(projectId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (inviteId: string) =>
+      projectApi(projectId, `/projects/${projectId}/invites/${inviteId}/resend`, {
+        method: 'POST',
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['invites', projectId] });
     },
   });
 }

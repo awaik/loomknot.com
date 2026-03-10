@@ -12,13 +12,17 @@ import {
   FolderKanban,
   Send,
   Check,
+  Mail,
+  RefreshCw,
+  Clock,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { cn } from '@/lib/utils';
+import { cn, formatRelative } from '@/lib/utils';
 import { useProject } from '@/hooks/use-projects';
 import { useProjectPages } from '@/hooks/use-pages';
 import { useMemories } from '@/hooks/use-memories';
-import { useMembers, useInviteMember } from '@/hooks/use-members';
+import { useMembers, useInviteMember, useProjectInvites, useResendInvite } from '@/hooks/use-members';
+import { useActivity } from '@/hooks/use-activity';
 import { useAuthStore } from '@/lib/auth';
 import { useSocketRoom } from '@/lib/socket';
 import { EVENTS, ROOMS, ROLE_PERMISSIONS } from '@loomknot/shared';
@@ -63,6 +67,7 @@ export default function ProjectPage({
       ['pages', id],
       ['memories', id],
       ['members', id],
+      ['activity', id],
     ],
   });
 
@@ -261,16 +266,87 @@ function MemoriesTab({ projectId }: { projectId: string }) {
   );
 }
 
+const ACTION_ICONS: Record<string, typeof FileText> = {
+  page: FileText,
+  memory: Brain,
+  negotiation: Users,
+  project: FolderKanban,
+  member: Users,
+  apikey: Lock,
+  task: Activity,
+};
+
+function getActionIcon(action: string) {
+  const prefix = action.split('.')[0];
+  return ACTION_ICONS[prefix] ?? Activity;
+}
+
+function formatAction(action: string, metadata: Record<string, unknown> | null, t: ReturnType<typeof useTranslations<'Project'>>) {
+  const key = `action_${action.replace('.', '_')}` as Parameters<typeof t>[0];
+  const translated = t.has(key) ? t(key) : action;
+  const title = metadata?.title ?? metadata?.key ?? metadata?.slug;
+  if (title) return `${translated}: ${String(title)}`;
+  return translated;
+}
+
 function ActivityTab({ projectId }: { projectId: string }) {
   const t = useTranslations('Project');
+  const [since] = useState(() => new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString());
+  const { data, isLoading } = useActivity(projectId, { limit: 50, since });
+  const entries = data?.data;
+
+  if (isLoading) {
+    return (
+      <div className="space-y-2">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-14 rounded-md bg-surface-alt animate-pulse" />
+        ))}
+      </div>
+    );
+  }
+
+  if (!entries || entries.length === 0) {
+    return (
+      <EmptyState
+        icon={Activity}
+        title={t('activityTitle')}
+        description={t('activityDesc')}
+        className="py-8"
+      />
+    );
+  }
 
   return (
-    <EmptyState
-      icon={Activity}
-      title={t('activityTitle')}
-      description={t('activityDesc')}
-      className="py-8"
-    />
+    <div className="space-y-1">
+      {entries.map((entry) => {
+        const Icon = getActionIcon(entry.action);
+        const isAgent = !!entry.apiKeyId && !entry.userId;
+        const actor = entry.userName ?? entry.userEmail ?? (isAgent ? 'Agent' : 'System');
+
+        return (
+          <div
+            key={entry.id}
+            className="flex items-start gap-3 rounded-md px-4 py-2.5 transition-colors hover:bg-surface-alt"
+          >
+            <div className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-surface-alt">
+              <Icon className="h-3.5 w-3.5 text-content-tertiary" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm text-content">
+                <span className="font-medium">{actor}</span>
+                {' '}
+                <span className="text-content-secondary">
+                  {formatAction(entry.action, entry.metadata, t)}
+                </span>
+              </p>
+            </div>
+            <span className="shrink-0 text-xs text-content-tertiary whitespace-nowrap">
+              {formatRelative(entry.createdAt, t)}
+            </span>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 
@@ -285,6 +361,8 @@ function MembersTab({ projectId }: { projectId: string }) {
     myMembership?.role
       ? ROLE_PERMISSIONS[myMembership.role as keyof typeof ROLE_PERMISSIONS]?.canManageMembers ?? false
       : false;
+
+  const { data: pendingInvites } = useProjectInvites(projectId, canManageMembers);
 
   if (isLoading) {
     return (
@@ -332,6 +410,78 @@ function MembersTab({ projectId }: { projectId: string }) {
               </span>
             </div>
           ))}
+        </div>
+      )}
+
+      {canManageMembers && pendingInvites && pendingInvites.length > 0 && (
+        <div className="space-y-2">
+          <h3 className="text-xs font-medium text-content-tertiary uppercase tracking-wider">
+            {t('pendingInvites')}
+          </h3>
+          {pendingInvites.map((invite) => (
+            <PendingInviteRow key={invite.id} invite={invite} projectId={projectId} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PendingInviteRow({ invite, projectId }: { invite: import('@/hooks/use-members').PendingInvite; projectId: string }) {
+  const t = useTranslations('Project');
+  const resendInvite = useResendInvite(projectId);
+  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const handleResend = async () => {
+    setFeedback(null);
+    try {
+      await resendInvite.mutateAsync(invite.id);
+      setFeedback({ type: 'success', message: t('resendSuccess', { email: invite.email }) });
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 400) {
+        setFeedback({ type: 'error', message: t('resendCooldown') });
+      } else {
+        setFeedback({ type: 'error', message: t('resendError') });
+      }
+    }
+  };
+
+  return (
+    <div className="rounded-md border border-border border-dashed bg-surface-elevated px-4 py-3">
+      <div className="flex items-center gap-3">
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-pill bg-surface-alt text-sm">
+          <Mail className="h-4 w-4 text-content-tertiary" />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm text-content truncate">{invite.email}</p>
+          <p className="text-xs text-content-tertiary">
+            {t('pendingInviteSent', { time: formatRelative(invite.createdAt, t) })}
+          </p>
+        </div>
+        <span className="rounded-pill bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">
+          {t('pendingLabel')}
+        </span>
+        <span className="rounded-pill bg-surface-alt px-2 py-0.5 text-xs font-medium text-content-secondary">
+          {invite.role}
+        </span>
+        <button
+          type="button"
+          onClick={handleResend}
+          disabled={resendInvite.isPending}
+          className="flex items-center gap-1 rounded-sm px-2 py-1 text-xs font-medium text-thread transition-colors cursor-pointer hover:bg-thread/10 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <RefreshCw className={cn('h-3 w-3', resendInvite.isPending && 'animate-spin')} />
+          {t('resendInvite')}
+        </button>
+      </div>
+      {feedback && (
+        <div className={cn(
+          'mt-2 flex items-center gap-2 text-xs',
+          feedback.type === 'success' ? 'text-sage' : 'text-accent',
+        )}>
+          {feedback.type === 'success' && <Check className="h-3 w-3" />}
+          {feedback.type === 'error' && <Clock className="h-3 w-3" />}
+          {feedback.message}
         </div>
       )}
     </div>

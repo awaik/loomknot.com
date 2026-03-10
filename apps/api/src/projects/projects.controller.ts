@@ -14,7 +14,6 @@ import { ProjectsService } from './projects.service';
 import { CurrentUser, type RequestUser } from '../auth/decorators/current-user.decorator';
 import { ProjectMemberGuard } from '../common/guards/project-member.guard';
 import { PermissionGuard, RequirePermission } from '../common/guards/permission.guard';
-import { SkipProjectGuard } from '../common/decorators/skip-project-guard.decorator';
 import { ProjectId } from '../common/decorators/project-id.decorator';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import {
@@ -110,6 +109,16 @@ export class ProjectsController {
   }
 
   /**
+   * List pending invites for a project. Requires canManageMembers permission.
+   */
+  @Get(':id/invites')
+  @UseGuards(ProjectMemberGuard, PermissionGuard)
+  @RequirePermission('canManageMembers')
+  async listInvites(@ProjectId() projectId: string) {
+    return this.projects.listInvites(projectId);
+  }
+
+  /**
    * Create an invite to join the project. Requires canManageMembers permission.
    */
   @Post(':id/invites')
@@ -121,6 +130,21 @@ export class ProjectsController {
     @Body(new ZodValidationPipe(createInviteSchema)) dto: CreateInviteDto,
   ) {
     return this.projects.createInvite(projectId, user.id, dto);
+  }
+
+  /**
+   * Resend a pending invite. Requires canManageMembers permission.
+   * 2-hour cooldown between resends.
+   */
+  @Post(':id/invites/:inviteId/resend')
+  @UseGuards(ProjectMemberGuard, PermissionGuard)
+  @RequirePermission('canManageMembers')
+  @HttpCode(HttpStatus.OK)
+  async resendInvite(
+    @ProjectId() projectId: string,
+    @Param('inviteId') inviteId: string,
+  ) {
+    return this.projects.resendInvite(projectId, inviteId);
   }
 }
 

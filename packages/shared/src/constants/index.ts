@@ -57,6 +57,17 @@ export const BLOCK_TYPES = {
 export type BlockType = (typeof BLOCK_TYPES)[keyof typeof BLOCK_TYPES];
 export const BLOCK_TYPE_VALUES = Object.values(BLOCK_TYPES);
 
+// Invite constants
+export const INVITE_STATUSES = {
+  pending: 'pending',
+  accepted: 'accepted',
+  expired: 'expired',
+} as const;
+export type InviteStatus = (typeof INVITE_STATUSES)[keyof typeof INVITE_STATUSES];
+
+export const INVITE_RESEND_COOLDOWN_MS = 2 * 60 * 60 * 1000; // 2 hours
+export const INVITE_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
 // Pagination
 export const DEFAULT_PAGE_SIZE = 20;
 export const MAX_PAGE_SIZE = 100;
