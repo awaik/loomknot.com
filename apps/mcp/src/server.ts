@@ -106,6 +106,19 @@ app.post('/mcp/sse', connectionLimiter, async (req, res) => {
       const server = createMcpServer(auth.userId, auth.apiKeyId);
       await server.connect(transport);
 
+      transport.onclose = () => {
+        const sid = transport.sessionId;
+        if (sid) {
+          const s = sessions.get(sid);
+          s?.stopKeepalive?.();
+          sessions.delete(sid);
+          console.log(`[MCP] session closed (streamable) id=${sid.slice(0, 8)}… remaining=${sessions.size}`);
+        }
+      };
+
+      // handleRequest generates the sessionId during initialize
+      await transport.handleRequest(req, res, req.body);
+
       const sessionId = transport.sessionId!;
       sessions.set(sessionId, {
         transport,
@@ -115,15 +128,6 @@ app.post('/mcp/sse', connectionLimiter, async (req, res) => {
         stopKeepalive: null,
       });
       console.log(`[MCP] session created (streamable) id=${sessionId.slice(0, 8)}… sessions=${sessions.size}`);
-
-      transport.onclose = () => {
-        const s = sessions.get(sessionId);
-        s?.stopKeepalive?.();
-        sessions.delete(sessionId);
-        console.log(`[MCP] session closed (streamable) id=${sessionId.slice(0, 8)}… remaining=${sessions.size}`);
-      };
-
-      await transport.handleRequest(req, res, req.body);
       return;
     }
 
