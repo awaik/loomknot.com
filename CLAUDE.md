@@ -14,7 +14,7 @@ AI Assistant Instructions for Loomknot — Pages as Memory Platform (Turborepo M
 
 **Launch vertical:** Travel. Architecture is domain-agnostic.
 
-**Project documentation:** `docs/` — [DATA_MODEL.md](./docs/DATA_MODEL.md), [LAUNCH_PLAN.md](./docs/LAUNCH_PLAN.md), [MCP_TOOLS.md](./docs/MCP_TOOLS.md), [BLOCKS_PROTOCOL.md](./docs/BLOCKS_PROTOCOL.md)
+**Project documentation:** `docs/` — [DATA_MODEL.md](./docs/DATA_MODEL.md), [LAUNCH_PLAN.md](./docs/LAUNCH_PLAN.md), [MCP_TOOLS.md](./docs/MCP_TOOLS.md), [BLOCKS_PROTOCOL.md](./docs/BLOCKS_PROTOCOL.md), [EMAIL.md](./docs/EMAIL.md)
 
 **AiTML Specification:** `/Users/mavbook/projects/AiTML - project/aitml/` — the open spec for AI-generated content blocks, extracted from Loomknot's block format. See [AiTML CLAUDE.md](/Users/mavbook/projects/AiTML - project/aitml/CLAUDE.md) for the full guide.
 
