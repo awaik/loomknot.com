@@ -11,6 +11,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { randomBytes } from 'node:crypto';
 import { and, count, desc, eq, gte, inArray, isNull, or } from 'drizzle-orm';
 import { slugify, INVITE_STATUSES, INVITE_RESEND_COOLDOWN_MS, INVITE_EXPIRY_MS, EMAIL_FROM } from '@loomknot/shared/constants';
+import { inviteEmail } from '../common/email-templates';
 import {
   createId,
   invites,
@@ -590,17 +591,14 @@ export class ProjectsService {
 
         const acceptUrl = `https://loomknot.com/invites/${token}`;
         const title = projectTitle ?? 'Unknown';
-        const safeTitle = this.escapeHtml(title);
+        const { html, text } = inviteEmail(acceptUrl, title);
 
         const { error } = await resend.emails.send({
           from: EMAIL_FROM,
           to: email,
           subject: `You're invited to join "${title}" on Loomknot`,
-          html: `
-            <p>You've been invited to join the project <strong>${safeTitle}</strong> on Loomknot.</p>
-            <p><a href="${acceptUrl}">Accept invitation</a></p>
-            <p>This invitation expires in 7 days.</p>
-          `,
+          html,
+          text,
         });
         if (error) {
           this.logger.error(`Failed to send invite email to ${email}: ${error.message}`);
@@ -611,14 +609,6 @@ export class ProjectsService {
     } else {
       this.logger.warn(`[DEV] Invite token for ${email}: ${token}`);
     }
-  }
-
-  private escapeHtml(text: string): string {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
   }
 
   private async generateUniqueSlug(title: string): Promise<string> {
