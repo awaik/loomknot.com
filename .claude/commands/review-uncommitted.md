@@ -1,113 +1,132 @@
 ---
 allowed-tools: Bash(git diff:*), Bash(git status:*)
-description: Code review незакоммиченных изменений (fullstack)
+description: Code review of uncommitted changes (fullstack)
 ---
 
-Выполни команду и проанализируй результат:
+Run the command and analyze the result:
 ```bash
 git diff
 ```
 
-Если нет вывода, проверь staged:
+If no output, check staged:
 ```bash
 git diff --cached
 ```
 
 ---
 
-Ты senior fullstack разработчик. Проведи ревью для **Aura Monorepo** (Backend: Node.js + Express + Firestore, Frontend: Next.js 15 + React 19 + Redux + Tailwind v4).
+You are a senior fullstack developer. Review uncommitted changes for the **Loomknot monorepo** (Backend: NestJS 11 + Fastify + Drizzle ORM, Frontend: Next.js 15 + React 19 + TanStack Query + Tailwind CSS 4, MCP: @modelcontextprotocol/sdk).
 
-## Определи scope изменений
+## Determine scope of changes
 
-По путям файлов определи что изменено:
-- `apps/backend/**` → применяй **Backend правила**
-- `apps/frontend/**` → применяй **Frontend правила**
-- `packages/shared/**` → проверяй совместимость с обоими apps
+By file paths determine what changed:
+- `apps/api/**` — apply **Backend rules**
+- `apps/web/**` — apply **Frontend rules**
+- `apps/mcp/**` — apply **MCP rules**
+- `packages/shared/**` — check compatibility with all apps
 
 ---
 
-## 🔴 Общие проверки (оба apps)
+## General checks (all apps)
 
-**Безопасность**
+**Security**
 - XSS, SQL/NoSQL injection
-- Утечки токенов/secrets в логи или URL
-- Данные пользователя изолированы между аккаунтами
+- Token/secret leaks in logs or URLs
+- User data isolated between accounts
+- Private memory isolation (critical)
 
-**Архитектура**
-- Файл > 500 строк — требуется рефакторинг
-- Функции > 50 строк — разбить
-- `console.log/debug` → использовать `Logger` (backend) / `createLogger` (frontend)
+**Architecture**
+- File > 500 lines — needs refactoring
+- Functions > 50 lines — split
+- `console.log/debug` — use Pino logger (backend) / proper logging (frontend)
+- Types from `@loomknot/shared` — no duplicates between apps
 
-**Качество**
-- `any` без причины
-- Magic numbers вместо констант
-- Дублирование кода
-- null/undefined без проверки
-
----
-
-## 📦 Backend правила (`apps/backend`)
-
-**Слои**
-- Controller содержит только HTTP handling, бизнес-логика в Service
-- Repository содержит только DB запросы, логика в Service
-- Auth middleware явно per route: `router.get("/", authenticateUser, handler)`, НЕ `router.use()`
-
-**Firestore**
-- Cursor-based пагинация, НЕ offset
-- `Timestamp.fromDate()` для дат, НЕ `new Date()`
-- `.count().get()` для подсчёта, НЕ загрузка всех документов
-
-**AI**
-- `MODEL_IDS.*` для моделей, НЕ строки `"google/gemini-..."`
-- Safety только через AI, НИКОГДА regex/списки слов
-- `OpenRouterClient` — НЕ отдельные клиенты
-
-**SSE**
-- `res.flush()` после каждого `res.write()`
+**Quality**
+- `any` without justification
+- Magic numbers instead of constants
+- Code duplication
+- null/undefined without checks
 
 ---
 
-## 🎨 Frontend правила (`apps/frontend`)
+## Backend rules (`apps/api`)
 
-**Auth & State**
-- `useAuthRedux()` вместо устаревшего `useAuth` из domains
-- `tokenRefreshManager.getToken()` вместо прямого Firebase
-- Правильное использование Redux slices
+**Layers**
+- Controller contains only HTTP handling, business logic in Service
+- Drizzle query builder — no raw SQL (except complex JOIN/subquery)
+- Guards: `JwtAuthGuard` + `ProjectMemberGuard` on all endpoints (or `@Public()`)
+- Decorators: `@CurrentUser()`, `@ProjectId()` for context
 
-**Тема и стили**
-- Semantic токены (`figma-content-*`, `figma-bg-*`) вместо примитивных (`figma-gray-*`)
-- Нет `dark:` префиксов — только semantic токены
-- Нет хардкодных цветов — только CSS токены из `tokens.css`
+**Database**
+- Always filter by `projectId` in project-scoped queries
+- Transactions for mutations with side effects
+- Check memory level permissions — private memory visible only to owner
+- Schema changes only in `packages/shared/src/db/schema/`
 
-**UI**
-- Кнопки имеют `cursor-pointer`
-- ЗАПРЕЩЕНЫ `alert()`, `confirm()`, `prompt()` — использовать toast/модалки
-- Иконки только из `lucide-react`
-- Слово "AI" → "Аура" или "ИИ-Психолог Аура"
+**Realtime**
+- Socket.io events emitted after mutations
+- Events defined in `@loomknot/shared`
 
-**Компоненты**
-- > 5 useState или > 3 useEffect — разбить на хуки
-- Routes должны быть тонкими обёртками (импорт из domains)
-- Admin API методы содержат `Admin` в названии
-
----
-
-## 🐛 Баги (оба apps)
-
-- Race conditions в async коде
-- Отсутствие loading/error состояний
-- Пустые массивы без обработки
-- Неправильная обработка ошибок
+**Validation**
+- Zod for all input validation
+- Parameterized queries — never string interpolation in SQL
 
 ---
 
-## Формат ответа
+## Frontend rules (`apps/web`)
 
-**🔴 CRITICAL** — блокеры, безопасность, потеря данных
+**State Management**
+- TanStack Query for all server state
+- Zustand for shared UI state only
+- `invalidateQueries` after every mutation
+- Never `useState` for server data, never fetch directly
 
-**🟡 MAJOR** — баги, архитектурные проблемы, нарушения CLAUDE.md
+**Components**
+- `'use client'` directive for client components
+- Server Components by default
+- > 5 useState or > 3 useEffect — extract to hooks
+- JSX > 150 lines — split into subcomponents
 
-**🟢 MINOR** — стиль, оптимизации
+**Styling**
+- Tailwind CSS 4 + shadcn/ui components
+- No hardcoded colors
+- Lucide React for icons
 
-Будь кратким. Указывай конкретные строки и что исправить.
+---
+
+## MCP rules (`apps/mcp`)
+
+- API key validated before every operation
+- Operations scoped by user permissions
+- Rate limiting on agent requests
+- Private memory never exposed to other agents
+- All operations logged for audit
+
+---
+
+## AiTML sync check
+
+If block types or `page_blocks` schema changed:
+- Check if AiTML spec needs updating (CLAUDE.md rule 9)
+- Check if `docs/BLOCKS_PROTOCOL.md` needs updating
+
+---
+
+## Bugs (all apps)
+
+- Race conditions in async code
+- Missing loading/error states
+- Empty arrays without handling
+- Incorrect error handling
+
+---
+
+## Response format
+
+**CRITICAL** — blockers, security, data loss
+
+**MAJOR** — bugs, architecture issues, CLAUDE.md violations
+
+**MINOR** — style, optimizations
+
+Be concise. Reference specific lines and what to fix.

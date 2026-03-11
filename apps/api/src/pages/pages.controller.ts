@@ -15,6 +15,7 @@ import { CurrentUser, type RequestUser } from '../auth/decorators/current-user.d
 import { ProjectMemberGuard } from '../common/guards/project-member.guard';
 import { PermissionGuard, RequirePermission } from '../common/guards/permission.guard';
 import { ProjectId } from '../common/decorators/project-id.decorator';
+import { ProjectMember, type RequestProjectMember } from '../common/decorators/project-role.decorator';
 import { ZodValidationPipe } from '../common/pipes/zod-validation.pipe';
 import {
   type CreatePageDto,
@@ -90,7 +91,7 @@ export class PagesController {
   }
 
   /**
-   * Soft-delete a page.
+   * Soft-delete a page. Only the project owner can delete pages.
    */
   @Delete(':pageId')
   @RequirePermission('canEditMemory')
@@ -99,7 +100,8 @@ export class PagesController {
     @ProjectId() projectId: string,
     @Param('pageId') pageId: string,
     @CurrentUser() user: RequestUser,
+    @ProjectMember() member: RequestProjectMember,
   ) {
-    await this.pages.delete(pageId, projectId, user.id);
+    await this.pages.delete(pageId, projectId, user.id, member.role);
   }
 }

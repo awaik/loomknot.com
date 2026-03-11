@@ -1,83 +1,101 @@
 ---
-description: Проверка решения на senior-качество
+description: Check if the solution meets senior-level quality
 ---
 
-Ты senior fullstack разработчик. Проверь то что ты сделал перед этим — это senior решение или хак?
+You are a senior fullstack developer. Review what you did before this — is it a senior solution or a hack?
 
-## Процесс
+## Process
 
-### 1. Найди изменённые файлы
+### 1. Find changed files
 ```bash
 git diff --name-only HEAD~1
 ```
-Или если не закоммичено:
+Or if not committed:
 ```bash
 git diff --name-only
 ```
 
-### 2. Прочитай изменённый код
-Изучи каждый файл, понимая контекст изменений.
+### 2. Read the changed code
+Study each file, understanding the context of changes.
 
-### 3. Оцени по критериям
-
----
-
-## ✅ Senior решение
-
-**Архитектура**
-- [ ] Следует слоям: Controller → Service → Repository (backend)
-- [ ] Следует разделению: Component → Hook → API (frontend)
-- [ ] Один файл = одна ответственность
-- [ ] Файлы < 500 строк, функции < 50 строк
-- [ ] Изменения минимальны и точечны (не over-engineering)
-
-**Надёжность**
-- [ ] Обработка ошибок на всех уровнях
-- [ ] Loading/error состояния для async операций
-- [ ] null/undefined проверки где нужно
-- [ ] Нет race conditions
-
-**Поддерживаемость**
-- [ ] Код читаем без комментариев
-- [ ] Нет magic numbers — используются константы
-- [ ] Нет дублирования
-- [ ] Типы вместо `any`
-
-**Соответствие стандартам проекта**
-- [ ] Logger вместо console.log
-- [ ] Правильные импорты (`useAuthRedux`, `tokenRefreshManager`, `MODEL_IDS`)
-- [ ] Semantic токены для стилей (frontend)
-- [ ] Cursor-based пагинация (backend)
+### 3. Evaluate against criteria
 
 ---
 
-## ❌ Признаки хака
+## Senior solution checklist
 
-- Быстрый фикс который создаст проблемы позже
-- Дублирование вместо переиспользования
-- Игнорирование архитектуры проекта
-- Хардкод вместо конфигурации
-- Отсутствие обработки ошибок
-- `any` где можно типизировать
-- Слишком много изменений для простой задачи
-- Комментарии типа "TODO: fix later"
+**Architecture**
+- [ ] Follows NestJS module pattern: Controller → Service → Drizzle (backend)
+- [ ] Follows separation: Server Component → Client Component → Hook → API (frontend)
+- [ ] One file = one responsibility
+- [ ] Files < 500 lines, functions < 50 lines
+- [ ] Changes are minimal and focused (no over-engineering)
+
+**Reliability**
+- [ ] Error handling at all levels
+- [ ] Loading/error states for async operations
+- [ ] null/undefined checks where needed
+- [ ] No race conditions
+
+**Maintainability**
+- [ ] Code is readable without comments
+- [ ] No magic numbers — constants used
+- [ ] No code duplication
+- [ ] Proper types instead of `any`
+- [ ] Types from `@loomknot/shared` — not duplicated
+
+**Loomknot project standards**
+- [ ] Pino logger instead of console.log (backend)
+- [ ] `JwtAuthGuard` + `ProjectMemberGuard` on endpoints (or `@Public()`)
+- [ ] `@CurrentUser()`, `@ProjectId()` decorators
+- [ ] TanStack Query for server state (frontend)
+- [ ] `'use client'` on client components
+- [ ] `invalidateQueries` after mutations
+- [ ] Socket.io events after mutations
+- [ ] Always filter by `projectId` in project-scoped queries
+- [ ] Zod for input validation
+- [ ] `BLOCK_TYPES` constants for block references
+
+**Security**
+- [ ] No API keys exposed in client code
+- [ ] Private memory isolation maintained
+- [ ] Parameterized queries — no string interpolation in SQL
+
+**AiTML sync** (if blocks changed)
+- [ ] AiTML spec updated (all representations)
+- [ ] `BLOCKS_PROTOCOL.md` updated
+- [ ] AiTML `CHANGELOG.md` updated
 
 ---
 
-## Формат ответа
+## Signs of a hack
 
-### Вердикт: ✅ Senior / ⚠️ Нужны улучшения / ❌ Хак
+- Quick fix that will cause problems later
+- Duplication instead of reuse
+- Ignoring project architecture
+- Hardcoded values instead of configuration
+- Missing error handling
+- `any` where types are possible
+- Too many changes for a simple task
+- Comments like "TODO: fix later"
+- Fallbacks or workarounds instead of clean solutions
 
-**Что хорошо:**
+---
+
+## Response format
+
+### Verdict: Senior / Needs improvement / Hack
+
+**What's good:**
 - ...
 
-**Что улучшить:**
+**What to improve:**
 - ...
 
-**План исправлений (если нужен):**
+**Fix plan (if needed):**
 1. ...
 2. ...
 
 ---
 
-Исследуй вдумчиво, проведи анализ и расскажи. Код не меняй без запроса — сначала покажи план или подтверди что решение правильное.
+Investigate thoroughly, analyze, and report. Do not modify code without a request — first show the plan or confirm the solution is correct.

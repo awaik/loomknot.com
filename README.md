@@ -69,6 +69,18 @@ Each page exists simultaneously as:
 - **Human mode** — beautiful UI with maps, photos, timelines
 - **Agent mode** — structured JSON data via MCP
 
+### AiTML — Our Open Block Specification
+
+Loomknot's content blocks follow **AiTML** (AI-first Text Markup Language) — an open specification we develop and maintain for structured content designed for AI agent workflows.
+
+- **Document** = ordered flat array of typed JSON blocks (not a tree)
+- **Dual representation**: `data` (structured, for rendering) + `text` (human-readable, for LLM context)
+- **14 standard block types**: text, heading, image, gallery, map, timeline, place, booking, weather, budget, checklist, embed, divider, callout
+- **Schema-less with conventions**: agents can extend freely; the spec defines recommended structures
+- **Transport-agnostic**: blocks travel over MCP, REST, WebSocket, or files
+
+Loomknot is the reference implementation. The spec is published separately and designed for adoption by other platforms.
+
 ## Architecture
 
 Turborepo monorepo with three apps:
@@ -106,4 +118,4 @@ Local app: http://localhost:8026
 - [docs/DATA_MODEL.md](./docs/DATA_MODEL.md) — database schema and data model
 - [docs/LAUNCH_PLAN.md](./docs/LAUNCH_PLAN.md) — launch plan
 - [docs/MCP_TOOLS.md](./docs/MCP_TOOLS.md) — MCP tools reference
-- [docs/BLOCKS_PROTOCOL.md](./docs/BLOCKS_PROTOCOL.md) — block type catalog and content schemas
+- [docs/BLOCKS_PROTOCOL.md](./docs/BLOCKS_PROTOCOL.md) — block type catalog and content schemas (AiTML implementation)

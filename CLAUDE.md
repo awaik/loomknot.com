@@ -16,7 +16,7 @@ AI Assistant Instructions for Loomknot — Pages as Memory Platform (Turborepo M
 
 **Project documentation:** `docs/` — [DATA_MODEL.md](./docs/DATA_MODEL.md), [LAUNCH_PLAN.md](./docs/LAUNCH_PLAN.md), [MCP_TOOLS.md](./docs/MCP_TOOLS.md), [BLOCKS_PROTOCOL.md](./docs/BLOCKS_PROTOCOL.md), [EMAIL.md](./docs/EMAIL.md)
 
-**AiTML Specification:** `/Users/mavbook/projects/AiTML - project/aitml/` — the open spec for AI-generated content blocks, extracted from Loomknot's block format. See [AiTML CLAUDE.md](/Users/mavbook/projects/AiTML - project/aitml/CLAUDE.md) for the full guide.
+**AiTML Specification:** We develop and maintain **AiTML** (AI-first Text Markup Language) — an open specification for structured content blocks designed for AI agent workflows. Loomknot is the reference implementation and primary adopter. Repo: `/Users/mavbook/projects/AiTML - project/aitml/`. See [AiTML CLAUDE.md](/Users/mavbook/projects/AiTML - project/aitml/CLAUDE.md) for the full guide.
 
 ---
 
@@ -515,13 +515,36 @@ docker compose down               # Stop
 
 ### 9. AiTML Spec Sync
 
-Loomknot's block format is formalized as **AiTML** — an open specification at `/Users/mavbook/projects/AiTML - project/aitml/`.
+We develop and maintain **AiTML** — an open specification for AI-generated content blocks. Loomknot is the reference implementation. Repo: `/Users/mavbook/projects/AiTML - project/aitml/`.
 
-- **When adding/changing block types** in Loomknot → update AiTML spec (`WHITEPAPER.md` section 7) and `CHANGELOG.md`
-- **When changing `page_blocks` schema** → update AiTML block structure (`WHITEPAPER.md` section 6) and field mapping table in AiTML `CLAUDE.md`
-- **When changing `BLOCKS_PROTOCOL.md`** → check if AiTML spec needs the same update
-- **Always update AiTML `CHANGELOG.md`** when block-related changes originate from Loomknot
-- Check AiTML `CLAUDE.md` for the field mapping table (Loomknot `content` = AiTML `data`, `agentData` = `agent`, `sortOrder` = `order`, etc.)
+**Spec structure** — AiTML ships the same spec in multiple representations (ALL must stay in sync):
+
+| File | Purpose |
+|------|---------|
+| `llms.txt` | Compact agent reference (~2k tokens, for MCP tool descriptions) |
+| `llms-full.txt` | Extended reference with full examples + common mistakes |
+| `spec/spec.md` (`WHITEPAPER.md`) | Full human-readable specification |
+| `schema/*.json` | JSON Schemas (draft 2020-12, advisory) |
+| `examples/` | 19 example documents (test corpus + few-shot prompts) |
+| `tests/` | Validation suite (46 tests, `pnpm test`) |
+
+**Field mapping** (Loomknot → AiTML): `content` = `data`, `agentData` = `agent`, `sortOrder` = `order`, `url` = `src`, `{lat, lng}` = `coords [lat, lng]`, `items` (budget) = `categories`, `itinerary` = `timeline`, `list` = `checklist`. Full table in AiTML `CLAUDE.md`.
+
+**When changing blocks in Loomknot:**
+1. New block type → add to AiTML `spec/spec.md` section 7 with full JSON example
+2. Block schema changed → update the corresponding type in `spec/spec.md`
+3. New field in `page_blocks` → consider adding to AiTML block structure (section 6)
+4. **Update ALL spec representations** — `llms.txt`, `llms-full.txt`, `spec/spec.md`, `schema/*.json`, `examples/`
+5. **ALWAYS update AiTML `CHANGELOG.md`**
+6. Update Loomknot `docs/BLOCKS_PROTOCOL.md`
+7. Update field mapping table in AiTML `CLAUDE.md` if new divergences
+
+**When changing AiTML spec:**
+1. New block type → add to Loomknot `BLOCK_TYPES`, create content schema, add renderer in `apps/web/src/components/blocks/`
+2. Changed fields → update Loomknot `docs/BLOCKS_PROTOCOL.md` and DB schema
+3. **ALWAYS update AiTML `CHANGELOG.md`**
+
+**A change in one representation but not the others is a bug.**
 
 ---
 
@@ -537,8 +560,8 @@ Loomknot's block format is formalized as **AiTML** — an open specification at 
 
 ---
 
-**Version**: 1.0
-**Last updated**: 2026-03-09
+**Version**: 1.1
+**Last updated**: 2026-03-11
 **Architecture**: Turborepo + NestJS 11/Fastify + Next.js 15 + PostgreSQL 16/pgvector + Redis 7 + Drizzle ORM + MCP (@modelcontextprotocol/sdk) + JWT (jose) + Socket.io + Traefik v3 (swarm provider) + Docker Swarm
 **Local port**: 8026
 

@@ -255,7 +255,11 @@ export class PagesService {
   /**
    * Soft-delete a page.
    */
-  async delete(pageId: string, projectId: string, userId: string) {
+  async delete(pageId: string, projectId: string, userId: string, role: string) {
+    if (role !== 'owner') {
+      throw new ForbiddenException('Only the project owner can delete pages');
+    }
+
     const existing = await this.findById(pageId);
 
     if (!existing) {

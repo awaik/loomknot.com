@@ -1,144 +1,128 @@
-# Рефакторинг файла
+# Refactor File
 
-Проведи рефакторинг файла: $ARGUMENTS
+Refactor the file: $ARGUMENTS
 
-Ты senior fullstack разработчик. Проведи рефакторинг указанного файла согласно архитектуре проекта.
+You are a senior fullstack developer. Refactor the specified file according to the Loomknot project architecture.
 
-## Процесс
+## Process
 
-### 1. Анализ (НЕ редактируй пока)
-- Прочитай файл целиком
-- Определи **app**: `apps/backend` или `apps/frontend`
-- Определи тип файла (см. таблицу ниже)
-- Посчитай строки и найди проблемы:
-  - Файл > 450 строк
-  - Функции > 50 строк
-  - **Frontend**: > 5 useState, > 3 useEffect, JSX > 150 строк
-  - **Backend**: контроллер содержит бизнес-логику, сервис содержит SQL/Firestore запросы
-  - Смешанная ответственность
+### 1. Analyze (DO NOT edit yet)
+- Read the entire file
+- Determine **app**: `apps/web`, `apps/api`, `apps/mcp`, or `packages/shared`
+- Determine file type (see tables below)
+- Count lines and identify problems:
+  - File > 450 lines
+  - Functions > 50 lines
+  - **Frontend**: > 5 useState, > 3 useEffect, JSX > 150 lines
+  - **Backend**: controller contains business logic, service contains raw SQL
+  - Mixed responsibilities
 
-### 2. План рефакторинга
-Создай TaskCreate с конкретными шагами. Покажи пользователю что планируешь сделать.
+### 2. Refactoring Plan
+Show the user what you plan to do before making changes.
 
-### 3. Выполнение
-Разбей файл по правилам для соответствующего app.
-
----
-
-## 📁 Frontend (`apps/frontend`)
-
-**Структура фичи:**
-```
-domains/client/features/{feature}/
-  index.ts              # только реэкспорт
-  {Feature}.tsx         # главный компонент (тонкий оркестратор)
-  {feature}.api.ts      # HTTP запросы
-  {feature}.types.ts    # interfaces, types, enums
-  {feature}.constants.ts
-  components/           # подкомпоненты
-  hooks/                # хуки с логикой
-  utils/                # чистые функции
-```
-
-**Проверки:**
-- [ ] `useAuthRedux()`, НЕ `useAuth` из domains
-- [ ] `tokenRefreshManager.getToken()`, НЕ Firebase напрямую
-- [ ] `createLogger()`, НЕ `console.log`
-- [ ] Кнопки имеют `cursor-pointer`
-- [ ] Нет хардкодных цветов — только токены `figma-*`
-- [ ] Нет `dark:` префиксов
+### 3. Execute
+Split the file according to the rules for the corresponding app.
 
 ---
 
-## 📁 Backend (`apps/backend`)
+## Frontend (`apps/web`) — Next.js 15 App Router
 
-**Структура фичи:**
+**Feature structure:**
 ```
-features/{feature}/
-  index.ts                # barrel export
-  {feature}.types.ts      # interfaces, DTOs, enums
-  {feature}.constants.ts
-  {feature}.controller.ts # HTTP handlers (thin!)
-  {feature}.service.ts    # бизнес-логика (оркестратор)
-  {feature}.repository.ts # Firestore/DB запросы
-  services/               # sub-services
-  utils/                  # pure functions
+app/[locale]/app/{feature}/
+  page.tsx              # Server Component (data fetching, layout)
+  components/           # Client components ('use client')
+  hooks/                # Custom hooks with logic
+
+# Shared components:
+components/{feature}/
+  {Feature}.tsx         # Main component
+  {feature}.types.ts    # interfaces, types
+  hooks/                # Feature hooks
 ```
 
-**Слои и зависимости:**
-| Слой | Может вызывать | НЕ может вызывать |
-|------|----------------|-------------------|
-| Controller | Service | Repository, DB |
-| Service | Repository, другие Services | Controller |
-| Repository | Firestore/DB | Service, Controller |
-
-**Проверки:**
-- [ ] `Logger`, НЕ `console.log`
-- [ ] Controller НЕ содержит бизнес-логику
-- [ ] Repository НЕ содержит бизнес-логику
-- [ ] `MODEL_IDS.*` для AI моделей, НЕ строки
-- [ ] Cursor-based пагинация, НЕ offset
-- [ ] `Timestamp.fromDate()` для дат Firestore
-- [ ] Auth middleware явно per route, НЕ `router.use()`
+**Checks:**
+- [ ] Server Components by default, `'use client'` only when needed
+- [ ] TanStack Query for all server state — never `useState` for server data
+- [ ] Zustand for shared UI state only
+- [ ] `invalidateQueries` after every mutation
+- [ ] No direct fetch — only through hooks (`useQuery`, `useMutation`)
+- [ ] Tailwind CSS 4 + shadcn/ui — no hardcoded colors
+- [ ] Lucide React for icons
+- [ ] Types from `@loomknot/shared` — no duplicates
 
 ---
 
-## Naming Conventions (оба app)
+## Backend (`apps/api`) — NestJS 11 + Fastify
 
-| Суффикс | Назначение | Зависимости |
-|---------|------------|-------------|
-| `*.types.ts` | interfaces, types, DTOs, enums | Никаких |
-| `*.constants.ts` | константы, конфиги | Никаких |
-| `*.utils.ts` / `*.helper.ts` | pure functions | Только types/constants |
-| `*.api.ts` / `*.repository.ts` | HTTP/DB запросы | Инфраструктура |
-| `*.service.ts` / `use*.ts` | бизнес-логика | Может использовать всё |
-| `*.controller.ts` | HTTP handlers | Только Service |
-| `*.tsx` | React компоненты | — |
+**Module structure:**
+```
+src/{feature}/
+  {feature}.module.ts      # NestJS module
+  {feature}.controller.ts  # HTTP handlers (thin!)
+  {feature}.service.ts     # Business logic
+  dto/                     # DTOs with Zod validation
+```
+
+**Layer rules:**
+| Layer | Can call | CANNOT call |
+|-------|----------|-------------|
+| Controller | Service | DB directly |
+| Service | Other Services, Drizzle queries | Controller |
+| Guard | Service | Controller |
+
+**Checks:**
+- [ ] Pino logger, NOT `console.log`
+- [ ] Controller does NOT contain business logic
+- [ ] `JwtAuthGuard` + `ProjectMemberGuard` on all endpoints (or `@Public()`)
+- [ ] `@CurrentUser()`, `@ProjectId()` decorators for context
+- [ ] Socket.io events emitted after mutations
+- [ ] Drizzle query builder — no raw SQL (except complex JOIN/subquery)
+- [ ] Always filter by `projectId` in project-scoped queries
+- [ ] Transactions for mutations with side effects
+- [ ] Zod for input validation
 
 ---
 
-## Примеры
+## MCP Server (`apps/mcp`)
 
-### Frontend: До → После
-
-**❌ До:** 500+ строк, всё в одном
-```tsx
-export function ChatFeature() {
-  const [messages, setMessages] = useState([]);
-  // ...ещё 10 useState, 5 useEffect, 200 строк JSX
-}
-```
-
-**✅ После:** разделение ответственности
-- `chat.types.ts` — типы
-- `chat.api.ts` — HTTP
-- `hooks/useChatMessages.ts` — логика
-- `components/ChatMessageList.tsx` — UI
-- `ChatFeature.tsx` — тонкий оркестратор
-
-### Backend: До → После
-
-**❌ До:** controller с бизнес-логикой
-```typescript
-router.get("/users/:id", async (req, res) => {
-  const user = await db.collection("users").doc(req.params.id).get();
-  const subscription = await db.collection("subscriptions")...
-  // 50 строк логики
-  res.json(result);
-});
-```
-
-**✅ После:** слои
-- `users.controller.ts` — только HTTP, вызывает service
-- `users.service.ts` — бизнес-логика, вызывает repository
-- `users.repository.ts` — Firestore запросы
+**Checks:**
+- [ ] API key validated before every operation
+- [ ] Operations scoped by user permissions in project
+- [ ] Rate limiting on agent requests
+- [ ] Private memory never exposed to other agents/users
+- [ ] All agent operations logged for audit
 
 ---
 
-## Важно
+## Shared Package (`packages/shared`)
 
-- **НЕ добавляй** лишние фичи, комментарии, docstrings
-- **НЕ трогай** код который не относится к рефакторингу
-- **Сохраняй** всю существующую функциональность
-- После рефакторинга — проверь что импорты работают
-- Запусти `npm run build` для проверки
+**Checks:**
+- [ ] Types use `$inferSelect` / `$inferInsert` from Drizzle schema
+- [ ] Schema is the single source of truth
+- [ ] `BLOCK_TYPES` constants for block type references
+- [ ] No app-specific logic — only types, constants, schemas
+
+---
+
+## Naming Conventions (all apps)
+
+| Suffix | Purpose | Dependencies |
+|--------|---------|-------------|
+| `*.types.ts` | interfaces, types, DTOs, enums | None |
+| `*.constants.ts` | constants, configs | None |
+| `*.utils.ts` / `*.helper.ts` | pure functions | Only types/constants |
+| `*.service.ts` | business logic | Can use everything |
+| `*.controller.ts` | HTTP handlers | Only Service |
+| `*.tsx` | React components | — |
+
+---
+
+## Important
+
+- **DO NOT add** extra features, comments, or docstrings
+- **DO NOT touch** code unrelated to the refactoring
+- **PRESERVE** all existing functionality
+- After refactoring — verify imports work
+- Run `pnpm build` to check
+- If block types are involved — check AiTML spec sync (CLAUDE.md rule 9)

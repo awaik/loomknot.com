@@ -353,7 +353,11 @@ export function registerPageTools(
         }
 
         const page = pageRows[0];
-        await requirePermission(userId, page.projectId, 'canEditMemory');
+        const role = await requirePermission(userId, page.projectId, 'canEditMemory');
+
+        if (role !== 'owner') {
+          return toolError('FORBIDDEN', 'Only the project owner can delete pages');
+        }
 
         await db
           .update(pages)
