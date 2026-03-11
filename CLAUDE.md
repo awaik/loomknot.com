@@ -16,6 +16,8 @@ AI Assistant Instructions for Loomknot — Pages as Memory Platform (Turborepo M
 
 **Project documentation:** `docs/` — [DATA_MODEL.md](./docs/DATA_MODEL.md), [LAUNCH_PLAN.md](./docs/LAUNCH_PLAN.md), [MCP_TOOLS.md](./docs/MCP_TOOLS.md), [BLOCKS_PROTOCOL.md](./docs/BLOCKS_PROTOCOL.md)
 
+**AiTML Specification:** `/Users/mavbook/projects/AiTML - project/aitml/` — the open spec for AI-generated content blocks, extracted from Loomknot's block format. See [AiTML CLAUDE.md](/Users/mavbook/projects/AiTML - project/aitml/CLAUDE.md) for the full guide.
+
 ---
 
 ## Production Server
@@ -510,6 +512,16 @@ docker compose down               # Stop
   - **Next.js standalone** in monorepo outputs `server.js` at `apps/web/server.js` (not root)
   - **Migrate container** runs from `packages/shared` (where drizzle config lives)
 - **Use BLOCK_TYPES constants** for block type references — defined in `@loomknot/shared/constants`
+
+### 9. AiTML Spec Sync
+
+Loomknot's block format is formalized as **AiTML** — an open specification at `/Users/mavbook/projects/AiTML - project/aitml/`.
+
+- **When adding/changing block types** in Loomknot → update AiTML spec (`WHITEPAPER.md` section 7) and `CHANGELOG.md`
+- **When changing `page_blocks` schema** → update AiTML block structure (`WHITEPAPER.md` section 6) and field mapping table in AiTML `CLAUDE.md`
+- **When changing `BLOCKS_PROTOCOL.md`** → check if AiTML spec needs the same update
+- **Always update AiTML `CHANGELOG.md`** when block-related changes originate from Loomknot
+- Check AiTML `CLAUDE.md` for the field mapping table (Loomknot `content` = AiTML `data`, `agentData` = `agent`, `sortOrder` = `order`, etc.)
 
 ---
 

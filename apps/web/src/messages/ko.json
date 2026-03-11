@@ -275,6 +275,7 @@
     "backToProject": "프로젝트로 돌아가기",
     "back": "뒤로",
     "breadcrumbProjects": "프로젝트",
+    "itineraryDay": "{day}일차",
     "noBlocksTitle": "콘텐츠 블록 없음",
     "noBlocksDesc": "이 페이지에는 아직 콘텐츠 블록이 없습니다."
   },

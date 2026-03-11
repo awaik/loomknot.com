@@ -99,35 +99,33 @@ app.post('/mcp/sse', connectionLimiter, async (req, res) => {
         return;
       }
 
+      // Pre-generate sessionId so we can register the session before handleRequest,
+      // avoiding a race where onclose fires before session is in the Map.
+      const sessionId = randomUUID();
       const transport = new StreamableHTTPServerTransport({
-        sessionIdGenerator: () => randomUUID(),
+        sessionIdGenerator: () => sessionId,
       });
 
       const server = createMcpServer(auth.userId, auth.apiKeyId);
       await server.connect(transport);
 
-      transport.onclose = () => {
-        const sid = transport.sessionId;
-        if (sid) {
-          const s = sessions.get(sid);
-          s?.stopKeepalive?.();
-          sessions.delete(sid);
-          console.log(`[MCP] session closed (streamable) id=${sid.slice(0, 8)}… remaining=${sessions.size}`);
-        }
-      };
-
-      // handleRequest generates the sessionId during initialize
-      await transport.handleRequest(req, res, req.body);
-
-      const sessionId = transport.sessionId!;
-      sessions.set(sessionId, {
+      const session: McpSession = {
         transport,
         server,
         userId: auth.userId,
         apiKeyId: auth.apiKeyId,
         stopKeepalive: null,
-      });
+      };
+      sessions.set(sessionId, session);
       console.log(`[MCP] session created (streamable) id=${sessionId.slice(0, 8)}… sessions=${sessions.size}`);
+
+      transport.onclose = () => {
+        session.stopKeepalive?.();
+        sessions.delete(sessionId);
+        console.log(`[MCP] session closed (streamable) id=${sessionId.slice(0, 8)}… remaining=${sessions.size}`);
+      };
+
+      await transport.handleRequest(req, res, req.body);
       return;
     }
 

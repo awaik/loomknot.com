@@ -275,6 +275,7 @@
     "backToProject": "Volver al proyecto",
     "back": "Atrás",
     "breadcrumbProjects": "Proyectos",
+    "itineraryDay": "Día {day}",
     "noBlocksTitle": "Sin bloques de contenido",
     "noBlocksDesc": "Esta página aún no tiene bloques de contenido."
   },

@@ -275,6 +275,7 @@
     "backToProject": "プロジェクトに戻る",
     "back": "戻る",
     "breadcrumbProjects": "プロジェクト",
+    "itineraryDay": "{day}日目",
     "noBlocksTitle": "コンテンツブロックなし",
     "noBlocksDesc": "このページにはまだコンテンツブロックがありません。"
   },

@@ -275,6 +275,7 @@
     "backToProject": "Back to project",
     "back": "Back",
     "breadcrumbProjects": "Dự án",
+    "itineraryDay": "Ngày {day}",
     "noBlocksTitle": "No content blocks",
     "noBlocksDesc": "This page doesn't have any content blocks yet."
   },

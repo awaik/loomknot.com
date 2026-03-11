@@ -275,6 +275,7 @@
     "backToProject": "返回项目",
     "back": "返回",
     "breadcrumbProjects": "项目",
+    "itineraryDay": "第{day}天",
     "noBlocksTitle": "暂无内容块",
     "noBlocksDesc": "该页面还没有任何内容块。"
   },

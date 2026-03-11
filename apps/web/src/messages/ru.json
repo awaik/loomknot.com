@@ -300,6 +300,7 @@
     "backToProject": "Назад к проекту",
     "back": "Назад",
     "breadcrumbProjects": "Проекты",
+    "itineraryDay": "День {day}",
     "noBlocksTitle": "Нет блоков контента",
     "noBlocksDesc": "На этой странице пока нет блоков контента."
   },

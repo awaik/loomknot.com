@@ -275,6 +275,7 @@
     "backToProject": "Tillbaka till projektet",
     "back": "Tillbaka",
     "breadcrumbProjects": "Projekt",
+    "itineraryDay": "Dag {day}",
     "noBlocksTitle": "Inga innehållsblock",
     "noBlocksDesc": "Denna sida har inga innehållsblock ännu."
   },

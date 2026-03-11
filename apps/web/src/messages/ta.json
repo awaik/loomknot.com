@@ -275,6 +275,7 @@
     "backToProject": "Back to project",
     "back": "Back",
     "breadcrumbProjects": "திட்டங்கள்",
+    "itineraryDay": "நாள் {day}",
     "noBlocksTitle": "No content blocks",
     "noBlocksDesc": "This page doesn't have any content blocks yet."
   },
