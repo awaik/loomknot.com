@@ -10,7 +10,7 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { randomBytes } from 'node:crypto';
 import { and, count, desc, eq, gte, inArray, isNull, or } from 'drizzle-orm';
-import { slugify, INVITE_STATUSES, INVITE_RESEND_COOLDOWN_MS, INVITE_EXPIRY_MS } from '@loomknot/shared/constants';
+import { slugify, INVITE_STATUSES, INVITE_RESEND_COOLDOWN_MS, INVITE_EXPIRY_MS, EMAIL_FROM } from '@loomknot/shared/constants';
 import {
   createId,
   invites,
@@ -592,8 +592,8 @@ export class ProjectsService {
         const title = projectTitle ?? 'Unknown';
         const safeTitle = this.escapeHtml(title);
 
-        await resend.emails.send({
-          from: 'Loomknot <noreply@send.loomknot.com>',
+        const { error } = await resend.emails.send({
+          from: EMAIL_FROM,
           to: email,
           subject: `You're invited to join "${title}" on Loomknot`,
           html: `
@@ -602,6 +602,9 @@ export class ProjectsService {
             <p>This invitation expires in 7 days.</p>
           `,
         });
+        if (error) {
+          this.logger.error(`Failed to send invite email to ${email}: ${error.message}`);
+        }
       } catch (err) {
         this.logger.error(`Failed to send invite email to ${email}`, err);
       }

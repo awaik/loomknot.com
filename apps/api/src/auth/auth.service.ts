@@ -8,6 +8,7 @@ import { randomInt, createHash } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import { users, sessions, type DrizzleDB } from '@loomknot/shared/db';
 import type Redis from 'ioredis';
+import { EMAIL_FROM } from '@loomknot/shared/constants';
 import { DATABASE_TOKEN } from '../database/database.provider';
 import { REDIS_TOKEN } from '../redis/redis.provider';
 import { JwtService } from './jwt.service';
@@ -32,12 +33,15 @@ export class AuthService {
     if (process.env.RESEND_API_KEY) {
       const { Resend } = await import('resend');
       const resend = new Resend(process.env.RESEND_API_KEY);
-      await resend.emails.send({
-        from: 'Loomknot <noreply@send.loomknot.com>',
+      const { error } = await resend.emails.send({
+        from: EMAIL_FROM,
         to: dto.email,
         subject: `${pin} — your Loomknot sign-in code`,
         html: `<p>Your sign-in code: <strong>${pin}</strong></p><p>This code is valid for 10 minutes.</p>`,
       });
+      if (error) {
+        this.logger.error(`Failed to send magic link to ${dto.email}: ${error.message}`);
+      }
     } else {
       this.logger.warn(`[DEV] Magic PIN for ${dto.email}: ${pin}`);
     }

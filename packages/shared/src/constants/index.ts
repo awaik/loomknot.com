@@ -76,6 +76,9 @@ export const MAX_PAGE_SIZE = 100;
 export const MAX_PRIVATE_MEMORIES = 500;
 export const MAX_PROJECT_MEMORIES = 2000;
 
+// Email
+export const EMAIL_FROM = 'Loomknot <noreply@loomknot.com>';
+
 // MCP
 export const MCP_PROTOCOL_VERSION = '2025-03-26';
 
