@@ -295,11 +295,15 @@ export function registerPageTools(
         });
 
         // Fetch updated page with blocks
-        const updatedPage = await db
+        const [updatedPage] = await db
           .select()
           .from(pages)
-          .where(eq(pages.id, pageId))
+          .where(and(eq(pages.id, pageId), isNull(pages.deletedAt)))
           .limit(1);
+
+        if (!updatedPage) {
+          return toolError('NOT_FOUND', 'Page was deleted during update');
+        }
 
         const updatedBlocks = await db
           .select()
@@ -324,7 +328,7 @@ export function registerPageTools(
           .catch(() => {});
 
         return toolResult({
-          ...updatedPage[0], blocks: updatedBlocks, url: pageUrl(page.projectId, pageId),
+          ...updatedPage, blocks: updatedBlocks, url: pageUrl(page.projectId, pageId),
           ...(warnings.length > 0 ? { _warnings: warnings } : {}),
         });
       } catch (err) {

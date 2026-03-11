@@ -55,7 +55,11 @@ const MAX_SESSIONS = 1000;
 
 // --- Rate Limiting ---
 
-const connectionLimiter = rateLimit({
+/**
+ * Limits new session creation (initialize requests).
+ * Applies only when the POST body is an MCP initialize request.
+ */
+const initLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 10,
   standardHeaders: true,
@@ -63,6 +67,21 @@ const connectionLimiter = rateLimit({
   message: { error: 'Too many connections, please try again later' },
 });
 
+/**
+ * Limits new legacy SSE connections (GET without mcp-session-id).
+ */
+const legacySseLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many connections, please try again later' },
+});
+
+/**
+ * Limits tool call messages (non-initialize POST requests and legacy POST /mcp/messages).
+ * 120 tool calls per minute per IP is generous but prevents runaway agents.
+ */
 const messageLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 120,
@@ -84,7 +103,7 @@ app.get('/mcp/health', (_req, res) => {
 
 // --- Streamable HTTP: POST /mcp/sse ---
 
-app.post('/mcp/sse', connectionLimiter, async (req, res) => {
+app.post('/mcp/sse', async (req, res) => {
   try {
     const auth = await authenticateApiKey(req.headers.authorization ?? '');
     if (!auth) {
@@ -92,8 +111,13 @@ app.post('/mcp/sse', connectionLimiter, async (req, res) => {
       return;
     }
 
-    // Initialize → create new session
+    // Initialize → create new session (connection rate limit)
     if (isInitializeRequest(req.body)) {
+      // Apply init limiter (promisified middleware)
+      await new Promise<void>((resolve, reject) => {
+        initLimiter(req, res, (err?: unknown) => (err ? reject(err) : resolve()));
+      });
+      if (res.headersSent) return; // 429 already sent
       if (sessions.size >= MAX_SESSIONS) {
         res.status(503).json({ error: 'Server at capacity' });
         return;
@@ -129,7 +153,12 @@ app.post('/mcp/sse', connectionLimiter, async (req, res) => {
       return;
     }
 
-    // Existing session message
+    // Existing session message (tool call rate limit)
+    await new Promise<void>((resolve, reject) => {
+      messageLimiter(req, res, (err?: unknown) => (err ? reject(err) : resolve()));
+    });
+    if (res.headersSent) return;
+
     const sessionId = req.headers['mcp-session-id'] as string | undefined;
     if (!sessionId) {
       res.status(400).json({ error: 'Missing mcp-session-id header' });
@@ -158,7 +187,7 @@ app.post('/mcp/sse', connectionLimiter, async (req, res) => {
 
 // --- GET /mcp/sse: Streamable HTTP SSE stream or Legacy SSE ---
 
-app.get('/mcp/sse', connectionLimiter, async (req, res) => {
+app.get('/mcp/sse', async (req, res) => {
   try {
     const auth = await authenticateApiKey(req.headers.authorization ?? '');
     if (!auth) {
@@ -167,6 +196,7 @@ app.get('/mcp/sse', connectionLimiter, async (req, res) => {
     }
 
     // With mcp-session-id → Streamable HTTP SSE notification stream (long-lived)
+    // No rate limit needed — this is just a response stream for an existing session
     const sessionId = req.headers['mcp-session-id'] as string | undefined;
     if (sessionId) {
       const session = sessions.get(sessionId);
@@ -182,7 +212,12 @@ app.get('/mcp/sse', connectionLimiter, async (req, res) => {
       return;
     }
 
-    // Without mcp-session-id → Legacy SSE transport
+    // Without mcp-session-id → Legacy SSE transport (new connection rate limit)
+    await new Promise<void>((resolve, reject) => {
+      legacySseLimiter(req, res, (err?: unknown) => (err ? reject(err) : resolve()));
+    });
+    if (res.headersSent) return;
+
     if (sessions.size >= MAX_SESSIONS) {
       res.status(503).json({ error: 'Server at capacity' });
       return;
