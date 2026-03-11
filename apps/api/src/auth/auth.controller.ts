@@ -10,7 +10,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
-import { EMAIL_FROM } from '@loomknot/shared/constants';
 import type { FastifyReply, FastifyRequest } from 'fastify';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/public.decorator';
@@ -88,23 +87,6 @@ export class AuthController {
   @Get('me')
   async me(@CurrentUser() user: RequestUser) {
     return this.auth.getMe(user.id);
-  }
-
-  @Public()
-  @Get('test-email')
-  async testEmail() {
-    if (!process.env.RESEND_API_KEY) {
-      return { ok: false, error: 'RESEND_API_KEY not set' };
-    }
-    const { Resend } = await import('resend');
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const { data, error } = await resend.emails.send({
-      from: EMAIL_FROM,
-      to: 'awaiking44@gmail.com',
-      subject: 'Loomknot test email',
-      html: '<p>This is a test email from Loomknot.</p>',
-    });
-    return { ok: !error, data, error };
   }
 
   @Public()
