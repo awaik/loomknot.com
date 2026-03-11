@@ -218,6 +218,7 @@
     "notFoundDesc": "该项目可能已被删除或您没有访问权限。",
     "backToDashboard": "返回仪表盘",
     "back": "返回",
+    "breadcrumbProjects": "项目",
     "tabPages": "页面",
     "tabMemories": "记忆",
     "tabActivity": "活动",
@@ -273,6 +274,7 @@
     "notFoundDesc": "该页面可能已被删除或您没有访问权限。",
     "backToProject": "返回项目",
     "back": "返回",
+    "breadcrumbProjects": "项目",
     "noBlocksTitle": "暂无内容块",
     "noBlocksDesc": "该页面还没有任何内容块。"
   },

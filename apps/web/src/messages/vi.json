@@ -218,6 +218,7 @@
     "notFoundDesc": "This project may have been deleted or you don't have access.",
     "backToDashboard": "Back to dashboard",
     "back": "Back",
+    "breadcrumbProjects": "Dự án",
     "tabPages": "Pages",
     "tabMemories": "Memories",
     "tabActivity": "Activity",
@@ -273,6 +274,7 @@
     "notFoundDesc": "This page may have been deleted or you don't have access.",
     "backToProject": "Back to project",
     "back": "Back",
+    "breadcrumbProjects": "Dự án",
     "noBlocksTitle": "No content blocks",
     "noBlocksDesc": "This page doesn't have any content blocks yet."
   },

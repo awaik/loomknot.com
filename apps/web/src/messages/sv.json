@@ -218,6 +218,7 @@
     "notFoundDesc": "Detta projekt kan ha tagits bort.",
     "backToDashboard": "Tillbaka till översikten",
     "back": "Tillbaka",
+    "breadcrumbProjects": "Projekt",
     "tabPages": "Sidor",
     "tabMemories": "Minnen",
     "tabActivity": "Aktivitet",
@@ -273,6 +274,7 @@
     "notFoundDesc": "Denna sida kan ha tagits bort.",
     "backToProject": "Tillbaka till projektet",
     "back": "Tillbaka",
+    "breadcrumbProjects": "Projekt",
     "noBlocksTitle": "Inga innehållsblock",
     "noBlocksDesc": "Denna sida har inga innehållsblock ännu."
   },

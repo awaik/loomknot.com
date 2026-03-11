@@ -218,6 +218,7 @@
     "notFoundDesc": "Ce projet a peut-être été supprimé ou vous n'y avez pas accès.",
     "backToDashboard": "Retour au tableau de bord",
     "back": "Retour",
+    "breadcrumbProjects": "Projets",
     "tabPages": "Pages",
     "tabMemories": "Mémoires",
     "tabActivity": "Activité",
@@ -273,6 +274,7 @@
     "notFoundDesc": "Cette page a peut-être été supprimée ou vous n'y avez pas accès.",
     "backToProject": "Retour au projet",
     "back": "Retour",
+    "breadcrumbProjects": "Projets",
     "noBlocksTitle": "Aucun bloc de contenu",
     "noBlocksDesc": "Cette page n'a pas encore de blocs de contenu."
   },

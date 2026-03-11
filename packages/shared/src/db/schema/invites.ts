@@ -20,6 +20,7 @@ export const invites = pgTable(
     token: varchar('token', { length: 64 }).notNull().unique(),
     status: inviteStatusEnum('status').notNull().default('pending'),
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    lastSentAt: timestamp('last_sent_at', { withTimezone: true }).notNull().defaultNow(),
     acceptedAt: timestamp('accepted_at', { withTimezone: true }),
     ...timestamps,
   },

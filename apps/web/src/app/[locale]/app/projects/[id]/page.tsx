@@ -106,15 +106,10 @@ export default function ProjectPage({
       <PageHeader
         title={project.title}
         description={project.description ?? project.summary ?? undefined}
-        actions={
-          <Link
-            href="/app"
-            className="flex items-center gap-1.5 text-sm text-content-secondary transition-colors hover:text-content"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {t('back')}
-          </Link>
-        }
+        breadcrumbs={[
+          { label: t('breadcrumbProjects'), href: '/app' },
+          { label: project.title },
+        ]}
       />
 
       {/* Tabs */}
@@ -439,7 +434,11 @@ function PendingInviteRow({ invite, projectId }: { invite: import('@/hooks/use-m
       setFeedback({ type: 'success', message: t('resendSuccess', { email: invite.email }) });
     } catch (err) {
       if (err instanceof ApiError && err.status === 400) {
-        setFeedback({ type: 'error', message: t('resendCooldown') });
+        const data = err.data as { error?: string } | undefined;
+        setFeedback({
+          type: 'error',
+          message: data?.error === 'RESEND_COOLDOWN' ? t('resendCooldown') : t('resendError'),
+        });
       } else {
         setFeedback({ type: 'error', message: t('resendError') });
       }
@@ -455,7 +454,7 @@ function PendingInviteRow({ invite, projectId }: { invite: import('@/hooks/use-m
         <div className="min-w-0 flex-1">
           <p className="text-sm text-content truncate">{invite.email}</p>
           <p className="text-xs text-content-tertiary">
-            {t('pendingInviteSent', { time: formatRelative(invite.createdAt, t) })}
+            {t('pendingInviteSent', { time: formatRelative(invite.lastSentAt, t) })}
           </p>
         </div>
         <span className="rounded-pill bg-accent/10 px-2 py-0.5 text-xs font-medium text-accent">

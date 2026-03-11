@@ -218,6 +218,7 @@
     "notFoundDesc": "ربما تم حذف هذا المشروع أو ليس لديك صلاحية.",
     "backToDashboard": "العودة للوحة التحكم",
     "back": "رجوع",
+    "breadcrumbProjects": "المشاريع",
     "tabPages": "الصفحات",
     "tabMemories": "الذكريات",
     "tabActivity": "النشاط",
@@ -273,6 +274,7 @@
     "notFoundDesc": "ربما تم حذف هذه الصفحة.",
     "backToProject": "العودة للمشروع",
     "back": "رجوع",
+    "breadcrumbProjects": "المشاريع",
     "noBlocksTitle": "لا توجد كتل محتوى",
     "noBlocksDesc": "هذه الصفحة لا تحتوي على كتل محتوى بعد."
   },

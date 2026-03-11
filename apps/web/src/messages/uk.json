@@ -218,6 +218,7 @@
     "notFoundDesc": "Цей проєкт міг бути видалений або у вас немає доступу.",
     "backToDashboard": "Назад до панелі",
     "back": "Назад",
+    "breadcrumbProjects": "Проєкти",
     "tabPages": "Сторінки",
     "tabMemories": "Пам'ять",
     "tabActivity": "Активність",
@@ -273,6 +274,7 @@
     "notFoundDesc": "Ця сторінка могла бути видалена.",
     "backToProject": "Назад до проєкту",
     "back": "Назад",
+    "breadcrumbProjects": "Проєкти",
     "noBlocksTitle": "Немає блоків контенту",
     "noBlocksDesc": "На цій сторінці ще немає блоків контенту."
   },

@@ -218,6 +218,7 @@
     "notFoundDesc": "Ten projekt mógł zostać usunięty.",
     "backToDashboard": "Wróć do panelu",
     "back": "Wróć",
+    "breadcrumbProjects": "Projekty",
     "tabPages": "Strony",
     "tabMemories": "Wspomnienia",
     "tabActivity": "Aktywność",
@@ -273,6 +274,7 @@
     "notFoundDesc": "Ta strona mogła zostać usunięta.",
     "backToProject": "Wróć do projektu",
     "back": "Wróć",
+    "breadcrumbProjects": "Projekty",
     "noBlocksTitle": "Brak bloków treści",
     "noBlocksDesc": "Ta strona nie ma jeszcze bloków treści."
   },

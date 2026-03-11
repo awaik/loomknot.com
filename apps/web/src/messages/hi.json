@@ -218,6 +218,7 @@
     "notFoundDesc": "यह प्रोजेक्ट हटाया जा चुका है या आपके पास एक्सेस नहीं है।",
     "backToDashboard": "डैशबोर्ड पर वापस",
     "back": "वापस",
+    "breadcrumbProjects": "प्रोजेक्ट्स",
     "tabPages": "पेज",
     "tabMemories": "मेमोरी",
     "tabActivity": "गतिविधि",
@@ -273,6 +274,7 @@
     "notFoundDesc": "यह पेज हटाया जा चुका है या आपके पास एक्सेस नहीं है।",
     "backToProject": "प्रोजेक्ट पर वापस",
     "back": "वापस",
+    "breadcrumbProjects": "प्रोजेक्ट्स",
     "noBlocksTitle": "कोई कंटेंट ब्लॉक नहीं",
     "noBlocksDesc": "इस पेज पर अभी कोई कंटेंट ब्लॉक नहीं है।"
   },

@@ -218,6 +218,7 @@
     "notFoundDesc": "이 프로젝트는 삭제되었거나 접근 권한이 없습니다.",
     "backToDashboard": "대시보드로 돌아가기",
     "back": "뒤로",
+    "breadcrumbProjects": "프로젝트",
     "tabPages": "페이지",
     "tabMemories": "메모리",
     "tabActivity": "활동",
@@ -273,6 +274,7 @@
     "notFoundDesc": "이 페이지는 삭제되었거나 접근 권한이 없습니다.",
     "backToProject": "프로젝트로 돌아가기",
     "back": "뒤로",
+    "breadcrumbProjects": "프로젝트",
     "noBlocksTitle": "콘텐츠 블록 없음",
     "noBlocksDesc": "이 페이지에는 아직 콘텐츠 블록이 없습니다."
   },

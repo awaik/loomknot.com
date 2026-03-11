@@ -74,6 +74,7 @@ export interface PendingInvite {
   role: string;
   status: string;
   expiresAt: string;
+  lastSentAt: string;
   createdAt: string;
   updatedAt: string | null;
 }

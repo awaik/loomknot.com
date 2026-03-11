@@ -218,6 +218,7 @@
     "notFoundDesc": "Dieses Projekt wurde möglicherweise gelöscht oder Sie haben keinen Zugriff.",
     "backToDashboard": "Zurück zum Dashboard",
     "back": "Zurück",
+    "breadcrumbProjects": "Projekte",
     "tabPages": "Seiten",
     "tabMemories": "Erinnerungen",
     "tabActivity": "Aktivität",
@@ -273,6 +274,7 @@
     "notFoundDesc": "Diese Seite wurde möglicherweise gelöscht oder Sie haben keinen Zugriff.",
     "backToProject": "Zurück zum Projekt",
     "back": "Zurück",
+    "breadcrumbProjects": "Projekte",
     "noBlocksTitle": "Keine Inhaltsblöcke",
     "noBlocksDesc": "Diese Seite hat noch keine Inhaltsblöcke."
   },

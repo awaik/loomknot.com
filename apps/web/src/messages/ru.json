@@ -218,6 +218,7 @@
     "notFoundDesc": "Возможно, проект был удалён или у вас нет доступа.",
     "backToDashboard": "Назад к проектам",
     "back": "Назад",
+    "breadcrumbProjects": "Проекты",
     "tabPages": "Страницы",
     "tabMemories": "Память",
     "tabActivity": "Активность",
@@ -298,6 +299,7 @@
     "notFoundDesc": "Возможно, страница была удалена или у вас нет доступа.",
     "backToProject": "Назад к проекту",
     "back": "Назад",
+    "breadcrumbProjects": "Проекты",
     "noBlocksTitle": "Нет блоков контента",
     "noBlocksDesc": "На этой странице пока нет блоков контента."
   },

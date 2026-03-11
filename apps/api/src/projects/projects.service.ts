@@ -487,6 +487,7 @@ export class ProjectsService {
         role: invites.role,
         status: invites.status,
         expiresAt: invites.expiresAt,
+        lastSentAt: invites.lastSentAt,
         createdAt: invites.createdAt,
         updatedAt: invites.updatedAt,
       })
@@ -526,32 +527,39 @@ export class ProjectsService {
       throw new BadRequestException('Only pending invites can be resent');
     }
 
-    // Cooldown since last send (creation or last resend)
-    const cooldownThreshold = new Date(Date.now() - INVITE_RESEND_COOLDOWN_MS);
-    const lastSentAt = invite.updatedAt ?? invite.createdAt;
-    if (lastSentAt > cooldownThreshold) {
-      throw new BadRequestException('Please wait at least 2 hours between resending invitations');
+    // Cooldown since last send
+    const now = new Date();
+    const cooldownThreshold = new Date(now.getTime() - INVITE_RESEND_COOLDOWN_MS);
+    if (invite.lastSentAt > cooldownThreshold) {
+      throw new BadRequestException({
+        message: 'Please wait at least 2 hours between resending invitations',
+        error: 'RESEND_COOLDOWN',
+      });
     }
 
     // Generate new token and reset expiration
     const token = randomBytes(32).toString('hex');
-    const expiresAt = new Date(Date.now() + INVITE_EXPIRY_MS);
+    const expiresAt = new Date(now.getTime() + INVITE_EXPIRY_MS);
 
-    const [updated] = await this.db
-      .update(invites)
-      .set({ token, expiresAt })
-      .where(eq(invites.id, invite.id))
-      .returning({
-        id: invites.id,
-        email: invites.email,
-        role: invites.role,
-        status: invites.status,
-        expiresAt: invites.expiresAt,
-        createdAt: invites.createdAt,
-        updatedAt: invites.updatedAt,
-      });
+    const [updatedRows, project] = await Promise.all([
+      this.db
+        .update(invites)
+        .set({ token, expiresAt, lastSentAt: now })
+        .where(eq(invites.id, invite.id))
+        .returning({
+          id: invites.id,
+          email: invites.email,
+          role: invites.role,
+          status: invites.status,
+          expiresAt: invites.expiresAt,
+          lastSentAt: invites.lastSentAt,
+          createdAt: invites.createdAt,
+          updatedAt: invites.updatedAt,
+        }),
+      this.findById(projectId),
+    ]);
 
-    const project = await this.findById(projectId);
+    const [updated] = updatedRows;
     await this.sendInviteEmail(invite.email, token, project?.title ?? null);
 
     return updated!;

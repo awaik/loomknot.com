@@ -218,6 +218,7 @@
     "notFoundDesc": "Questo progetto potrebbe essere stato eliminato o non hai accesso.",
     "backToDashboard": "Torna al pannello",
     "back": "Indietro",
+    "breadcrumbProjects": "Progetti",
     "tabPages": "Pagine",
     "tabMemories": "Memorie",
     "tabActivity": "Attività",
@@ -273,6 +274,7 @@
     "notFoundDesc": "Questa pagina potrebbe essere stata eliminata.",
     "backToProject": "Torna al progetto",
     "back": "Indietro",
+    "breadcrumbProjects": "Progetti",
     "noBlocksTitle": "Nessun blocco",
     "noBlocksDesc": "Questa pagina non ha ancora blocchi di contenuto."
   },

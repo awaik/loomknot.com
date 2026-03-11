@@ -218,6 +218,7 @@
     "notFoundDesc": "このプロジェクトは削除されたか、アクセス権がありません。",
     "backToDashboard": "ダッシュボードに戻る",
     "back": "戻る",
+    "breadcrumbProjects": "プロジェクト",
     "tabPages": "ページ",
     "tabMemories": "メモリ",
     "tabActivity": "アクティビティ",
@@ -273,6 +274,7 @@
     "notFoundDesc": "このページは削除されたか、アクセス権がありません。",
     "backToProject": "プロジェクトに戻る",
     "back": "戻る",
+    "breadcrumbProjects": "プロジェクト",
     "noBlocksTitle": "コンテンツブロックなし",
     "noBlocksDesc": "このページにはまだコンテンツブロックがありません。"
   },

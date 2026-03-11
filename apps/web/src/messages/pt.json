@@ -218,6 +218,7 @@
     "notFoundDesc": "Este projeto pode ter sido excluído ou você não tem acesso.",
     "backToDashboard": "Voltar ao painel",
     "back": "Voltar",
+    "breadcrumbProjects": "Projetos",
     "tabPages": "Páginas",
     "tabMemories": "Memórias",
     "tabActivity": "Atividade",
@@ -273,6 +274,7 @@
     "notFoundDesc": "Esta página pode ter sido excluída ou você não tem acesso.",
     "backToProject": "Voltar ao projeto",
     "back": "Voltar",
+    "breadcrumbProjects": "Projetos",
     "noBlocksTitle": "Sem blocos de conteúdo",
     "noBlocksDesc": "Esta página ainda não tem blocos de conteúdo."
   },

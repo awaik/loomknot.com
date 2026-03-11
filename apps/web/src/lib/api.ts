@@ -49,9 +49,13 @@ export async function api<T = unknown>(
   options: RequestInit = {},
 ): Promise<T> {
   const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
     ...((options.headers as Record<string, string>) ?? {}),
   };
+
+  // Only set JSON Content-Type when there's a body to avoid Fastify parse errors
+  if (options.body !== undefined) {
+    headers['Content-Type'] = headers['Content-Type'] ?? 'application/json';
+  }
 
   if (accessToken) {
     headers['Authorization'] = `Bearer ${accessToken}`;

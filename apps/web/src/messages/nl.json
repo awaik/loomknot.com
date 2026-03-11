@@ -218,6 +218,7 @@
     "notFoundDesc": "Dit project is mogelijk verwijderd.",
     "backToDashboard": "Terug naar dashboard",
     "back": "Terug",
+    "breadcrumbProjects": "Projecten",
     "tabPages": "Pagina's",
     "tabMemories": "Herinneringen",
     "tabActivity": "Activiteit",
@@ -273,6 +274,7 @@
     "notFoundDesc": "Deze pagina is mogelijk verwijderd.",
     "backToProject": "Terug naar project",
     "back": "Terug",
+    "breadcrumbProjects": "Projecten",
     "noBlocksTitle": "Geen inhoudsblokken",
     "noBlocksDesc": "Deze pagina heeft nog geen inhoudsblokken."
   },

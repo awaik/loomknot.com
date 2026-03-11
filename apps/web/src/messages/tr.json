@@ -218,6 +218,7 @@
     "notFoundDesc": "Bu proje silinmiş olabilir veya erişiminiz yok.",
     "backToDashboard": "Panele dön",
     "back": "Geri",
+    "breadcrumbProjects": "Projeler",
     "tabPages": "Sayfalar",
     "tabMemories": "Anılar",
     "tabActivity": "Etkinlik",
@@ -273,6 +274,7 @@
     "notFoundDesc": "Bu sayfa silinmiş olabilir.",
     "backToProject": "Projeye dön",
     "back": "Geri",
+    "breadcrumbProjects": "Projeler",
     "noBlocksTitle": "İçerik bloğu yok",
     "noBlocksDesc": "Bu sayfada henüz içerik bloğu yok."
   },
