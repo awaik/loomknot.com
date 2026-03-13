@@ -16,7 +16,7 @@ app.set('trust proxy', 1);
 // --- Constants ---
 
 const SSE_KEEPALIVE_MS = 30_000;
-const SESSION_IDLE_TIMEOUT_MS = 10 * 60 * 1000; // 10 min — reaper kills idle sessions
+const SESSION_IDLE_TIMEOUT_MS = 30 * 60 * 1000; // 30 min — reaper kills idle sessions
 const SESSION_REAPER_INTERVAL_MS = 60 * 1000; // reaper sweep every 60s
 const MAX_SESSIONS = 1000;
 const MAX_SESSIONS_PER_USER = 50;
@@ -46,10 +46,15 @@ interface McpSession {
 /**
  * Attach an SSE keepalive timer to a response stream.
  * Returns a stop function. Also auto-clears on response close.
+ * If `session` is provided, bumps `lastActivity` on each keepalive
+ * so the reaper doesn't kill sessions with active SSE listeners.
  */
-function startSseKeepalive(res: express.Response): () => void {
+function startSseKeepalive(res: express.Response, session?: McpSession): () => void {
   const timer = setInterval(() => {
-    if (!res.writableEnded) res.write(':keepalive\n\n');
+    if (!res.writableEnded) {
+      res.write(':keepalive\n\n');
+      if (session) session.lastActivity = Date.now();
+    }
   }, SSE_KEEPALIVE_MS);
   const stop = () => clearInterval(timer);
   res.on('close', stop);
@@ -287,13 +292,12 @@ app.get('/mcp/sse', legacySseLimiter, async (req, res) => {
       }
 
       session.lastActivity = Date.now();
-      session.stopKeepalive = startSseKeepalive(res);
+      session.stopKeepalive = startSseKeepalive(res, session);
 
-      // When SSE stream drops (client disconnect, network failure) — destroy session.
-      // Client will re-initialize on reconnect (standard Streamable HTTP flow).
-      res.on('close', () => {
-        destroySession(sessionId, 'sse-disconnect').catch(() => {});
-      });
+      // Streamable HTTP: SSE GET stream is a reconnectable notification channel.
+      // Do NOT destroy the session on close — client can reconnect using the same
+      // session ID (e.g. after network hiccups). Cleanup is handled by the reaper
+      // (idle timeout) or explicit DELETE from the client.
 
       await session.transport.handleRequest(req, res);
       return;
@@ -313,22 +317,24 @@ app.get('/mcp/sse', legacySseLimiter, async (req, res) => {
     const server = createMcpServer(auth.userId, auth.apiKeyId);
     const transport = new SSEServerTransport('/mcp/messages', res);
 
-    const stopKeepalive = startSseKeepalive(res);
     const now = Date.now();
-
-    sessions.set(transport.sessionId, {
+    const session: McpSession = {
       transport,
       server,
       userId: auth.userId,
       apiKeyId: auth.apiKeyId,
-      stopKeepalive,
+      stopKeepalive: null,
       createdAt: now,
       lastActivity: now,
-    });
+    };
+    sessions.set(transport.sessionId, session);
+    session.stopKeepalive = startSseKeepalive(res, session);
+
     console.log(
       `[MCP] session created (legacy SSE) id=${transport.sessionId.slice(0, 8)}… user=${auth.userId.slice(0, 12)}… sessions=${sessions.size}`,
     );
 
+    // Legacy SSE: the GET stream IS the session — destroy on close.
     res.on('close', () => {
       destroySession(transport.sessionId, 'sse-disconnect').catch(() => {});
     });
