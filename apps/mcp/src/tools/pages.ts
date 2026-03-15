@@ -183,7 +183,12 @@ export function registerPageTools(
   // --- pages/update ---
   server.tool(
     'pages_update',
-    'Loomknot: update a page and/or its content blocks. For blocks: include id to update existing, omit id to create new, set action:"delete" to remove.',
+    `Loomknot: update a page and/or its content blocks.
+IMPORTANT: Send ONLY the blocks you want to change — not the entire page.
+Blocks not included in the request remain unchanged.
+• Update existing block: include "id" + changed fields (type, content, etc.)
+• Create new block: omit "id"
+• Delete block: include "id" + action:"delete"`,
     {
       pageId: z.string().describe('Page ID'),
       title: z.string().min(1).max(500).optional().describe('New page title'),
@@ -202,7 +207,7 @@ export function registerPageTools(
           }),
         )
         .optional()
-        .describe('Block operations: update (with id), create (without id), delete (with id + action:"delete")'),
+        .describe('Block operations: update (with id), create (without id), delete (with id + action:"delete"). Send ONLY changed blocks.'),
     },
     async ({ pageId, title, description, status, blocks }) => {
       try {
@@ -236,80 +241,64 @@ export function registerPageTools(
         if (description !== undefined) pageUpdates.description = description;
         if (status !== undefined) pageUpdates.status = status;
 
+        // Classify block operations before transaction
+        const toDelete: string[] = [];
+        const toUpdate: Array<{ id: string; data: Record<string, unknown> }> = [];
+        const toCreate: Array<typeof pageBlocks.$inferInsert> = [];
+
+        if (blocks && blocks.length > 0) {
+          for (const block of blocks) {
+            if (block.id && block.action === 'delete') {
+              toDelete.push(block.id);
+            } else if (block.id) {
+              const blockUpdates: Record<string, unknown> = {};
+              if (block.type !== undefined) blockUpdates.type = block.type;
+              if (block.content !== undefined) blockUpdates.content = block.content;
+              if (block.agentData !== undefined) blockUpdates.agentData = block.agentData;
+              if (block.sourceMemoryIds !== undefined) blockUpdates.sourceMemoryIds = block.sourceMemoryIds;
+              if (block.sortOrder !== undefined) blockUpdates.sortOrder = block.sortOrder;
+              if (Object.keys(blockUpdates).length > 0) {
+                toUpdate.push({ id: block.id, data: blockUpdates });
+              }
+            } else {
+              toCreate.push({
+                id: createId(),
+                pageId,
+                type: block.type ?? 'text',
+                content: block.content ?? {},
+                agentData: block.agentData ?? null,
+                sourceMemoryIds: block.sourceMemoryIds ?? null,
+                sortOrder: block.sortOrder ?? 0,
+              });
+            }
+          }
+        }
+
         await db.transaction(async (tx) => {
           if (Object.keys(pageUpdates).length > 0) {
-            await tx
-              .update(pages)
-              .set(pageUpdates)
-              .where(eq(pages.id, pageId));
+            await tx.update(pages).set(pageUpdates).where(eq(pages.id, pageId));
           }
 
-          // Process block operations (batched by operation type)
-          if (blocks && blocks.length > 0) {
-            const toDelete: string[] = [];
-            const toUpdate: Array<{ id: string; data: Record<string, unknown> }> = [];
-            const toCreate: Array<typeof pageBlocks.$inferInsert> = [];
+          if (toDelete.length > 0) {
+            await tx.delete(pageBlocks).where(
+              and(inArray(pageBlocks.id, toDelete), eq(pageBlocks.pageId, pageId)),
+            );
+          }
 
-            for (const block of blocks) {
-              if (block.id && block.action === 'delete') {
-                toDelete.push(block.id);
-              } else if (block.id) {
-                const blockUpdates: Record<string, unknown> = {};
-                if (block.type !== undefined) blockUpdates.type = block.type;
-                if (block.content !== undefined) blockUpdates.content = block.content;
-                if (block.agentData !== undefined) blockUpdates.agentData = block.agentData;
-                if (block.sourceMemoryIds !== undefined) blockUpdates.sourceMemoryIds = block.sourceMemoryIds;
-                if (block.sortOrder !== undefined) blockUpdates.sortOrder = block.sortOrder;
-                if (Object.keys(blockUpdates).length > 0) {
-                  toUpdate.push({ id: block.id, data: blockUpdates });
-                }
-              } else {
-                toCreate.push({
-                  id: createId(),
-                  pageId,
-                  type: block.type ?? 'text',
-                  content: block.content ?? {},
-                  agentData: block.agentData ?? null,
-                  sourceMemoryIds: block.sourceMemoryIds ?? null,
-                  sortOrder: block.sortOrder ?? 0,
-                });
-              }
-            }
+          for (const item of toUpdate) {
+            await tx.update(pageBlocks).set(item.data).where(
+              and(eq(pageBlocks.id, item.id), eq(pageBlocks.pageId, pageId)),
+            );
+          }
 
-            if (toDelete.length > 0) {
-              await tx.delete(pageBlocks).where(
-                and(inArray(pageBlocks.id, toDelete), eq(pageBlocks.pageId, pageId)),
-              );
-            }
-
-            for (const item of toUpdate) {
-              await tx.update(pageBlocks).set(item.data).where(
-                and(eq(pageBlocks.id, item.id), eq(pageBlocks.pageId, pageId)),
-              );
-            }
-
-            if (toCreate.length > 0) {
-              await tx.insert(pageBlocks).values(toCreate);
-            }
+          if (toCreate.length > 0) {
+            await tx.insert(pageBlocks).values(toCreate);
           }
         });
 
-        // Fetch updated page with blocks
-        const [updatedPage] = await db
-          .select()
-          .from(pages)
-          .where(and(eq(pages.id, pageId), isNull(pages.deletedAt)))
-          .limit(1);
-
-        if (!updatedPage) {
-          return toolError('NOT_FOUND', 'Page was deleted during update');
-        }
-
-        const updatedBlocks = await db
-          .select()
-          .from(pageBlocks)
-          .where(eq(pageBlocks.pageId, pageId))
-          .orderBy(asc(pageBlocks.sortOrder));
+        // Lightweight response: only affected block IDs + summary
+        const updatedIds = toUpdate.map((u) => u.id);
+        const createdIds = toCreate.map((c) => c.id as string);
 
         // Log activity (fire-and-forget)
         db.insert(activityLog)
@@ -327,8 +316,13 @@ export function registerPageTools(
           })
           .catch(() => {});
 
+        const updatedFieldKeys = Object.keys(pageUpdates);
         return toolResult({
-          ...updatedPage, blocks: updatedBlocks, url: pageUrl(page.projectId, pageId),
+          pageId,
+          url: pageUrl(page.projectId, pageId),
+          title: title ?? page.title,
+          ...(updatedFieldKeys.length > 0 ? { updatedFields: updatedFieldKeys } : {}),
+          ...(blocks?.length ? { blocks: { created: createdIds, updated: updatedIds, deleted: toDelete } } : {}),
           ...(warnings.length > 0 ? { _warnings: warnings } : {}),
         });
       } catch (err) {
