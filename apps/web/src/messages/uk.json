@@ -356,5 +356,17 @@
     "archived": "В архіві",
     "active": "Активний",
     "revoked": "Відкликано"
+  },
+  "ProjectsEmpty": {
+    "heroTitle": "Projects are where AI gets its memory",
+    "heroDesc": "A project is a workspace where you, your team, and AI agents share persistent memory. Everything your AI learns — preferences, decisions, context — stays here across conversations and across agents.",
+    "memoryTitle": "Memory that never resets",
+    "memoryDesc": "Every conversation builds on the last. Switch from Claude to ChatGPT — nothing is lost. Your AI picks up exactly where it left off.",
+    "pagesTitle": "Living pages, not static docs",
+    "pagesDesc": "Each project has pages — beautiful for you, structured data for agents. Trip plans, health logs, budgets — all dynamic and always up to date.",
+    "teamTitle": "Multiple agents, one brain",
+    "teamDesc": "Invite friends, each with their own AI. Agents share project memory, respect private preferences, and negotiate compromises automatically.",
+    "createButton": "Create your first project",
+    "hint": "Try \"Barcelona Trip 2026\", \"My Health\", or anything you want your AI to remember."
   }
 }

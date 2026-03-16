@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { FolderKanban, Plus, ListTodo, Users, Brain, Clock } from 'lucide-react';
+import { Plus, ListTodo, Users, Brain, Clock } from 'lucide-react';
 import { formatRelative } from '@/lib/utils';
 import { useProjects } from '@/hooks/use-projects';
 import { useTasks } from '@/hooks/use-tasks';
@@ -11,6 +11,7 @@ import { PageHeader } from '@/components/page-header';
 import { EmptyState } from '@/components/empty-state';
 import { StatusBadge } from '@/components/status-badge';
 import { CreateProjectDialog } from '@/components/create-project-dialog';
+import { ProjectsEmptyState } from '@/components/projects-empty-state';
 
 export default function DashboardPage() {
   const t = useTranslations('Dashboard');
@@ -53,20 +54,7 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : !projects || projects.length === 0 ? (
-          <EmptyState
-            icon={FolderKanban}
-            title={t('noProjectsTitle')}
-            description={t('noProjectsDesc')}
-            action={
-              <button
-                onClick={() => setDialogOpen(true)}
-                className="flex items-center gap-2 rounded-sm bg-thread px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-thread-dark"
-              >
-                <Plus className="h-4 w-4" />
-                {t('createProject')}
-              </button>
-            }
-          />
+          <ProjectsEmptyState onCreateProject={() => setDialogOpen(true)} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (

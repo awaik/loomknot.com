@@ -218,7 +218,7 @@
     "notFoundDesc": "This project may have been deleted or you don't have access.",
     "backToDashboard": "Back to dashboard",
     "back": "Back",
-    "breadcrumbProjects": "ಪ್ರಾಜೆಕ್ಟ್\u200cಗಳು",
+    "breadcrumbProjects": "ಪ್ರಾಜೆಕ್ಟ್‌ಗಳು",
     "tabPages": "Pages",
     "tabMemories": "Memories",
     "tabActivity": "Activity",
@@ -274,7 +274,7 @@
     "notFoundDesc": "This page may have been deleted or you don't have access.",
     "backToProject": "Back to project",
     "back": "Back",
-    "breadcrumbProjects": "ಪ್ರಾಜೆಕ್ಟ್\u200cಗಳು",
+    "breadcrumbProjects": "ಪ್ರಾಜೆಕ್ಟ್‌ಗಳು",
     "itineraryDay": "ದಿನ {day}",
     "noBlocksTitle": "No content blocks",
     "noBlocksDesc": "This page doesn't have any content blocks yet."
@@ -356,5 +356,17 @@
     "archived": "Archived",
     "active": "Active",
     "revoked": "Revoked"
+  },
+  "ProjectsEmpty": {
+    "heroTitle": "Projects are where AI gets its memory",
+    "heroDesc": "A project is a workspace where you, your team, and AI agents share persistent memory. Everything your AI learns — preferences, decisions, context — stays here across conversations and across agents.",
+    "memoryTitle": "Memory that never resets",
+    "memoryDesc": "Every conversation builds on the last. Switch from Claude to ChatGPT — nothing is lost. Your AI picks up exactly where it left off.",
+    "pagesTitle": "Living pages, not static docs",
+    "pagesDesc": "Each project has pages — beautiful for you, structured data for agents. Trip plans, health logs, budgets — all dynamic and always up to date.",
+    "teamTitle": "Multiple agents, one brain",
+    "teamDesc": "Invite friends, each with their own AI. Agents share project memory, respect private preferences, and negotiate compromises automatically.",
+    "createButton": "Create your first project",
+    "hint": "Try \"Barcelona Trip 2026\", \"My Health\", or anything you want your AI to remember."
   }
 }
