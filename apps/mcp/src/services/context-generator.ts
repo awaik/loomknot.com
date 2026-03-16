@@ -9,14 +9,44 @@ interface MemoryRow {
   summary: string | null;
 }
 
+const DEBOUNCE_MS = 3_000;
+
+interface PendingEntry {
+  timer: NodeJS.Timeout;
+  resolve: () => void;
+}
+
+const pendingTimers = new Map<string, PendingEntry>();
+
 /**
  * Regenerate the project context and summary from all project-level memories.
  *
- * Loads all non-deleted, project-level memories, groups them by category,
- * and builds a markdown context document + a short summary string.
- * Updates `projects.context` and `projects.summary`.
+ * Debounced per projectId — multiple rapid calls within 3 seconds
+ * coalesce into a single DB operation. This prevents pool exhaustion
+ * when bulk-writing memories.
+ *
+ * Superseded callers are resolved immediately (no hanging Promises).
  */
-export async function regenerateContext(projectId: string): Promise<void> {
+export function regenerateContext(projectId: string): Promise<void> {
+  return new Promise<void>((resolve) => {
+    const existing = pendingTimers.get(projectId);
+    if (existing) {
+      clearTimeout(existing.timer);
+      existing.resolve(); // let the superseded caller go
+    }
+
+    const timer = setTimeout(() => {
+      pendingTimers.delete(projectId);
+      doRegenerateContext(projectId)
+        .then(resolve)
+        .catch(() => resolve());
+    }, DEBOUNCE_MS);
+
+    pendingTimers.set(projectId, { timer, resolve });
+  });
+}
+
+async function doRegenerateContext(projectId: string): Promise<void> {
   // Load all project-level, non-deleted memories
   const rows = await db
     .select({

@@ -1,4 +1,4 @@
-import { eq, and, inArray, sql } from 'drizzle-orm';
+import { eq, and, inArray } from 'drizzle-orm';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
   users,
@@ -37,25 +37,15 @@ export function registerBootstrapTools(
 
         const user = userRows[0];
 
-        // Get all user's projects with member count and memory count
+        // Get all user's projects (lightweight — no correlated subqueries)
         const userProjects = await db
           .select({
             projectId: projectMembers.projectId,
             role: projectMembers.role,
             title: projects.title,
             slug: projects.slug,
-            description: projects.description,
             vertical: projects.vertical,
-            summary: projects.summary,
             isPublic: projects.isPublic,
-            memberCount: sql<number>`(
-              SELECT count(*)::int FROM project_members
-              WHERE project_id = ${projects.id}
-            )`,
-            memoryCount: sql<number>`(
-              SELECT count(*)::int FROM memories
-              WHERE project_id = ${projects.id} AND deleted_at IS NULL
-            )`,
           })
           .from(projectMembers)
           .innerJoin(projects, eq(projects.id, projectMembers.projectId))
@@ -86,13 +76,9 @@ export function registerBootstrapTools(
             projectId: p.projectId,
             title: p.title,
             slug: p.slug,
-            description: p.description,
             vertical: p.vertical,
-            summary: p.summary,
             isPublic: p.isPublic,
             role: p.role,
-            memberCount: p.memberCount,
-            memoryCount: p.memoryCount,
           })),
           pendingTasks,
         });

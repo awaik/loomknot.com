@@ -73,7 +73,18 @@ export function registerPageTools(
     async ({ pageId }) => {
       try {
         const pageRows = await db
-          .select()
+          .select({
+            id: pages.id,
+            projectId: pages.projectId,
+            slug: pages.slug,
+            title: pages.title,
+            description: pages.description,
+            status: pages.status,
+            sortOrder: pages.sortOrder,
+            createdBy: pages.createdBy,
+            createdAt: pages.createdAt,
+            updatedAt: pages.updatedAt,
+          })
           .from(pages)
           .where(and(eq(pages.id, pageId), isNull(pages.deletedAt)))
           .limit(1);
@@ -86,7 +97,14 @@ export function registerPageTools(
         await requireProjectMembership(userId, page.projectId);
 
         const blocks = await db
-          .select()
+          .select({
+            id: pageBlocks.id,
+            type: pageBlocks.type,
+            content: pageBlocks.content,
+            agentData: pageBlocks.agentData,
+            sourceMemoryIds: pageBlocks.sourceMemoryIds,
+            sortOrder: pageBlocks.sortOrder,
+          })
           .from(pageBlocks)
           .where(eq(pageBlocks.pageId, pageId))
           .orderBy(asc(pageBlocks.sortOrder));

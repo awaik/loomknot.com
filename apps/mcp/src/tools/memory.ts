@@ -231,7 +231,17 @@ export function registerMemoryTools(
         }
 
         const rows = await db
-          .select()
+          .select({
+            id: memories.id,
+            projectId: memories.projectId,
+            level: memories.level,
+            category: memories.category,
+            key: memories.key,
+            value: memories.value,
+            summary: memories.summary,
+            userId: memories.userId,
+            updatedAt: memories.updatedAt,
+          })
           .from(memories)
           .where(and(...conditions))
           .orderBy(memories.id)

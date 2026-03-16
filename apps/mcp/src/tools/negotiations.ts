@@ -1,4 +1,4 @@
-import { eq, and, desc } from 'drizzle-orm';
+import { eq, and, desc, inArray } from 'drizzle-orm';
 import { z } from 'zod';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
@@ -81,7 +81,6 @@ export function registerNegotiationTools(
         const optionIds = options.map((o) => o.id);
         let votes: typeof negotiationVotes.$inferSelect[] = [];
         if (optionIds.length > 0) {
-          const { inArray } = await import('drizzle-orm');
           votes = await db
             .select()
             .from(negotiationVotes)

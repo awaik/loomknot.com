@@ -21,7 +21,7 @@ export function registerProjectTools(
   // --- projects/list ---
   server.tool(
     'projects_list',
-    'Loomknot: list all your projects with summaries, member count, and memory count.',
+    'Loomknot: list all your projects. Use projects_get for full details.',
     {},
     async () => {
       try {
@@ -31,19 +31,9 @@ export function registerProjectTools(
             role: projectMembers.role,
             title: projects.title,
             slug: projects.slug,
-            description: projects.description,
             vertical: projects.vertical,
-            summary: projects.summary,
             isPublic: projects.isPublic,
             createdAt: projects.createdAt,
-            memberCount: sql<number>`(
-              SELECT count(*)::int FROM project_members
-              WHERE project_id = ${projects.id}
-            )`,
-            memoryCount: sql<number>`(
-              SELECT count(*)::int FROM memories
-              WHERE project_id = ${projects.id} AND deleted_at IS NULL
-            )`,
           })
           .from(projectMembers)
           .innerJoin(projects, and(eq(projects.id, projectMembers.projectId), isNull(projects.deletedAt)))
@@ -61,14 +51,31 @@ export function registerProjectTools(
   // --- projects/get ---
   server.tool(
     'projects_get',
-    'Loomknot: get project details — full context, members, pages count, and memories count.',
-    { projectId: z.string().describe('Project ID') },
-    async ({ projectId }) => {
+    'Loomknot: get project details — members, pages count, and memories count. Set includeContext=true to get full project context (large).',
+    {
+      projectId: z.string().describe('Project ID'),
+      includeContext: z.boolean().optional().describe('Include full project context markdown (can be large). Default: false'),
+    },
+    async ({ projectId, includeContext }) => {
       try {
         await requireProjectMembership(userId, projectId);
 
+        const baseColumns = {
+          id: projects.id,
+          slug: projects.slug,
+          title: projects.title,
+          description: projects.description,
+          vertical: projects.vertical,
+          summary: projects.summary,
+          isPublic: projects.isPublic,
+          ownerId: projects.ownerId,
+          settings: projects.settings,
+          createdAt: projects.createdAt,
+          updatedAt: projects.updatedAt,
+        };
+
         const projectRows = await db
-          .select()
+          .select(includeContext ? { ...baseColumns, context: projects.context } : baseColumns)
           .from(projects)
           .where(and(eq(projects.id, projectId), isNull(projects.deletedAt)))
           .limit(1);
@@ -79,25 +86,25 @@ export function registerProjectTools(
 
         const project = projectRows[0];
 
-        // Get members with user info
-        const members = await db
-          .select({
-            userId: projectMembers.userId,
-            role: projectMembers.role,
-            joinedAt: projectMembers.joinedAt,
-          })
-          .from(projectMembers)
-          .where(eq(projectMembers.projectId, projectId));
-
-        // Get counts via raw SQL subqueries for efficiency
-        const [counts] = await db.execute<{
-          page_count: number;
-          memory_count: number;
-        }>(sql`
-          SELECT
-            (SELECT count(*)::int FROM pages WHERE project_id = ${projectId} AND deleted_at IS NULL) as page_count,
-            (SELECT count(*)::int FROM memories WHERE project_id = ${projectId} AND deleted_at IS NULL) as memory_count
-        `);
+        // Get members + counts in parallel
+        const [members, [counts]] = await Promise.all([
+          db
+            .select({
+              userId: projectMembers.userId,
+              role: projectMembers.role,
+              joinedAt: projectMembers.joinedAt,
+            })
+            .from(projectMembers)
+            .where(eq(projectMembers.projectId, projectId)),
+          db.execute<{
+            page_count: number;
+            memory_count: number;
+          }>(sql`
+            SELECT
+              (SELECT count(*)::int FROM pages WHERE project_id = ${projectId} AND deleted_at IS NULL) as page_count,
+              (SELECT count(*)::int FROM memories WHERE project_id = ${projectId} AND deleted_at IS NULL) as memory_count
+          `),
+        ]);
 
         return toolResult({
           ...project,

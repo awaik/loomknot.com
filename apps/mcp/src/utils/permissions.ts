@@ -3,23 +3,42 @@ import { projectMembers } from '@loomknot/shared/db';
 import { ROLE_PERMISSIONS, type Role, type Permission } from '@loomknot/shared/constants';
 import { db } from '@/services/db.js';
 import { McpToolError } from './errors.js';
+import { TtlCache } from './ttl-cache.js';
+
+const membershipCache = new TtlCache<Role>({ ttlMs: 10 * 60 * 1000, maxSize: 500 });
+
+function cacheKey(userId: string, projectId: string): string {
+  return `${userId}:${projectId}`;
+}
 
 /**
  * Check if user is a member of a project.
  * Returns the member's role or null if not a member.
+ * Results are cached in-memory for 10 minutes.
  */
 export async function checkProjectMembership(
   userId: string,
   projectId: string,
 ): Promise<Role | null> {
+  const key = cacheKey(userId, projectId);
+  const cached = membershipCache.get(key);
+  if (cached) return cached;
+
   const member = await db
     .select({ role: projectMembers.role })
     .from(projectMembers)
     .where(and(eq(projectMembers.projectId, projectId), eq(projectMembers.userId, userId)))
     .limit(1);
 
-  if (member.length === 0) return null;
-  return member[0].role as Role;
+  if (member.length === 0) {
+    membershipCache.delete(key);
+    return null;
+  }
+
+  const role = member[0].role as Role;
+  membershipCache.set(key, role);
+
+  return role;
 }
 
 /**
@@ -60,4 +79,15 @@ export async function requirePermission(
     throw new McpToolError('FORBIDDEN', `You do not have ${permission} permission in this project`);
   }
   return role;
+}
+
+/**
+ * Invalidate cached membership for a user/project pair (e.g. on role change or removal).
+ */
+export function invalidateMembershipCache(userId?: string, projectId?: string): void {
+  if (userId && projectId) {
+    membershipCache.delete(cacheKey(userId, projectId));
+  } else {
+    membershipCache.clear();
+  }
 }
