@@ -182,6 +182,57 @@ export function registerProjectTools(
     },
   );
 
+  // --- projects/delete ---
+  server.tool(
+    'projects_delete',
+    'Loomknot: soft-delete a project. Only the project owner can delete it. The project can be restored later.',
+    {
+      projectId: z.string().describe('Project ID to delete'),
+    },
+    async ({ projectId }) => {
+      try {
+        await requirePermission(userId, projectId, 'canManageProject');
+
+        // Verify ownership — only owner can delete
+        const [project] = await db
+          .select({ ownerId: projects.ownerId, title: projects.title })
+          .from(projects)
+          .where(and(eq(projects.id, projectId), isNull(projects.deletedAt)))
+          .limit(1);
+
+        if (!project) {
+          return toolError('NOT_FOUND', 'Project not found');
+        }
+
+        if (project.ownerId !== userId) {
+          return toolError('FORBIDDEN', 'Only the project owner can delete the project');
+        }
+
+        await db
+          .update(projects)
+          .set({ deletedAt: new Date() })
+          .where(eq(projects.id, projectId));
+
+        // Log activity (fire-and-forget)
+        db.insert(activityLog)
+          .values({
+            projectId,
+            userId,
+            apiKeyId,
+            action: 'project.delete',
+            targetType: 'project',
+            targetId: projectId,
+            metadata: { title: project.title },
+          })
+          .catch(() => {});
+
+        return toolResult({ deleted: true, projectId });
+      } catch (err) {
+        return classifyError(err, 'projects_delete');
+      }
+    },
+  );
+
   // --- projects/update ---
   server.tool(
     'projects_update',
