@@ -83,12 +83,28 @@ export const EMAIL_FROM = 'Loomknot <noreply@loomknot.com>';
 export const MCP_PROTOCOL_VERSION = '2025-03-26';
 
 /**
+ * Cyrillic → Latin transliteration map (covers Russian/Ukrainian).
+ */
+const CYRILLIC_MAP: Record<string, string> = {
+  а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'yo', ж: 'zh',
+  з: 'z', и: 'i', й: 'y', к: 'k', л: 'l', м: 'm', н: 'n', о: 'o',
+  п: 'p', р: 'r', с: 's', т: 't', у: 'u', ф: 'f', х: 'kh', ц: 'ts',
+  ч: 'ch', ш: 'sh', щ: 'shch', ъ: '', ы: 'y', ь: '', э: 'e', ю: 'yu',
+  я: 'ya', є: 'ye', і: 'i', ї: 'yi', ґ: 'g',
+};
+
+/**
  * Generate a URL-friendly slug from a string.
- * Lowercases, replaces non-alphanumeric chars with dashes, trims dashes.
+ * Transliterates Cyrillic, lowercases, replaces non-alphanumeric chars with dashes.
  */
 export function slugify(text: string, maxLength = 100): string {
-  return text
+  const transliterated = text
     .toLowerCase()
+    .split('')
+    .map((ch) => CYRILLIC_MAP[ch] ?? ch)
+    .join('');
+
+  return transliterated
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
     .slice(0, maxLength) || 'untitled';
