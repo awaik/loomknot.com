@@ -18,8 +18,8 @@ export function registerTaskTools(
 ): void {
   // --- tasks/list ---
   server.tool(
-    'tasks_list',
-    'Loomknot: list your tasks with optional filters by status (pending, in_progress, done, failed) and project.',
+    'lk_tasks_list',
+    'Loomknot: list your tasks with optional filters by status (pending, in_progress, done, failed) and Loomknot project.',
     {
       status: z
         .enum(['pending', 'in_progress', 'done', 'failed'])
@@ -58,14 +58,14 @@ export function registerTaskTools(
 
         return toolResult({ tasks: data, nextCursor, hasMore });
       } catch (err) {
-        return classifyError(err, 'tasks_list');
+        return classifyError(err, 'lk_tasks_list');
       }
     },
   );
 
   // --- tasks/get ---
   server.tool(
-    'tasks_get',
+    'lk_tasks_get',
     'Loomknot: get task details with execution logs.',
     {
       taskId: z.string().describe('Task ID'),
@@ -92,15 +92,15 @@ export function registerTaskTools(
 
         return toolResult({ ...task, logs });
       } catch (err) {
-        return classifyError(err, 'tasks_get');
+        return classifyError(err, 'lk_tasks_get');
       }
     },
   );
 
   // --- tasks/create ---
   server.tool(
-    'tasks_create',
-    'Loomknot: create a task — reminders, to-dos, or scheduled actions within a project.',
+    'lk_tasks_create',
+    'Loomknot: create a task — reminders, to-dos, or scheduled actions within a Loomknot project.',
     {
       title: z.string().min(1).max(500).describe('Task title'),
       prompt: z.string().min(1).describe('Task prompt/instructions'),
@@ -150,14 +150,14 @@ export function registerTaskTools(
 
         return toolResult(task);
       } catch (err) {
-        return classifyError(err, 'tasks_create');
+        return classifyError(err, 'lk_tasks_create');
       }
     },
   );
 
   // --- tasks/update ---
   server.tool(
-    'tasks_update',
+    'lk_tasks_update',
     'Loomknot: update task status, result, or add a log entry.',
     {
       taskId: z.string().describe('Task ID'),
@@ -233,7 +233,7 @@ export function registerTaskTools(
 
         return toolResult(updated);
       } catch (err) {
-        return classifyError(err, 'tasks_update');
+        return classifyError(err, 'lk_tasks_update');
       }
     },
   );

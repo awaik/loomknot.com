@@ -221,9 +221,9 @@
 - [ ] Audit log for all agent operations
 
 ### 4.2 MCP Tools Implementation
-- [ ] `memory_read` — read memory (private: own only, project: if member)
-- [ ] `memory_write` — write to memory (level check + permission check)
-- [ ] `memory_search` — semantic search across project memory
+- [ ] `lk_memory_read` — read memory (private: own only, project: if member)
+- [ ] `lk_memory_write` — write to memory (level check + permission check)
+- [ ] `lk_memory_search` — semantic search across project memory
 - [ ] `page_get` — get page in agent-friendly format
 - [ ] `page_suggest` — suggest a page change (creates a suggestion, does not apply)
 - [ ] `preferences_get` — get current user's preferences

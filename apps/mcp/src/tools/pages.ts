@@ -29,8 +29,8 @@ export function registerPageTools(
 ): void {
   // --- pages/list ---
   server.tool(
-    'pages_list',
-    'Loomknot: list all pages in a project (metadata only, no content blocks).',
+    'lk_pages_list',
+    'Loomknot: list all pages in a collaborative project (metadata only, no content blocks).',
     {
       projectId: z.string().describe('Project ID'),
     },
@@ -58,15 +58,15 @@ export function registerPageTools(
           pages: rows.map((row) => ({ ...row, url: pageUrl(projectId, row.id) })),
         });
       } catch (err) {
-        return classifyError(err, 'pages_list');
+        return classifyError(err, 'lk_pages_list');
       }
     },
   );
 
   // --- pages/get ---
   server.tool(
-    'pages_get',
-    'Loomknot: get a page with all its content blocks (text, headings, images, maps, lists).',
+    'lk_pages_get',
+    'Loomknot: get a page with all its content blocks (text, headings, images, maps, lists, itineraries).',
     {
       pageId: z.string().describe('Page ID'),
     },
@@ -111,15 +111,15 @@ export function registerPageTools(
 
         return toolResult({ ...page, blocks, url: pageUrl(page.projectId, pageId) });
       } catch (err) {
-        return classifyError(err, 'pages_get');
+        return classifyError(err, 'lk_pages_get');
       }
     },
   );
 
   // --- pages/create ---
   server.tool(
-    'pages_create',
-    'Loomknot: create a new page inside a project with content blocks. Use for travel plans, checklists, itineraries, notes, etc.',
+    'lk_pages_create',
+    'Loomknot: create a new page inside a collaborative project with content blocks. Use for travel plans, checklists, itineraries, notes, etc.',
     {
       projectId: z.string().describe('Project ID'),
       title: z.string().min(1).max(500).describe('Page title'),
@@ -193,14 +193,14 @@ export function registerPageTools(
           ...(warnings.length > 0 ? { _warnings: warnings } : {}),
         });
       } catch (err) {
-        return classifyError(err, 'pages_create');
+        return classifyError(err, 'lk_pages_create');
       }
     },
   );
 
   // --- pages/update ---
   server.tool(
-    'pages_update',
+    'lk_pages_update',
     `Loomknot: update a page and/or its content blocks.
 IMPORTANT: Send ONLY the blocks you want to change — not the entire page.
 Blocks not included in the request remain unchanged.
@@ -344,15 +344,15 @@ Blocks not included in the request remain unchanged.
           ...(warnings.length > 0 ? { _warnings: warnings } : {}),
         });
       } catch (err) {
-        return classifyError(err, 'pages_update');
+        return classifyError(err, 'lk_pages_update');
       }
     },
   );
 
   // --- pages/delete ---
   server.tool(
-    'pages_delete',
-    'Loomknot: delete a page from a project. The index page cannot be deleted.',
+    'lk_pages_delete',
+    'Loomknot: delete a page from a collaborative project. The index page cannot be deleted.',
     {
       pageId: z.string().describe('Page ID to delete'),
     },
@@ -395,7 +395,7 @@ Blocks not included in the request remain unchanged.
 
         return toolResult({ deleted: true, pageId });
       } catch (err) {
-        return classifyError(err, 'pages_delete');
+        return classifyError(err, 'lk_pages_delete');
       }
     },
   );

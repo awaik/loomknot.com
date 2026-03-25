@@ -308,25 +308,44 @@ Agent gateway — implements Model Context Protocol for connecting external AI a
 ### MCP Tools (exposed to agents)
 
 ```typescript
-// Memory operations
-'memory_read'     — read memory (private/project/public) with filtering
-'memory_write'    — write to memory (respecting access level)
-'memory_search'   — semantic search across memory (pgvector)
-'memory_delete'   — delete memory entry
-
-// Page operations
-'page_get'        — get page content (agent mode)
-'page_suggest'    — suggest page change
-'page_list'       — list project pages
-
-// Negotiation operations
-'negotiations_list'    — list project negotiations
-'negotiations_get'     — get negotiation with options and votes
-'negotiations_propose' — propose option for open negotiation
+// Bootstrap
+'lk_bootstrap'            — start session, get user info + projects + pending tasks
 
 // Project operations
-'project_info'    — project and member info
-'project_members' — list members and their agents
+'lk_projects_list'        — list all collaborative projects
+'lk_projects_get'         — project details with members and counts
+'lk_projects_create'      — create a new collaborative project
+'lk_projects_update'      — update project settings
+'lk_projects_delete'      — soft-delete a project
+
+// Memory operations
+'lk_memory_write'         — save a memory entry (preferences, decisions, constraints)
+'lk_memory_bulk-write'    — save multiple memory entries at once (max 50)
+'lk_memory_read'          — read memories with filtering and pagination
+'lk_memory_search'        — search memories by text across projects
+'lk_memory_update'        — update an existing memory entry
+'lk_memory_delete'        — delete a memory entry
+
+// Page operations
+'lk_pages_list'           — list project pages (metadata only)
+'lk_pages_get'            — get page with all content blocks
+'lk_pages_create'         — create a page with content blocks
+'lk_pages_update'         — update page and/or blocks (delta-only)
+'lk_pages_delete'         — delete a page
+
+// Task operations
+'lk_tasks_list'           — list tasks with filters
+'lk_tasks_get'            — get task details with execution logs
+'lk_tasks_create'         — create a task (reminders, to-dos, scheduled actions)
+'lk_tasks_update'         — update task status, result, or add log entry
+
+// Negotiation operations
+'lk_negotiations_list'    — list preference negotiations
+'lk_negotiations_get'     — get negotiation with options and votes
+'lk_negotiations_propose' — propose compromise option
+
+// Activity
+'lk_activity_recent'      — recent activity log for a project
 ```
 
 ### Transport

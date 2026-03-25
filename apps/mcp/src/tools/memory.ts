@@ -19,8 +19,8 @@ export function registerMemoryTools(
 ): void {
   // --- memory/write ---
   server.tool(
-    'memory_write',
-    'Loomknot: save a memory entry to a project (preferences, decisions, constraints). Upserts by category + key. Levels: private (only you), project (all members), public (shareable via link).',
+    'lk_memory_write',
+    'Loomknot: save a memory entry to a collaborative project (preferences, decisions, constraints). Upserts by category + key. Levels: private (only you), project (all members), public (shareable via link).',
     {
       projectId: z.string().describe('Project ID'),
       category: z.string().min(1).max(100).describe('Memory category (e.g. "preferences", "decisions", "constraints")'),
@@ -88,15 +88,15 @@ export function registerMemoryTools(
 
         return toolResult(memory);
       } catch (err) {
-        return classifyError(err, 'memory_write');
+        return classifyError(err, 'lk_memory_write');
       }
     },
   );
 
   // --- memory/bulk-write ---
   server.tool(
-    'memory_bulk-write',
-    'Loomknot: save multiple memory entries at once (max 50). All items must belong to the same project.',
+    'lk_memory_bulk-write',
+    'Loomknot: save multiple memory entries at once (max 50). All items must belong to the same collaborative project.',
     {
       projectId: z.string().describe('Project ID'),
       items: z
@@ -177,15 +177,15 @@ export function registerMemoryTools(
 
         return toolResult({ written: results.length, memories: results });
       } catch (err) {
-        return classifyError(err, 'memory_bulk-write');
+        return classifyError(err, 'lk_memory_bulk-write');
       }
     },
   );
 
   // --- memory/read ---
   server.tool(
-    'memory_read',
-    'Loomknot: read memories from a project with filtering by category and level. Supports cursor pagination. Private memories are only visible to their owner.',
+    'lk_memory_read',
+    'Loomknot: read memories from a collaborative project with filtering by category and level. Supports cursor pagination. Private memories are only visible to their owner.',
     {
       projectId: z.string().describe('Project ID'),
       category: z.string().optional().describe('Filter by category'),
@@ -257,15 +257,15 @@ export function registerMemoryTools(
           hasMore,
         });
       } catch (err) {
-        return classifyError(err, 'memory_read');
+        return classifyError(err, 'lk_memory_read');
       }
     },
   );
 
   // --- memory/search ---
   server.tool(
-    'memory_search',
-    'Loomknot: search memories by text across key, summary, and category. Can search across all your projects or a specific one.',
+    'lk_memory_search',
+    'Loomknot: search memories by text across key, summary, and category. Can search across all your Loomknot projects or a specific one.',
     {
       query: z.string().min(1).max(500).describe('Search query text'),
       projectId: z.string().optional().describe('Limit search to a specific project'),
@@ -330,14 +330,14 @@ export function registerMemoryTools(
 
         return toolResult({ memories: rows, total: rows.length });
       } catch (err) {
-        return classifyError(err, 'memory_search');
+        return classifyError(err, 'lk_memory_search');
       }
     },
   );
 
   // --- memory/update ---
   server.tool(
-    'memory_update',
+    'lk_memory_update',
     'Loomknot: update an existing memory entry (value, summary, or visibility level). You must own the memory.',
     {
       memoryId: z.string().describe('Memory ID to update'),
@@ -401,14 +401,14 @@ export function registerMemoryTools(
 
         return toolResult(updated[0]);
       } catch (err) {
-        return classifyError(err, 'memory_update');
+        return classifyError(err, 'lk_memory_update');
       }
     },
   );
 
   // --- memory/delete ---
   server.tool(
-    'memory_delete',
+    'lk_memory_delete',
     'Loomknot: delete a memory entry. You must own the memory.',
     {
       memoryId: z.string().describe('Memory ID to delete'),
@@ -458,7 +458,7 @@ export function registerMemoryTools(
 
         return toolResult({ deleted: true, memoryId });
       } catch (err) {
-        return classifyError(err, 'memory_delete');
+        return classifyError(err, 'lk_memory_delete');
       }
     },
   );

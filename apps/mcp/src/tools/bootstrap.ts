@@ -15,8 +15,8 @@ export function registerBootstrapTools(
   _apiKeyId: string,
 ): void {
   server.tool(
-    'bootstrap',
-    'Loomknot: start a session. Returns your user info, all projects with summaries, and pending tasks. Always call this first when connecting to Loomknot.',
+    'lk_bootstrap',
+    'Loomknot: start a session. Returns your user info, all collaborative projects (trips, events, plans) with summaries, and pending tasks. Always call this first when connecting to Loomknot.',
     {},
     async () => {
       try {
@@ -83,7 +83,7 @@ export function registerBootstrapTools(
           pendingTasks,
         });
       } catch (err) {
-        return classifyError(err, 'bootstrap');
+        return classifyError(err, 'lk_bootstrap');
       }
     },
   );

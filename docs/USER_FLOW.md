@@ -75,7 +75,7 @@ AI: "Looking in your Health project..."
 ```
 User: "Health project — add that I started taking magnesium"
   → direct match by title, no routing needed
-  → memory_write
+  → lk_memory_write
 ```
 
 **Option C — Ambiguous, ask user:**
@@ -131,8 +131,8 @@ AI (knows from context: vegetarian, no cilantro, staying at Hotel Arts):
 User: "Add Flax & Kale for day 1 dinner"
 
 AI:
-  → memory_write: { category: "restaurants", key: "flax_and_kale", value: {...} }
-  → pages_update: adds restaurant to day 1 itinerary block
+  → lk_memory_write: { category: "restaurants", key: "flax_and_kale", value: {...} }
+  → lk_pages_update: adds restaurant to day 1 itinerary block
   → context.md regenerated with new info
 ```
 
@@ -143,7 +143,7 @@ User: "I bought Nurofen 400mg, remember that"
 
 AI:
   → Routes to "Health" project
-  → memory_write: { category: "medications", key: "nurofen", value: {name: "Nurofen", dose: "400mg", type: "painkiller"} }
+  → lk_memory_write: { category: "medications", key: "nurofen", value: {name: "Nurofen", dose: "400mg", type: "painkiller"} }
   → context.md updated:
       ## Medications
       - Nurofen 400mg (painkiller)
@@ -180,7 +180,7 @@ AI:
   2. Reads relevant memories (restaurants, activities decided)
   3. Creates page with blocks:
 
-  pages_create:
+  lk_pages_create:
     title: "Barcelona March 2026"
     blocks:
       - type: "text", content: { markdown: "# Barcelona for Two\nMarch 15-22..." }
@@ -203,7 +203,7 @@ User: "Replace the day 2 lunch restaurant"
 AI:
   → finds the itinerary block for day 2
   → updates only that block's content
-  → pages_update(pageId, blocks: [{ id: blockId, content: newContent }])
+  → lk_pages_update(pageId, blocks: [{ id: blockId, content: newContent }])
   → page re-renders, only the changed block updates
 ```
 
@@ -250,13 +250,13 @@ Users assign work to their AI. The AI picks up tasks, executes them, reports bac
 ```
 AI connects via MCP:
 
-1. tasks_list(status: "pending") → sees "Find hotels in Barcelona"
-2. tasks_update(status: "in_progress", log: "Starting hotel search")
+1. lk_tasks_list(status: "pending") → sees "Find hotels in Barcelona"
+2. lk_tasks_update(status: "in_progress", log: "Starting hotel search")
 3. Reads project context.md → knows budget, dates, preferences
 4. Searches for hotels (external APIs or AI knowledge)
-5. memory_write × 5 (saves each hotel option)
-6. pages_create (comparison page with place blocks)
-7. tasks_update(status: "done",
+5. lk_memory_write × 5 (saves each hotel option)
+6. lk_pages_create (comparison page with place blocks)
+7. lk_tasks_update(status: "done",
      result: { hotelsFound: 5, pageCreated: "hotel-comparison" },
      log: "Found 5 hotels within budget. Created comparison page.")
 ```
@@ -544,7 +544,7 @@ AUDIT
 | Tasks | list, get, update | 3 |
 | **Total** | | **16** |
 
-`memory_search` — no longer uses pgvector. Searches by category/key within a project or uses LLM to find relevant memories across projects (same routing pipeline).
+`lk_memory_search` — no longer uses pgvector. Searches by category/key within a project or uses LLM to find relevant memories across projects (same routing pipeline).
 
 Negotiations are triggered automatically by the system when conflicting memories are detected in group projects — no direct MCP tool for agents.
 
@@ -556,10 +556,10 @@ Negotiations are triggered automatically by the system when conflicting memories
 
 ```
 1. User: "Create a health project"
-   → projects_create("Health")
+   → lk_projects_create("Health")
 
 2. User: "I take Omega-3 and Vitamin D daily, allergic to penicillin"
-   → memory_write × 2 (supplements, allergy)
+   → lk_memory_write × 2 (supplements, allergy)
    → context.md generated
    → summary: "Health: Omega-3, Vitamin D, penicillin allergy"
 
@@ -570,7 +570,7 @@ Negotiations are triggered automatically by the system when conflicting memories
    → Answers: "Nurofen or Paracetamol are safe for you"
 
 4. User: "I bought Nurofen 400mg, remember that"
-   → memory_write (medications, nurofen)
+   → lk_memory_write (medications, nurofen)
    → context.md updated
 ```
 
@@ -578,21 +578,21 @@ Negotiations are triggered automatically by the system when conflicting memories
 
 ```
 1. User: "I'm going to Milan, help me plan"
-   → projects_create("Milan 2026")
+   → lk_projects_create("Milan 2026")
 
 2. User: "I like quiet neighborhoods but close to center. Budget 120€/night."
-   → memory_write × 2
+   → lk_memory_write × 2
 
 3. User: "Find me a hotel"
    → AI reads context.md → knows budget + preferences
    → Suggests hotels
-   → User picks one → memory_write
+   → User picks one → lk_memory_write
 
 4. User: "Make a page with the itinerary"
-   → pages_create with itinerary + map + hotel + budget blocks
+   → lk_pages_create with itinerary + map + hotel + budget blocks
 
 5. User: "Share this with my mom"
-   → projects_update(isPublic: true)
+   → lk_projects_update(isPublic: true)
    → Public URL: loomknot.com/p/milan-2026
 ```
 
@@ -634,12 +634,12 @@ AI:
     If price drops below 15,000₽, save and notify me."
 
 2. AI picks up task via MCP:
-   → tasks_update(status: "in_progress")
+   → lk_tasks_update(status: "in_progress")
    → Checks prices periodically
-   → tasks_update(log: "Current price: 18,000₽, watching...")
+   → lk_tasks_update(log: "Current price: 18,000₽, watching...")
 
 3. Price drops:
-   → memory_write(category: "flights", value: {price: 14,200, airline: "..."})
-   → tasks_update(status: "done", result: {price: 14200})
+   → lk_memory_write(category: "flights", value: {price: 14,200, airline: "..."})
+   → lk_tasks_update(status: "done", result: {price: 14200})
    → User gets notification in UI
 ```

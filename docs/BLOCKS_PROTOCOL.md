@@ -189,14 +189,14 @@ Validation is **lenient** — warnings, not errors:
 | Known type, extra fields | Accepted | None (passthrough) |
 | Unknown type | Accepted | Lists known types, notes it may not render |
 
-Validation runs in the MCP server on `pages_create` and `pages_update`. Warnings are returned in the `_warnings` array of the tool response. The API does not validate block content for MVP.
+Validation runs in the MCP server on `lk_pages_create` and `lk_pages_update`. Warnings are returned in the `_warnings` array of the tool response. The API does not validate block content for MVP.
 
 ## For AI Agents
 
 Quick MCP reference for creating page blocks:
 
 ```
-Tool: pages_create
+Tool: lk_pages_create
   blocks: [
     { type: "heading", content: { text: "Barcelona Trip", level: 1 } },
     { type: "text", content: { text: "A 7-day adventure..." } },

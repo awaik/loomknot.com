@@ -7,7 +7,7 @@ The AI connects once and receives the user's full workspace.
 
 ## 0. Bootstrap
 
-### `bootstrap`
+### `lk_bootstrap`
 **First call after connection.** Returns everything AI needs to start working: user info, all projects with summaries (for routing), and pending tasks.
 
 ```
@@ -31,7 +31,7 @@ AI uses this to:
 
 ## 1. Projects
 
-### `projects_list`
+### `lk_projects_list`
 All user's projects with summaries for routing.
 
 ```
@@ -42,7 +42,7 @@ Returns: Array<{
 }>
 ```
 
-### `projects_get`
+### `lk_projects_get`
 Project details including full context.md — the main document AI reads before answering.
 
 ```
@@ -58,7 +58,7 @@ Returns: Project & {
 }
 ```
 
-### `projects_create`
+### `lk_projects_create`
 Create a new project. AI can create projects autonomously.
 
 ```
@@ -74,7 +74,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `projects_update`
+### `lk_projects_update`
 Update project settings.
 
 ```
@@ -91,11 +91,24 @@ Side effects:
   → INSERT activity_log
 ```
 
+### `lk_projects_delete`
+Soft-delete a project. Only the project owner can delete it.
+
+```
+Params:
+  projectId: string
+
+Returns: { deleted: true, projectId }
+Side effects:
+  → UPDATE projects.deletedAt
+  → INSERT activity_log
+```
+
 ---
 
 ## 2. Memory
 
-### `memory_write`
+### `lk_memory_write`
 Save a fact, decision, or preference to project memory.
 
 ```
@@ -115,7 +128,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `memory_bulk-write`
+### `lk_memory_bulk-write`
 Save multiple memories at once. For parsing documents, importing data, or saving multiple facts from a conversation.
 
 ```
@@ -137,7 +150,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `memory_read`
+### `lk_memory_read`
 Read project memories with filtering and pagination.
 
 ```
@@ -159,7 +172,7 @@ Access:
   → public — everyone
 ```
 
-### `memory_search`
+### `lk_memory_search`
 Search memories across one or all user's projects. Text-based matching by category, key, summary, and value fields.
 
 ```
@@ -180,7 +193,7 @@ Implementation:
   → Ordered by relevance (match quality) then updatedAt
 ```
 
-### `memory_update`
+### `lk_memory_update`
 Update an existing memory record.
 
 ```
@@ -197,7 +210,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `memory_delete`
+### `lk_memory_delete`
 Delete a memory record.
 
 ```
@@ -215,7 +228,7 @@ Side effects:
 
 ## 3. Pages
 
-### `pages_list`
+### `lk_pages_list`
 List project pages (metadata only, no blocks).
 
 ```
@@ -227,7 +240,7 @@ Returns: Array<{
 }>
 ```
 
-### `pages_get`
+### `lk_pages_get`
 Full page with all blocks.
 
 ```
@@ -237,7 +250,7 @@ Params:
 Returns: Page & { blocks: PageBlock[] }
 ```
 
-### `pages_create`
+### `lk_pages_create`
 Create a page with blocks. AI can build full pages: itineraries, comparisons, maps.
 
 ```
@@ -260,7 +273,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `pages_update`
+### `lk_pages_update`
 Update page title or specific blocks. Can add, update, or remove blocks.
 
 ```
@@ -282,7 +295,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `pages_delete`
+### `lk_pages_delete`
 Delete a page and all its blocks.
 
 ```
@@ -304,7 +317,7 @@ Side effects:
 
 Tasks live outside projects — a task can reference a project, span multiple projects, or be project-independent.
 
-### `tasks_list`
+### `lk_tasks_list`
 List tasks for the AI. On every connection, AI should check for pending tasks.
 
 ```
@@ -320,7 +333,7 @@ Returns: {
 }
 ```
 
-### `tasks_get`
+### `lk_tasks_get`
 Task details with execution logs.
 
 ```
@@ -330,7 +343,7 @@ Params:
 Returns: Task & { logs: TaskLog[] }
 ```
 
-### `tasks_update`
+### `lk_tasks_update`
 AI updates task status and writes progress logs.
 
 ```
@@ -348,7 +361,7 @@ Side effects:
   → INSERT activity_log
 ```
 
-### `tasks_create`
+### `lk_tasks_create`
 AI can create tasks for itself — scheduled work, reminders, follow-ups.
 
 ```
@@ -381,20 +394,20 @@ Priority: high
 
 **AI on connection:**
 ```
-1. bootstrap → sees pendingTasks
-2. tasks_update(taskId, status: "in_progress", log: "Starting hotel search")
-3. projects_get(projectId) → reads context.md → knows budget, dates, preferences
+1. lk_bootstrap → sees pendingTasks
+2. lk_tasks_update(taskId, status: "in_progress", log: "Starting hotel search")
+3. lk_projects_get(projectId) → reads context.md → knows budget, dates, preferences
 4. Searches for hotels (AI knowledge or external tools)
-5. memory_bulk-write(projectId, hotel options × 5)
-6. pages_create(projectId, comparison page with place + budget blocks)
-7. tasks_update(taskId, status: "done",
+5. lk_memory_bulk-write(projectId, hotel options × 5)
+6. lk_pages_create(projectId, comparison page with place + budget blocks)
+7. lk_tasks_update(taskId, status: "done",
      result: { hotelsFound: 5, pageCreated: "hotel-comparison" },
      log: "Found 5 hotels within budget. Created comparison page.")
 ```
 
 **AI creates a follow-up task for itself:**
 ```
-tasks_create(
+lk_tasks_create(
   title: "Recheck Barcelona hotel prices",
   prompt: "Check if Hotel Arts price changed. Update memory if so.",
   projectId: "...",
@@ -420,7 +433,7 @@ tasks_create(
 
 ## 5. Negotiations (group projects)
 
-### `negotiations_list`
+### `lk_negotiations_list`
 Active and resolved conflicts in a project.
 
 ```
@@ -431,7 +444,7 @@ Params:
 Returns: Negotiation[]
 ```
 
-### `negotiations_get`
+### `lk_negotiations_get`
 Full negotiation details: conflict data, options, votes.
 
 ```
@@ -445,7 +458,7 @@ Returns: Negotiation & {
 }
 ```
 
-### `negotiations_propose`
+### `lk_negotiations_propose`
 An agent proposes a compromise option.
 
 ```
@@ -467,7 +480,7 @@ Side effects:
 
 ## 6. Activity
 
-### `activity_recent`
+### `lk_activity_recent`
 Recent changes in a project. AI can check "what happened since last visit".
 
 ```
@@ -493,14 +506,14 @@ Returns: Array<{
 
 | Group | Tools | Count |
 |-------|-------|-------|
-| Bootstrap | bootstrap | 1 |
-| Projects | list, get, create, update | 4 |
-| Memory | write, bulk-write, read, search, update, delete | 6 |
-| Pages | list, get, create, update, delete | 5 |
-| Tasks | list, get, update, create | 4 |
-| Negotiations | list, get, propose | 3 |
-| Activity | recent | 1 |
-| **Total** | | **24** |
+| Bootstrap | `lk_bootstrap` | 1 |
+| Projects | `lk_projects_list`, `lk_projects_get`, `lk_projects_create`, `lk_projects_update`, `lk_projects_delete` | 5 |
+| Memory | `lk_memory_write`, `lk_memory_bulk-write`, `lk_memory_read`, `lk_memory_search`, `lk_memory_update`, `lk_memory_delete` | 6 |
+| Pages | `lk_pages_list`, `lk_pages_get`, `lk_pages_create`, `lk_pages_update`, `lk_pages_delete` | 5 |
+| Tasks | `lk_tasks_list`, `lk_tasks_get`, `lk_tasks_update`, `lk_tasks_create` | 4 |
+| Negotiations | `lk_negotiations_list`, `lk_negotiations_get`, `lk_negotiations_propose` | 3 |
+| Activity | `lk_activity_recent` | 1 |
+| **Total** | | **25** |
 
 ---
 
@@ -510,30 +523,30 @@ Returns: Array<{
 AI connects via MCP (API key in Authorization header)
   │
   ▼
-1. bootstrap
+1. lk_bootstrap
    → Get user info, all projects (with summaries), pending tasks
    │
    ├── Has pending tasks?
-   │   → Pick up and execute (tasks_update → work → tasks_update)
+   │   → Pick up and execute (lk_tasks_update → work → lk_tasks_update)
    │
    └── User sends a message?
        │
        ▼
 2. Route to project
-   → Match message against project summaries (from bootstrap)
+   → Match message against project summaries (from lk_bootstrap)
    → High confidence → auto-select
    → Low confidence → ask user
    → No match → offer to create new project
    │
    ▼
 3. Load project context
-   → projects_get(projectId) → read context.md
+   → lk_projects_get(projectId) → read context.md
    │
    ▼
 4. Work within project
-   → memory_read, memory_write — read/save facts
-   → pages_create, pages_update — build visual output
-   → memory_search — cross-project lookup if needed
+   → lk_memory_read, lk_memory_write — read/save facts
+   → lk_pages_create, lk_pages_update — build visual output
+   → lk_memory_search — cross-project lookup if needed
    │
    ▼
 5. After changes
@@ -576,12 +589,12 @@ Common errors:
 
 | Added | Purpose |
 |-------|---------|
-| `bootstrap` | Single call to initialize AI session |
-| `memory_bulk-write` | Write multiple memories in one call |
-| `memory_read` pagination (cursor) | Handle projects with many memories |
-| `memory_search` text-based | Search without pgvector |
-| `pages_delete` | AI can clean up pages |
-| `tasks_create` | AI creates follow-up tasks for itself |
-| `negotiations_get` | View negotiation details with options and votes |
-| `activity_recent` | AI knows what changed since last visit |
+| `lk_bootstrap` | Single call to initialize AI session |
+| `lk_memory_bulk-write` | Write multiple memories in one call |
+| `lk_memory_read` pagination (cursor) | Handle projects with many memories |
+| `lk_memory_search` text-based | Search without pgvector |
+| `lk_pages_delete` | AI can clean up pages |
+| `lk_tasks_create` | AI creates follow-up tasks for itself |
+| `lk_negotiations_get` | View negotiation details with options and votes |
+| `lk_activity_recent` | AI knows what changed since last visit |
 | Error schema | Standard error format for all tools |

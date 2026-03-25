@@ -19,8 +19,8 @@ export function registerNegotiationTools(
 ): void {
   // --- negotiations/list ---
   server.tool(
-    'negotiations_list',
-    'Loomknot: list preference negotiations in a project. Used when members have conflicting preferences that need resolution.',
+    'lk_negotiations_list',
+    'Loomknot: list preference negotiations in a collaborative project. Used when members have conflicting preferences that need resolution.',
     {
       projectId: z.string().describe('Project ID'),
       status: z.enum(['open', 'resolved', 'dismissed']).optional().describe('Filter by status'),
@@ -43,14 +43,14 @@ export function registerNegotiationTools(
 
         return toolResult({ negotiations: rows });
       } catch (err) {
-        return classifyError(err, 'negotiations_list');
+        return classifyError(err, 'lk_negotiations_list');
       }
     },
   );
 
   // --- negotiations/get ---
   server.tool(
-    'negotiations_get',
+    'lk_negotiations_get',
     'Loomknot: get a negotiation with all proposed options and votes from participants.',
     {
       negotiationId: z.string().describe('Negotiation ID'),
@@ -102,14 +102,14 @@ export function registerNegotiationTools(
 
         return toolResult({ ...negotiation, options: optionsWithVotes });
       } catch (err) {
-        return classifyError(err, 'negotiations_get');
+        return classifyError(err, 'lk_negotiations_get');
       }
     },
   );
 
   // --- negotiations/propose ---
   server.tool(
-    'negotiations_propose',
+    'lk_negotiations_propose',
     'Loomknot: propose a compromise option for an open negotiation with reasoning.',
     {
       negotiationId: z.string().describe('Negotiation ID'),
@@ -179,7 +179,7 @@ export function registerNegotiationTools(
 
         return toolResult(option);
       } catch (err) {
-        return classifyError(err, 'negotiations_propose');
+        return classifyError(err, 'lk_negotiations_propose');
       }
     },
   );

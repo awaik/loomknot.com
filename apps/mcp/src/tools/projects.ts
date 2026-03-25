@@ -20,8 +20,8 @@ export function registerProjectTools(
 ): void {
   // --- projects/list ---
   server.tool(
-    'projects_list',
-    'Loomknot: list all your projects. Use projects_get for full details.',
+    'lk_projects_list',
+    'Loomknot: list all your collaborative projects (trips, events, plans). Use lk_projects_get for full details.',
     {},
     async () => {
       try {
@@ -43,15 +43,15 @@ export function registerProjectTools(
           projects: rows.map((r) => ({ ...r, url: projectUrl(r.projectId) })),
         });
       } catch (err) {
-        return classifyError(err, 'projects_list');
+        return classifyError(err, 'lk_projects_list');
       }
     },
   );
 
   // --- projects/get ---
   server.tool(
-    'projects_get',
-    'Loomknot: get project details — members, pages count, and memories count. Set includeContext=true to get full project context (large).',
+    'lk_projects_get',
+    'Loomknot: get collaborative project details — members, pages count, and memories count. Set includeContext=true to get full project context (large).',
     {
       projectId: z.string().describe('Project ID'),
       includeContext: z.boolean().optional().describe('Include full project context markdown (can be large). Default: false'),
@@ -114,15 +114,15 @@ export function registerProjectTools(
           url: projectUrl(projectId),
         });
       } catch (err) {
-        return classifyError(err, 'projects_get');
+        return classifyError(err, 'lk_projects_get');
       }
     },
   );
 
   // --- projects/create ---
   server.tool(
-    'projects_create',
-    'Loomknot: create a new project (e.g. a trip, event, renovation). You become the owner. An index page is auto-created inside the project.',
+    'lk_projects_create',
+    'Loomknot: create a new collaborative project (e.g. a trip, event, renovation). You become the owner. An index page is auto-created inside the project.',
     {
       title: z.string().min(1).max(255).describe('Project title'),
       description: z.string().max(5000).optional().describe('Project description'),
@@ -177,15 +177,15 @@ export function registerProjectTools(
           url: projectUrl(projectId),
         });
       } catch (err) {
-        return classifyError(err, 'projects_create');
+        return classifyError(err, 'lk_projects_create');
       }
     },
   );
 
   // --- projects/delete ---
   server.tool(
-    'projects_delete',
-    'Loomknot: soft-delete a project. Only the project owner can delete it. The project can be restored later.',
+    'lk_projects_delete',
+    'Loomknot: soft-delete a collaborative project. Only the project owner can delete it. The project can be restored later.',
     {
       projectId: z.string().describe('Project ID to delete'),
     },
@@ -228,15 +228,15 @@ export function registerProjectTools(
 
         return toolResult({ deleted: true, projectId });
       } catch (err) {
-        return classifyError(err, 'projects_delete');
+        return classifyError(err, 'lk_projects_delete');
       }
     },
   );
 
   // --- projects/update ---
   server.tool(
-    'projects_update',
-    'Loomknot: update project settings (title, description, visibility). Requires project manager permission.',
+    'lk_projects_update',
+    'Loomknot: update collaborative project settings (title, description, visibility). Requires project manager permission.',
     {
       projectId: z.string().describe('Project ID'),
       title: z.string().min(1).max(255).optional().describe('New project title'),
@@ -283,7 +283,7 @@ export function registerProjectTools(
 
         return toolResult({ ...updated[0], url: projectUrl(projectId) });
       } catch (err) {
-        return classifyError(err, 'projects_update');
+        return classifyError(err, 'lk_projects_update');
       }
     },
   );

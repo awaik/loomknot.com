@@ -13,8 +13,8 @@ export function registerActivityTools(
 ): void {
   // --- activity/recent ---
   server.tool(
-    'activity_recent',
-    'Loomknot: get recent activity log for a project — who did what and when.',
+    'lk_activity_recent',
+    'Loomknot: get recent activity log for a collaborative project — who did what and when.',
     {
       projectId: z.string().describe('Project ID'),
       since: z.string().optional().describe('ISO date string — only return activity after this time'),
@@ -40,7 +40,7 @@ export function registerActivityTools(
 
         return toolResult({ activity: rows, count: rows.length });
       } catch (err) {
-        return classifyError(err, 'activity_recent');
+        return classifyError(err, 'lk_activity_recent');
       }
     },
   );
