@@ -133,6 +133,7 @@ services:
         - "traefik.http.services.loomknot-mcp.loadbalancer.server.port=4100"
         - "traefik.http.services.loomknot-mcp.loadbalancer.healthcheck.path=/mcp/health"
         - "traefik.http.services.loomknot-mcp.loadbalancer.healthcheck.interval=10s"
+        - "traefik.http.services.loomknot-mcp.loadbalancer.responseForwarding.flushInterval=10ms"
         # SSE needs long timeouts
         - "traefik.http.middlewares.mcp-timeout.headers.customresponseheaders.Cache-Control=no-cache"
         - "traefik.http.routers.loomknot-mcp.middlewares=mcp-timeout"
