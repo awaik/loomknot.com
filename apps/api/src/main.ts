@@ -8,6 +8,7 @@ import { IoAdapter } from '@nestjs/platform-socket.io';
 import fastifyCookie from '@fastify/cookie';
 import { Logger } from 'nestjs-pino';
 import { AppModule } from './app.module';
+import { getCorsOrigin } from './config/cors';
 
 async function bootstrap() {
   const adapter = new FastifyAdapter();
@@ -33,7 +34,7 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
   app.setGlobalPrefix('api/v1');
   app.enableCors({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:8026',
+    origin: getCorsOrigin(),
     credentials: true,
   });
 

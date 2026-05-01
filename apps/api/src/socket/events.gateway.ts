@@ -12,11 +12,12 @@ import { EVENTS, ROOMS } from '@loomknot/shared';
 import { projectMembers, type DrizzleDB } from '@loomknot/shared/db';
 import { DATABASE_TOKEN } from '../database/database.provider';
 import { JwtService } from '../auth/jwt.service';
+import { getCorsOrigin } from '../config/cors';
 
 @WebSocketGateway({
-  namespace: '/socket.io',
+  path: '/socket.io',
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:8026',
+    origin: getCorsOrigin(),
     credentials: true,
   },
 })
