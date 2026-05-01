@@ -8,7 +8,8 @@ Each project has:
 - **context.md** — auto-generated full context (what AI reads before answering)
 - **summary** — one paragraph describing the project (used for routing)
 - **memories** — facts, decisions, preferences (everything the AI should remember)
-- **pages** — beautiful visual output (itineraries, comparisons, maps)
+- **main page** — auto-created `index` page that brings the project together
+- **child pages** — detailed visual output (itineraries, comparisons, maps)
 - **tasks** — CRM for AI (what to do, progress, results)
 
 No global user settings. No preferences outside projects. Everything lives inside a project.
@@ -157,7 +158,10 @@ AI: "Saved to Health project. Now I know you have Nurofen if you need a painkill
 
 ## 2. Pages — Beautiful Output
 
-Pages are the visual result of AI's work. A page consists of blocks.
+Pages are the visual result of AI's work. Every project has an auto-created
+`index` page that acts as the main page. Detailed output lives in child pages,
+and agents update the main page when child pages change. A page consists of
+blocks.
 
 ### 2.1 Block Types
 
@@ -178,7 +182,7 @@ User: "Make a page with our Barcelona itinerary"
 AI:
   1. Reads project context.md (dates, hotel, preferences)
   2. Reads relevant memories (restaurants, activities decided)
-  3. Creates page with blocks:
+  3. Creates a child page with blocks:
 
   lk_pages_create:
     title: "Barcelona March 2026"
@@ -191,6 +195,7 @@ AI:
       - type: "place", content: { name: "Hotel Arts", rating: 4.6, ... }
 
   4. Each block stores sourceMemoryIds — links to memories it was built from
+  5. Updates the index page with a summary and link to the child page
 ```
 
 ### 2.3 Updating a Single Block
@@ -204,6 +209,7 @@ AI:
   → finds the itinerary block for day 2
   → updates only that block's content
   → lk_pages_update(pageId, blocks: [{ id: blockId, content: newContent }])
+  → updates the index page if the overview, decisions, or navigation changed
   → page re-renders, only the changed block updates
 ```
 
@@ -590,6 +596,7 @@ Negotiations are triggered automatically by the system when conflicting memories
 
 4. User: "Make a page with the itinerary"
    → lk_pages_create with itinerary + map + hotel + budget blocks
+   → lk_pages_update on the index page with a trip overview and link
 
 5. User: "Share this with my mom"
    → lk_projects_update(isPublic: true)

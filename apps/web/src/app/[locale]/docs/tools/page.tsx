@@ -129,7 +129,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
     tools: [
       {
         name: 'pages_list',
-        desc: 'List all pages in a project (metadata only, no blocks).',
+        desc: 'List all pages in a project. The slug "index" page is the project main page.',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },
         ],
@@ -143,7 +143,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
       },
       {
         name: 'pages_create',
-        desc: 'Create a new page with optional content blocks. Slug "index" is reserved.',
+        desc: 'Create a child page with optional content blocks. Slug "index" is reserved for the project main page; update it after creating child pages.',
         params: [
           { name: 'projectId', type: 'string', required: true, desc: 'Project ID' },
           { name: 'title', type: 'string', required: true, desc: 'Page title' },
@@ -155,7 +155,7 @@ const toolGroups: { category: string; desc: string; tools: Tool[] }[] = [
       },
       {
         name: 'pages_update',
-        desc: 'Update page metadata and/or content blocks. Block operations: include id to update, omit id to create, set action:"delete" to remove.',
+        desc: 'Update page metadata and/or content blocks. After updating a child page, update the index page if the project overview or navigation changed.',
         params: [
           { name: 'pageId', type: 'string', required: true, desc: 'Page ID' },
           { name: 'title', type: 'string', desc: 'New title' },

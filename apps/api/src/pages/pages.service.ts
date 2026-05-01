@@ -8,7 +8,7 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { randomBytes } from 'node:crypto';
 import { and, asc, eq, inArray, isNull } from 'drizzle-orm';
-import { slugify } from '@loomknot/shared/constants';
+import { INDEX_PAGE_SLUG, slugify } from '@loomknot/shared/constants';
 import {
   createId,
   pageBlocks,
@@ -31,6 +31,10 @@ export class PagesService {
    * Create a page with blocks in a single transaction.
    */
   async create(projectId: string, userId: string, dto: CreatePageDto) {
+    if (slugify(dto.slug ?? dto.title, 200) === INDEX_PAGE_SLUG) {
+      throw new BadRequestException('The index slug is reserved for the project main page');
+    }
+
     const slug = await this.ensureUniqueSlug(projectId, dto.slug ?? dto.title);
 
     const pageId = createId();
@@ -268,6 +272,10 @@ export class PagesService {
 
     if (existing.projectId !== projectId) {
       throw new ForbiddenException('Page does not belong to this project');
+    }
+
+    if (existing.slug === INDEX_PAGE_SLUG) {
+      throw new ForbiddenException('The main index page cannot be deleted');
     }
 
     await this.db

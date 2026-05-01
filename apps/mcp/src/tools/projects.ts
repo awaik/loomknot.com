@@ -4,10 +4,15 @@ import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import {
   projects,
   projectMembers,
+  pages,
   activityLog,
   createId,
 } from '@loomknot/shared/db';
-import { slugify } from '@loomknot/shared/constants';
+import {
+  INDEX_PAGE_SLUG,
+  INDEX_PAGE_SORT_ORDER,
+  slugify,
+} from '@loomknot/shared/constants';
 import { db } from '@/services/db.js';
 import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
@@ -122,7 +127,7 @@ export function registerProjectTools(
   // --- projects/create ---
   server.tool(
     'lk_projects_create',
-    'Loomknot: create a new collaborative project (e.g. a trip, event, renovation). You become the owner. An index page is auto-created inside the project.',
+    'Loomknot: create a new collaborative project (e.g. a trip, event, renovation). You become the owner. An index page is auto-created inside the project and acts as the main page agents keep synchronized.',
     {
       title: z.string().min(1).max(255).describe('Project title'),
       description: z.string().max(5000).optional().describe('Project description'),
@@ -134,7 +139,8 @@ export function registerProjectTools(
     async ({ title, description, vertical }) => {
       try {
         const projectId = createId();
-        const slug = slugify(title);
+        const indexPageId = createId();
+        const slug = await generateUniqueProjectSlug(title);
 
         // Insert project + member in a transaction
         await db.transaction(async (tx) => {
@@ -151,6 +157,16 @@ export function registerProjectTools(
             projectId,
             userId,
             role: 'owner',
+          });
+
+          await tx.insert(pages).values({
+            id: indexPageId,
+            projectId,
+            slug: INDEX_PAGE_SLUG,
+            title: 'Overview',
+            description: description ?? null,
+            sortOrder: INDEX_PAGE_SORT_ORDER,
+            createdBy: userId,
           });
         });
 
@@ -175,6 +191,7 @@ export function registerProjectTools(
           vertical: vertical ?? 'general',
           role: 'owner',
           url: projectUrl(projectId),
+          indexPageId,
         });
       } catch (err) {
         return classifyError(err, 'lk_projects_create');
@@ -287,4 +304,17 @@ export function registerProjectTools(
       }
     },
   );
+}
+
+async function generateUniqueProjectSlug(title: string): Promise<string> {
+  const base = slugify(title);
+  const [existing] = await db
+    .select({ id: projects.id })
+    .from(projects)
+    .where(eq(projects.slug, base))
+    .limit(1);
+
+  if (!existing) return base;
+
+  return `${base.slice(0, 93)}-${createId().slice(-6)}`;
 }

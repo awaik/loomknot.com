@@ -57,6 +57,10 @@ export const BLOCK_TYPES = {
 export type BlockType = (typeof BLOCK_TYPES)[keyof typeof BLOCK_TYPES];
 export const BLOCK_TYPE_VALUES = Object.values(BLOCK_TYPES);
 
+// System pages
+export const INDEX_PAGE_SLUG = 'index';
+export const INDEX_PAGE_SORT_ORDER = -1000;
+
 // Invite constants
 export const INVITE_STATUSES = {
   pending: 'pending',

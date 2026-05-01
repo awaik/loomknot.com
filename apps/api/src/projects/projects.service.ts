@@ -10,7 +10,15 @@ import {
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { randomBytes } from 'node:crypto';
 import { and, count, desc, eq, gte, inArray, isNull, or } from 'drizzle-orm';
-import { slugify, INVITE_STATUSES, INVITE_RESEND_COOLDOWN_MS, INVITE_EXPIRY_MS, EMAIL_FROM } from '@loomknot/shared/constants';
+import {
+  EMAIL_FROM,
+  INDEX_PAGE_SLUG,
+  INDEX_PAGE_SORT_ORDER,
+  INVITE_EXPIRY_MS,
+  INVITE_RESEND_COOLDOWN_MS,
+  INVITE_STATUSES,
+  slugify,
+} from '@loomknot/shared/constants';
 import { inviteEmail } from '../common/email-templates';
 import {
   createId,
@@ -41,6 +49,7 @@ export class ProjectsService {
     const slug = await this.generateUniqueSlug(dto.title);
     const projectId = createId();
     const memberId = createId();
+    const indexPageId = createId();
 
     await this.db.transaction(async (tx) => {
       await tx.insert(projects).values({
@@ -59,6 +68,16 @@ export class ProjectsService {
         projectId,
         userId,
         role: 'owner',
+      });
+
+      await tx.insert(pages).values({
+        id: indexPageId,
+        projectId,
+        slug: INDEX_PAGE_SLUG,
+        title: 'Overview',
+        description: dto.description ?? null,
+        sortOrder: INDEX_PAGE_SORT_ORDER,
+        createdBy: userId,
       });
     });
 

@@ -1,12 +1,13 @@
 'use client';
 
-import { FileText, Brain, Activity, Users } from 'lucide-react';
+import { Activity, Brain, FileText, Home, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/lib/utils';
 import { Link, usePathname } from '@/i18n/navigation';
 
 const navItems = [
-  { key: 'pages', segment: '', icon: FileText, labelKey: 'tabPages' },
+  { key: 'main', segment: '', icon: Home, labelKey: 'tabMain' },
+  { key: 'pages', segment: '/pages', icon: FileText, labelKey: 'tabPages' },
   { key: 'memory', segment: '/memory', icon: Brain, labelKey: 'tabMemories' },
   { key: 'activity', segment: '/activity', icon: Activity, labelKey: 'tabActivity' },
   { key: 'members', segment: '/members', icon: Users, labelKey: 'tabMembers' },
@@ -26,7 +27,7 @@ export function ProjectSubNav({ projectId }: ProjectSubNavProps) {
       {navItems.map((item) => {
         const href = `${basePath}${item.segment}`;
         const isActive =
-          item.key === 'pages'
+          item.key === 'main'
             ? pathname === basePath || pathname === `${basePath}/`
             : pathname.startsWith(`${basePath}/${item.key}`);
 

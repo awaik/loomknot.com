@@ -229,7 +229,8 @@ Side effects:
 ## 3. Pages
 
 ### `lk_pages_list`
-List project pages (metadata only, no blocks).
+List project pages (metadata only, no blocks). The page with slug `index` is
+the project main page; other pages are child/detail pages.
 
 ```
 Params:
@@ -251,7 +252,13 @@ Returns: Page & { blocks: PageBlock[] }
 ```
 
 ### `lk_pages_create`
-Create a page with blocks. AI can build full pages: itineraries, comparisons, maps.
+Create a child page with blocks. AI can build full pages: itineraries,
+comparisons, maps.
+
+Agent invariant: after creating a child page, update the `index` page so the
+project main page summarizes the change and links to the new page. Do not call
+`lk_pages_create` with slug `index`; edit the existing index page with
+`lk_pages_update`.
 
 ```
 Params:
@@ -275,6 +282,10 @@ Side effects:
 
 ### `lk_pages_update`
 Update page title or specific blocks. Can add, update, or remove blocks.
+
+Agent invariant: after updating a child page, update the `index` page when the
+change affects the project summary, navigation, decisions, itinerary, budget,
+places, or current status.
 
 ```
 Params:

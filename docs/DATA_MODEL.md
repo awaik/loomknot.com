@@ -146,6 +146,12 @@ pages
 └── UNIQUE(projectId, slug)
 ```
 
+Each project has one system page with slug `index`. It is created together
+with the project, uses a reserved sort order before child pages, cannot be
+deleted, and serves as the project main page. Agent-created detail pages are
+child pages; after creating or materially updating one, the agent updates
+`index` with the current summary and links.
+
 **Question: where does the page content live?**
 
 **Option A — Blocks in a separate `page_blocks` table:**
@@ -324,8 +330,8 @@ lk_memory_delete           — delete a record
 ── Pages ──
 lk_pages_list              — list project pages
 lk_pages_get               — get a page
-lk_pages_create            — create a page in the project
-lk_pages_update            — update a page
+lk_pages_create            — create a child page in the project
+lk_pages_update            — update a page; sync `index` after child-page changes
 
 ```
 

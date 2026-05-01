@@ -7,7 +7,7 @@ import {
   activityLog,
   createId,
 } from '@loomknot/shared/db';
-import { slugify } from '@loomknot/shared/constants';
+import { INDEX_PAGE_SLUG, slugify } from '@loomknot/shared/constants';
 import { validateBlockContent, KNOWN_TYPES_DESCRIPTION } from '@loomknot/shared/blocks';
 import { db } from '@/services/db.js';
 import { toolResult, toolError, classifyError } from '@/utils/errors.js';
@@ -30,7 +30,7 @@ export function registerPageTools(
   // --- pages/list ---
   server.tool(
     'lk_pages_list',
-    'Loomknot: list all pages in a collaborative project (metadata only, no content blocks).',
+    `Loomknot: list all pages in a collaborative project (metadata only, no content blocks). The page with slug "${INDEX_PAGE_SLUG}" is the main page and should summarize and link the important child pages.`,
     {
       projectId: z.string().describe('Project ID'),
     },
@@ -119,7 +119,7 @@ export function registerPageTools(
   // --- pages/create ---
   server.tool(
     'lk_pages_create',
-    'Loomknot: create a new page inside a collaborative project with content blocks. Use for travel plans, checklists, itineraries, notes, etc.',
+    `Loomknot: create a new child page inside a collaborative project with content blocks. Use for travel plans, checklists, itineraries, notes, etc. After creating a child page, read/update the slug "${INDEX_PAGE_SLUG}" page so the main page links to it and reflects the new project state.`,
     {
       projectId: z.string().describe('Project ID'),
       title: z.string().min(1).max(500).describe('Page title'),
@@ -132,7 +132,13 @@ export function registerPageTools(
       try {
         await requirePermission(userId, projectId, 'canEditMemory');
 
-        const pageSlug = slug ?? slugify(title);
+        const pageSlug = slugify(slug ?? title, 200);
+        if (pageSlug === INDEX_PAGE_SLUG) {
+          return toolError('VALIDATION', 'The index slug is reserved for the project main page', {
+            hint: 'Use lk_pages_list to find the index page, then lk_pages_update to edit it.',
+            retryable: false,
+          });
+        }
 
         const pageId = createId();
 
@@ -190,6 +196,14 @@ export function registerPageTools(
 
         return toolResult({
           ...page, blocks: insertedBlocks, url: pageUrl(projectId, pageId),
+          ...(pageSlug !== INDEX_PAGE_SLUG
+            ? {
+                _next: {
+                  action: 'sync_index_page',
+                  reason: 'Child page created; update the main page summary and links.',
+                },
+              }
+            : {}),
           ...(warnings.length > 0 ? { _warnings: warnings } : {}),
         });
       } catch (err) {
@@ -206,7 +220,8 @@ IMPORTANT: Send ONLY the blocks you want to change — not the entire page.
 Blocks not included in the request remain unchanged.
 • Update existing block: include "id" + changed fields (type, content, etc.)
 • Create new block: omit "id"
-• Delete block: include "id" + action:"delete"`,
+• Delete block: include "id" + action:"delete"
+After updating a child page, also update the slug "${INDEX_PAGE_SLUG}" page when the change affects the project summary, navigation, decisions, itinerary, budget, places, or current status.`,
     {
       pageId: z.string().describe('Page ID'),
       title: z.string().min(1).max(500).optional().describe('New page title'),
@@ -339,6 +354,14 @@ Blocks not included in the request remain unchanged.
           pageId,
           url: pageUrl(page.projectId, pageId),
           title: title ?? page.title,
+          ...(page.slug !== INDEX_PAGE_SLUG
+            ? {
+                _next: {
+                  action: 'sync_index_page',
+                  reason: 'Child page changed; update the main page if this affects summary, navigation, or current status.',
+                },
+              }
+            : {}),
           ...(updatedFieldKeys.length > 0 ? { updatedFields: updatedFieldKeys } : {}),
           ...(blocks?.length ? { blocks: { created: createdIds, updated: updatedIds, deleted: toDelete } } : {}),
           ...(warnings.length > 0 ? { _warnings: warnings } : {}),
@@ -370,6 +393,10 @@ Blocks not included in the request remain unchanged.
 
         const page = pageRows[0];
         const role = await requirePermission(userId, page.projectId, 'canEditMemory');
+
+        if (page.slug === INDEX_PAGE_SLUG) {
+          return toolError('FORBIDDEN', 'The main index page cannot be deleted');
+        }
 
         if (role !== 'owner') {
           return toolError('FORBIDDEN', 'Only the project owner can delete pages');

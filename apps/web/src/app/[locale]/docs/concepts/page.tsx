@@ -128,7 +128,9 @@ export default function ConceptsPage() {
           Every project has an auto-created index page (slug &ldquo;index&rdquo;).
           It is created atomically with the project, cannot be deleted, and the
           slug &ldquo;index&rdquo; is reserved. The index page serves as the
-          project&rsquo;s landing page.
+          project&rsquo;s main page. Agents keep it synchronized when they create
+          or update child pages, so people always have one coherent project
+          overview with links to the detailed pages.
         </p>
       </section>
 

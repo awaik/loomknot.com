@@ -28,6 +28,8 @@ export interface ProjectResponse {
   createdAt: string;
   updatedAt: string;
   members?: ProjectMember[];
+  pageCount?: number;
+  memoryCount?: number;
   _counts?: {
     members: number;
     pages: number;
