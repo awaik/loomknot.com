@@ -11,6 +11,7 @@ import {
 import { db } from '@/services/db.js';
 import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership } from '@/utils/permissions.js';
+import { idempotencyKeySchema, runIdempotent } from '@/utils/idempotency.js';
 
 export function registerNegotiationTools(
   server: McpServer,
@@ -117,8 +118,9 @@ export function registerNegotiationTools(
       description: z.string().max(2000).optional().describe('Option description'),
       proposedValue: z.unknown().describe('Proposed value (JSON)'),
       reasoning: z.string().max(5000).optional().describe('Reasoning for this proposal'),
+      idempotencyKey: idempotencyKeySchema,
     },
-    async ({ negotiationId, title, description, proposedValue, reasoning }) => {
+    async ({ negotiationId, title, description, proposedValue, reasoning, idempotencyKey }) => {
       try {
         // Verify negotiation exists and is open
         const negRows = await db
@@ -138,46 +140,58 @@ export function registerNegotiationTools(
 
         await requireProjectMembership(userId, negotiation.projectId);
 
-        // Get current max sort order
-        const existingOptions = await db
-          .select({ sortOrder: negotiationOptions.sortOrder })
-          .from(negotiationOptions)
-          .where(eq(negotiationOptions.negotiationId, negotiationId))
-          .orderBy(desc(negotiationOptions.sortOrder))
-          .limit(1);
-
-        const nextSortOrder = existingOptions.length > 0 ? existingOptions[0].sortOrder + 1 : 0;
-
-        const optionId = createId();
-        const [option] = await db
-          .insert(negotiationOptions)
-          .values({
-            id: optionId,
-            negotiationId,
-            title,
-            description: description ?? null,
-            proposedValue,
-            reasoning: reasoning ?? null,
-            source: 'agent',
-            apiKeyId,
-            sortOrder: nextSortOrder,
-          })
-          .returning();
-
-        // Log activity (fire-and-forget)
-        db.insert(activityLog)
-          .values({
-            projectId: negotiation.projectId,
+        const result = await runIdempotent(
+          {
+            toolName: 'lk_negotiations_propose',
             userId,
             apiKeyId,
-            action: 'negotiation.create',
-            targetType: 'negotiation_option',
-            targetId: optionId,
-            metadata: { negotiationId, title },
-          })
-          .catch(() => {});
+            idempotencyKey,
+            args: { negotiationId, title, description, proposedValue, reasoning },
+            resourceType: 'negotiation_option',
+            getResourceId: (data) => (data as { id?: string }).id,
+          },
+          async (tx) => {
+            // Get current max sort order
+            const existingOptions = await tx
+              .select({ sortOrder: negotiationOptions.sortOrder })
+              .from(negotiationOptions)
+              .where(eq(negotiationOptions.negotiationId, negotiationId))
+              .orderBy(desc(negotiationOptions.sortOrder))
+              .limit(1);
 
-        return toolResult(option);
+            const nextSortOrder = existingOptions.length > 0 ? existingOptions[0].sortOrder + 1 : 0;
+
+            const optionId = createId();
+            const [option] = await tx
+              .insert(negotiationOptions)
+              .values({
+                id: optionId,
+                negotiationId,
+                title,
+                description: description ?? null,
+                proposedValue,
+                reasoning: reasoning ?? null,
+                source: 'agent',
+                apiKeyId,
+                sortOrder: nextSortOrder,
+              })
+              .returning();
+
+            await tx.insert(activityLog).values({
+              projectId: negotiation.projectId,
+              userId,
+              apiKeyId,
+              action: 'negotiation.create',
+              targetType: 'negotiation_option',
+              targetId: optionId,
+              metadata: { negotiationId, title },
+            });
+
+            return option;
+          },
+        );
+
+        return toolResult(result);
       } catch (err) {
         return classifyError(err, 'lk_negotiations_propose');
       }

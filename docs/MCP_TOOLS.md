@@ -3,6 +3,15 @@
 One API key = one user = access to all user's projects, tasks, and memories.
 The AI connects once and receives the user's full workspace.
 
+Mutation tools that can create duplicate records accept optional
+`idempotencyKey`. Agents should generate a unique stable key per intended
+mutation and reuse the same key when retrying after a timeout or lost response.
+The retried call must send the same arguments; reusing a key with different
+arguments returns a conflict. Keyed responses include `_idempotency` with
+`replayed: false` on the first successful call and `replayed: true` on cached
+replays. Stored idempotency responses are retained for 48 hours by default
+(`MCP_IDEMPOTENCY_RETENTION_MS`).
+
 ---
 
 ## 0. Bootstrap
@@ -66,6 +75,7 @@ Params:
   title: string
   description?: string
   vertical?: string            — travel, health, finance, education, general...
+  idempotencyKey?: string      — safe retry key
 
 Returns: Project
 Side effects:
@@ -265,6 +275,7 @@ Params:
   projectId: string
   title: string
   slug?: string                — auto-generate from title if not provided
+  idempotencyKey?: string      — safe retry key
   blocks: Array<{
     type: string               — text, map, itinerary, place, budget, gallery...
     content: any               — block data (JSONB)
@@ -291,6 +302,7 @@ places, or current status.
 Params:
   pageId: string
   title?: string
+  idempotencyKey?: string      — safe retry key, especially when adding blocks
   blocks?: Array<{
     id?: string                — if present → update existing block
     action?: "delete"          — if set → remove this block
@@ -363,6 +375,7 @@ Params:
   status?: pending | in_progress | done | failed
   result?: any                 — execution result (JSON)
   log?: string                 — progress message ("Found 3 hotels, saved to memory")
+  idempotencyKey?: string      — safe retry key
 
 Returns: Task
 Side effects:
@@ -382,6 +395,7 @@ Params:
   projectId?: string           — optional project binding
   priority?: low | normal | high | urgent    — default: normal
   scheduledAt?: string         — ISO datetime for deferred execution
+  idempotencyKey?: string      — safe retry key
 
 Returns: Task
 Side effects:
@@ -479,6 +493,7 @@ Params:
   description: string
   proposedValue: any
   reasoning: string            — why this option is a good compromise
+  idempotencyKey?: string      — safe retry key
 
 Returns: NegotiationOption
 Side effects:

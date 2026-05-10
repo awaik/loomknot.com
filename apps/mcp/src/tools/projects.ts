@@ -14,9 +14,10 @@ import {
   slugify,
 } from '@loomknot/shared/constants';
 import { db } from '@/services/db.js';
-import { toolResult, toolError, classifyError } from '@/utils/errors.js';
+import { toolResult, toolError, classifyError, McpToolError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
 import { projectUrl } from '@/utils/urls.js';
+import { idempotencyKeySchema, runIdempotent } from '@/utils/idempotency.js';
 
 export function registerProjectTools(
   server: McpServer,
@@ -135,64 +136,94 @@ export function registerProjectTools(
         .enum(['travel', 'wedding', 'renovation', 'education', 'events', 'general'])
         .optional()
         .describe('Project vertical (default: general)'),
+      idempotencyKey: idempotencyKeySchema,
     },
-    async ({ title, description, vertical }) => {
+    async ({ title, description, vertical, idempotencyKey }) => {
       try {
-        const projectId = createId();
-        const indexPageId = createId();
-        const slug = await generateUniqueProjectSlug(title);
-
-        // Insert project + member in a transaction
-        await db.transaction(async (tx) => {
-          await tx.insert(projects).values({
-            id: projectId,
-            slug,
-            title,
-            description: description ?? null,
-            vertical: vertical ?? 'general',
-            ownerId: userId,
-          });
-
-          await tx.insert(projectMembers).values({
-            projectId,
-            userId,
-            role: 'owner',
-          });
-
-          await tx.insert(pages).values({
-            id: indexPageId,
-            projectId,
-            slug: INDEX_PAGE_SLUG,
-            title: 'Overview',
-            description: description ?? null,
-            sortOrder: INDEX_PAGE_SORT_ORDER,
-            createdBy: userId,
-          });
-        });
-
-        // Log activity (fire-and-forget)
-        db.insert(activityLog)
-          .values({
-            projectId,
+        const result = await runIdempotent(
+          {
+            toolName: 'lk_projects_create',
             userId,
             apiKeyId,
-            action: 'project.create',
-            targetType: 'project',
-            targetId: projectId,
-            metadata: { title, slug },
-          })
-          .catch(() => {});
+            idempotencyKey,
+            args: { title, description, vertical },
+            resourceType: 'project',
+            getResourceId: (data) => (data as { projectId?: string }).projectId,
+          },
+          async (tx) => {
+            const baseSlug = slugify(title);
+            let slug = baseSlug;
+            let projectId: string | null = null;
 
-        return toolResult({
-          projectId,
-          slug,
-          title,
-          description: description ?? null,
-          vertical: vertical ?? 'general',
-          role: 'owner',
-          url: projectUrl(projectId),
-          indexPageId,
-        });
+            for (let attempt = 0; attempt < 5; attempt++) {
+              const candidateId = createId();
+              const inserted = await tx
+                .insert(projects)
+                .values({
+                  id: candidateId,
+                  slug,
+                  title,
+                  description: description ?? null,
+                  vertical: vertical ?? 'general',
+                  ownerId: userId,
+                })
+                .onConflictDoNothing({ target: projects.slug })
+                .returning({ id: projects.id });
+
+              if (inserted.length > 0) {
+                projectId = candidateId;
+                break;
+              }
+
+              slug = `${baseSlug.slice(0, 93)}-${createId().slice(-6)}`;
+            }
+
+            if (!projectId) {
+              throw new McpToolError('CONFLICT', 'Could not generate a unique project slug');
+            }
+
+            const indexPageId = createId();
+
+            await tx.insert(projectMembers).values({
+              projectId,
+              userId,
+              role: 'owner',
+            });
+
+            await tx.insert(pages).values({
+              id: indexPageId,
+              projectId,
+              slug: INDEX_PAGE_SLUG,
+              title: 'Overview',
+              description: description ?? null,
+              sortOrder: INDEX_PAGE_SORT_ORDER,
+              createdBy: userId,
+            });
+
+            await tx.insert(activityLog).values({
+              projectId,
+              userId,
+              apiKeyId,
+              action: 'project.create',
+              targetType: 'project',
+              targetId: projectId,
+              metadata: { title, slug },
+            });
+
+            return {
+              projectId,
+              slug,
+              title,
+              description: description ?? null,
+              vertical: vertical ?? 'general',
+              role: 'owner',
+              url: projectUrl(projectId),
+              indexPageId,
+            };
+          },
+        );
+
+        return toolResult(result);
       } catch (err) {
         return classifyError(err, 'lk_projects_create');
       }
@@ -304,17 +335,4 @@ export function registerProjectTools(
       }
     },
   );
-}
-
-async function generateUniqueProjectSlug(title: string): Promise<string> {
-  const base = slugify(title);
-  const [existing] = await db
-    .select({ id: projects.id })
-    .from(projects)
-    .where(eq(projects.slug, base))
-    .limit(1);
-
-  if (!existing) return base;
-
-  return `${base.slice(0, 93)}-${createId().slice(-6)}`;
 }

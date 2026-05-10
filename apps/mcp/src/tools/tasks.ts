@@ -10,6 +10,7 @@ import {
 import { db } from '@/services/db.js';
 import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership } from '@/utils/permissions.js';
+import { idempotencyKeySchema, runIdempotent } from '@/utils/idempotency.js';
 
 export function registerTaskTools(
   server: McpServer,
@@ -110,45 +111,58 @@ export function registerTaskTools(
         .optional()
         .describe('Task priority (default: normal)'),
       scheduledAt: z.string().optional().describe('ISO date string for scheduled execution'),
+      idempotencyKey: idempotencyKeySchema,
     },
-    async ({ title, prompt, projectId, priority, scheduledAt }) => {
+    async ({ title, prompt, projectId, priority, scheduledAt, idempotencyKey }) => {
       try {
         // Verify project membership if projectId is provided
         if (projectId) {
           await requireProjectMembership(userId, projectId);
         }
 
-        const taskId = createId();
-
-        const [task] = await db
-          .insert(tasks)
-          .values({
-            id: taskId,
+        const result = await runIdempotent(
+          {
+            toolName: 'lk_tasks_create',
             userId,
-            projectId: projectId ?? null,
-            title,
-            prompt,
-            priority: priority ?? 'normal',
-            scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
-          })
-          .returning();
+            apiKeyId,
+            idempotencyKey,
+            args: { title, prompt, projectId, priority, scheduledAt },
+            resourceType: 'task',
+            getResourceId: (data) => (data as { id?: string }).id,
+          },
+          async (tx) => {
+            const taskId = createId();
 
-        // Log activity (fire-and-forget, only if projectId is set)
-        if (projectId) {
-          db.insert(activityLog)
-            .values({
-              projectId,
-              userId,
-              apiKeyId,
-              action: 'task.create',
-              targetType: 'task',
-              targetId: taskId,
-              metadata: { title, priority: priority ?? 'normal' },
-            })
-            .catch(() => {});
-        }
+            const [task] = await tx
+              .insert(tasks)
+              .values({
+                id: taskId,
+                userId,
+                projectId: projectId ?? null,
+                title,
+                prompt,
+                priority: priority ?? 'normal',
+                scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
+              })
+              .returning();
 
-        return toolResult(task);
+            if (projectId) {
+              await tx.insert(activityLog).values({
+                projectId,
+                userId,
+                apiKeyId,
+                action: 'task.create',
+                targetType: 'task',
+                targetId: taskId,
+                metadata: { title, priority: priority ?? 'normal' },
+              });
+            }
+
+            return task;
+          },
+        );
+
+        return toolResult(result);
       } catch (err) {
         return classifyError(err, 'lk_tasks_create');
       }
@@ -167,8 +181,9 @@ export function registerTaskTools(
         .describe('New task status'),
       result: z.unknown().optional().describe('Task result data (JSON)'),
       log: z.string().optional().describe('Log message to append'),
+      idempotencyKey: idempotencyKeySchema,
     },
-    async ({ taskId, status, result, log }) => {
+    async ({ taskId, status, result, log, idempotencyKey }) => {
       try {
         // Verify ownership
         const existing = await db
@@ -193,43 +208,53 @@ export function registerTaskTools(
         }
         if (result !== undefined) updates.result = result;
 
-        if (Object.keys(updates).length > 0) {
-          await db
-            .update(tasks)
-            .set(updates)
-            .where(eq(tasks.id, taskId));
-        }
+        const updated = await runIdempotent(
+          {
+            toolName: 'lk_tasks_update',
+            userId,
+            apiKeyId,
+            idempotencyKey,
+            args: { taskId, status, result, log },
+            resourceType: 'task',
+            getResourceId: () => taskId,
+          },
+          async (tx) => {
+            if (Object.keys(updates).length > 0) {
+              await tx
+                .update(tasks)
+                .set(updates)
+                .where(eq(tasks.id, taskId));
+            }
 
-        // Add log entry if provided
-        if (log) {
-          await db.insert(taskLogs).values({
-            taskId,
-            message: log,
-            metadata: status ? { statusChange: status } : null,
-          });
-        }
+            if (log) {
+              await tx.insert(taskLogs).values({
+                taskId,
+                message: log,
+                metadata: status ? { statusChange: status } : null,
+              });
+            }
 
-        // Fetch updated task
-        const [updated] = await db
-          .select()
-          .from(tasks)
-          .where(eq(tasks.id, taskId))
-          .limit(1);
+            const [updatedTask] = await tx
+              .select()
+              .from(tasks)
+              .where(eq(tasks.id, taskId))
+              .limit(1);
 
-        // Log activity (fire-and-forget, only if projectId is set)
-        if (task.projectId) {
-          db.insert(activityLog)
-            .values({
-              projectId: task.projectId,
-              userId,
-              apiKeyId,
-              action: 'task.update',
-              targetType: 'task',
-              targetId: taskId,
-              metadata: { updated: Object.keys(updates), hasLog: !!log },
-            })
-            .catch(() => {});
-        }
+            if (task.projectId) {
+              await tx.insert(activityLog).values({
+                projectId: task.projectId,
+                userId,
+                apiKeyId,
+                action: 'task.update',
+                targetType: 'task',
+                targetId: taskId,
+                metadata: { updated: Object.keys(updates), hasLog: !!log },
+              });
+            }
+
+            return updatedTask;
+          },
+        );
 
         return toolResult(updated);
       } catch (err) {

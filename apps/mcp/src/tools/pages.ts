@@ -7,12 +7,13 @@ import {
   activityLog,
   createId,
 } from '@loomknot/shared/db';
-import { INDEX_PAGE_SLUG, slugify } from '@loomknot/shared/constants';
+import { INDEX_PAGE_SLUG, MAX_BLOCKS_PER_PAGE_MUTATION, slugify } from '@loomknot/shared/constants';
 import { validateBlockContent, KNOWN_TYPES_DESCRIPTION } from '@loomknot/shared/blocks';
 import { db } from '@/services/db.js';
 import { toolResult, toolError, classifyError } from '@/utils/errors.js';
 import { requireProjectMembership, requirePermission } from '@/utils/permissions.js';
 import { pageUrl } from '@/utils/urls.js';
+import { idempotencyKeySchema, runIdempotent } from '@/utils/idempotency.js';
 
 const blockSchema = z.object({
   type: z.string().min(1).max(50).describe(`Block type. ${KNOWN_TYPES_DESCRIPTION}`),
@@ -126,9 +127,14 @@ export function registerPageTools(
       slug: z.string().max(200).optional().describe('URL slug (auto-generated from title if omitted)'),
       description: z.string().max(2000).optional().describe('Page description'),
       status: z.enum(['draft', 'published', 'archived']).optional().describe('Page status (default: draft)'),
-      blocks: z.array(blockSchema).optional().describe('Initial page blocks'),
+      blocks: z
+        .array(blockSchema)
+        .max(MAX_BLOCKS_PER_PAGE_MUTATION)
+        .optional()
+        .describe('Initial page blocks'),
+      idempotencyKey: idempotencyKeySchema,
     },
-    async ({ projectId, title, slug, description, status, blocks }) => {
+    async ({ projectId, title, slug, description, status, blocks, idempotencyKey }) => {
       try {
         await requirePermission(userId, projectId, 'canEditMemory');
 
@@ -140,72 +146,111 @@ export function registerPageTools(
           });
         }
 
-        const pageId = createId();
-
-        // Insert page
-        const [page] = await db
-          .insert(pages)
-          .values({
-            id: pageId,
-            projectId,
-            slug: pageSlug,
-            title,
-            description: description ?? null,
-            status: status ?? 'draft',
-            createdBy: userId,
-          })
-          .returning();
-
         // Validate blocks and collect warnings
         const warnings: string[] = [];
-        let insertedBlocks: typeof pageBlocks.$inferSelect[] = [];
         if (blocks && blocks.length > 0) {
           for (const block of blocks) {
             const validation = validateBlockContent(block.type, block.content);
             warnings.push(...validation.warnings);
           }
-
-          insertedBlocks = await db
-            .insert(pageBlocks)
-            .values(
-              blocks.map((block, index) => ({
-                id: createId(),
-                pageId,
-                type: block.type,
-                content: block.content,
-                agentData: block.agentData ?? null,
-                sourceMemoryIds: block.sourceMemoryIds ?? null,
-                sortOrder: block.sortOrder ?? index,
-              })),
-            )
-            .returning();
         }
 
-        // Log activity (fire-and-forget)
-        db.insert(activityLog)
-          .values({
-            projectId,
+        const result = await runIdempotent(
+          {
+            toolName: 'lk_pages_create',
             userId,
             apiKeyId,
-            action: 'page.create',
-            targetType: 'page',
-            targetId: pageId,
-            metadata: { title, slug: pageSlug, blockCount: insertedBlocks.length },
-          })
-          .catch(() => {});
+            idempotencyKey,
+            args: { projectId, title, slug, description, status, blocks },
+            resourceType: 'page',
+            getResourceId: (data) => (data as { id?: string }).id,
+          },
+          async (tx) => {
+            const pageId = createId();
 
-        return toolResult({
-          ...page, blocks: insertedBlocks, url: pageUrl(projectId, pageId),
-          ...(pageSlug !== INDEX_PAGE_SLUG
-            ? {
-                _next: {
-                  action: 'sync_index_page',
-                  reason: 'Child page created; update the main page summary and links.',
-                },
-              }
-            : {}),
-          ...(warnings.length > 0 ? { _warnings: warnings } : {}),
-        });
+            const [createdPage] = await tx
+              .insert(pages)
+              .values({
+                id: pageId,
+                projectId,
+                slug: pageSlug,
+                title,
+                description: description ?? null,
+                status: status ?? 'draft',
+                createdBy: userId,
+              })
+              .returning();
+
+            if (!blocks || blocks.length === 0) {
+              await tx.insert(activityLog).values({
+                projectId,
+                userId,
+                apiKeyId,
+                action: 'page.create',
+                targetType: 'page',
+                targetId: pageId,
+                metadata: { title, slug: pageSlug, blockCount: 0 },
+              });
+
+              return {
+                ...createdPage,
+                blocks: [] as typeof pageBlocks.$inferSelect[],
+                url: pageUrl(projectId, pageId),
+                ...(pageSlug !== INDEX_PAGE_SLUG
+                  ? {
+                      _next: {
+                        action: 'sync_index_page',
+                        reason: 'Child page created; update the main page summary and links.',
+                      },
+                    }
+                : {}),
+                ...(warnings.length > 0 ? { _warnings: warnings } : {}),
+              };
+            }
+
+            const createdBlocks = await tx
+              .insert(pageBlocks)
+              .values(
+                blocks.map((block, index) => ({
+                  id: createId(),
+                  pageId,
+                  type: block.type,
+                  content: block.content,
+                  agentData: block.agentData ?? null,
+                  sourceMemoryIds: block.sourceMemoryIds ?? null,
+                  sortOrder: block.sortOrder ?? index,
+                })),
+              )
+              .returning();
+
+            await tx.insert(activityLog).values({
+              projectId,
+              userId,
+              apiKeyId,
+              action: 'page.create',
+              targetType: 'page',
+              targetId: pageId,
+              metadata: { title, slug: pageSlug, blockCount: createdBlocks.length },
+            });
+
+            return {
+              ...createdPage,
+              blocks: createdBlocks,
+              url: pageUrl(projectId, pageId),
+              ...(pageSlug !== INDEX_PAGE_SLUG
+                ? {
+                    _next: {
+                      action: 'sync_index_page',
+                      reason: 'Child page created; update the main page summary and links.',
+                    },
+                  }
+                : {}),
+              ...(warnings.length > 0 ? { _warnings: warnings } : {}),
+            };
+          },
+        );
+
+        return toolResult(result);
       } catch (err) {
         return classifyError(err, 'lk_pages_create');
       }
@@ -239,10 +284,12 @@ After updating a child page, also update the slug "${INDEX_PAGE_SLUG}" page when
             sortOrder: z.number().int().optional(),
           }),
         )
+        .max(MAX_BLOCKS_PER_PAGE_MUTATION)
         .optional()
         .describe('Block operations: update (with id), create (without id), delete (with id + action:"delete"). Send ONLY changed blocks.'),
+      idempotencyKey: idempotencyKeySchema,
     },
-    async ({ pageId, title, description, status, blocks }) => {
+    async ({ pageId, title, description, status, blocks, idempotencyKey }) => {
       try {
         // Verify page exists and user has access
         const pageRows = await db
@@ -307,65 +354,74 @@ After updating a child page, also update the slug "${INDEX_PAGE_SLUG}" page when
           }
         }
 
-        await db.transaction(async (tx) => {
-          if (Object.keys(pageUpdates).length > 0) {
-            await tx.update(pages).set(pageUpdates).where(eq(pages.id, pageId));
-          }
-
-          if (toDelete.length > 0) {
-            await tx.delete(pageBlocks).where(
-              and(inArray(pageBlocks.id, toDelete), eq(pageBlocks.pageId, pageId)),
-            );
-          }
-
-          for (const item of toUpdate) {
-            await tx.update(pageBlocks).set(item.data).where(
-              and(eq(pageBlocks.id, item.id), eq(pageBlocks.pageId, pageId)),
-            );
-          }
-
-          if (toCreate.length > 0) {
-            await tx.insert(pageBlocks).values(toCreate);
-          }
-        });
-
-        // Lightweight response: only affected block IDs + summary
         const updatedIds = toUpdate.map((u) => u.id);
         const createdIds = toCreate.map((c) => c.id as string);
+        const updatedFieldKeys = Object.keys(pageUpdates);
 
-        // Log activity (fire-and-forget)
-        db.insert(activityLog)
-          .values({
-            projectId: page.projectId,
+        const result = await runIdempotent(
+          {
+            toolName: 'lk_pages_update',
             userId,
             apiKeyId,
-            action: 'page.update',
-            targetType: 'page',
-            targetId: pageId,
-            metadata: {
-              updatedFields: Object.keys(pageUpdates),
-              blockOps: blocks?.length ?? 0,
-            },
-          })
-          .catch(() => {});
+            idempotencyKey,
+            args: { pageId, title, description, status, blocks },
+            resourceType: 'page',
+            getResourceId: () => pageId,
+          },
+          async (tx) => {
+            if (Object.keys(pageUpdates).length > 0) {
+              await tx.update(pages).set(pageUpdates).where(eq(pages.id, pageId));
+            }
 
-        const updatedFieldKeys = Object.keys(pageUpdates);
-        return toolResult({
-          pageId,
-          url: pageUrl(page.projectId, pageId),
-          title: title ?? page.title,
-          ...(page.slug !== INDEX_PAGE_SLUG
-            ? {
-                _next: {
-                  action: 'sync_index_page',
-                  reason: 'Child page changed; update the main page if this affects summary, navigation, or current status.',
-                },
-              }
-            : {}),
-          ...(updatedFieldKeys.length > 0 ? { updatedFields: updatedFieldKeys } : {}),
-          ...(blocks?.length ? { blocks: { created: createdIds, updated: updatedIds, deleted: toDelete } } : {}),
-          ...(warnings.length > 0 ? { _warnings: warnings } : {}),
-        });
+            if (toDelete.length > 0) {
+              await tx.delete(pageBlocks).where(
+                and(inArray(pageBlocks.id, toDelete), eq(pageBlocks.pageId, pageId)),
+              );
+            }
+
+            for (const item of toUpdate) {
+              await tx.update(pageBlocks).set(item.data).where(
+                and(eq(pageBlocks.id, item.id), eq(pageBlocks.pageId, pageId)),
+              );
+            }
+
+            if (toCreate.length > 0) {
+              await tx.insert(pageBlocks).values(toCreate);
+            }
+
+            await tx.insert(activityLog).values({
+              projectId: page.projectId,
+              userId,
+              apiKeyId,
+              action: 'page.update',
+              targetType: 'page',
+              targetId: pageId,
+              metadata: {
+                updatedFields: Object.keys(pageUpdates),
+                blockOps: blocks?.length ?? 0,
+              },
+            });
+
+            return {
+              pageId,
+              url: pageUrl(page.projectId, pageId),
+              title: title ?? page.title,
+              ...(page.slug !== INDEX_PAGE_SLUG
+                ? {
+                    _next: {
+                      action: 'sync_index_page',
+                      reason: 'Child page changed; update the main page if this affects summary, navigation, or current status.',
+                    },
+                  }
+                : {}),
+              ...(updatedFieldKeys.length > 0 ? { updatedFields: updatedFieldKeys } : {}),
+              ...(blocks?.length ? { blocks: { created: createdIds, updated: updatedIds, deleted: toDelete } } : {}),
+              ...(warnings.length > 0 ? { _warnings: warnings } : {}),
+            };
+          },
+        );
+
+        return toolResult(result);
       } catch (err) {
         return classifyError(err, 'lk_pages_update');
       }

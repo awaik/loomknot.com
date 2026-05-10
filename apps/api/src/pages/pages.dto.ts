@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { KNOWN_TYPES_DESCRIPTION } from '@loomknot/shared/blocks';
+import { MAX_BLOCKS_PER_PAGE_MUTATION } from '@loomknot/shared/constants';
 
 // --- Block schema (used inside create/update) ---
 const blockSchema = z.object({
@@ -14,7 +15,7 @@ export const createPageSchema = z.object({
   title: z.string().min(1).max(500),
   slug: z.string().min(1).max(200).optional(),
   description: z.string().max(5000).optional(),
-  blocks: z.array(blockSchema).default([]),
+  blocks: z.array(blockSchema).max(MAX_BLOCKS_PER_PAGE_MUTATION).default([]),
 });
 
 export type CreatePageDto = z.infer<typeof createPageSchema>;
@@ -32,7 +33,7 @@ const updateBlockSchema = z.object({
 export const updatePageSchema = z.object({
   title: z.string().min(1).max(500).optional(),
   description: z.string().max(5000).nullable().optional(),
-  blocks: z.array(updateBlockSchema).optional(),
+  blocks: z.array(updateBlockSchema).max(MAX_BLOCKS_PER_PAGE_MUTATION).optional(),
 });
 
 export type UpdatePageDto = z.infer<typeof updatePageSchema>;

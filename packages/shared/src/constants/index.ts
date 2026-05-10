@@ -75,6 +75,7 @@ export const INVITE_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 // Pagination
 export const DEFAULT_PAGE_SIZE = 20;
 export const MAX_PAGE_SIZE = 100;
+export const MAX_BLOCKS_PER_PAGE_MUTATION = 100;
 
 // Memory limits
 export const MAX_PRIVATE_MEMORIES = 500;

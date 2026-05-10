@@ -1,12 +1,15 @@
 import express from 'express';
 import { randomUUID } from 'node:crypto';
 import rateLimit from 'express-rate-limit';
+import { sql } from 'drizzle-orm';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { authenticateApiKey } from '@/auth/api-key-auth.js';
 import { createMcpServer } from '@/create-server.js';
+import { db } from '@/services/db.js';
+import { startIdempotencyCleanup } from '@/utils/idempotency.js';
 
 const app = express();
 
@@ -16,10 +19,27 @@ app.set('trust proxy', 1);
 // --- Constants ---
 
 const SSE_KEEPALIVE_MS = 30_000;
-const SESSION_IDLE_TIMEOUT_MS = 30 * 60 * 1000; // 30 min — reaper kills idle sessions
-const SESSION_REAPER_INTERVAL_MS = 60 * 1000; // reaper sweep every 60s
+const STREAMABLE_SESSION_IDLE_TIMEOUT_MS = readPositiveIntEnv(
+  'MCP_STREAMABLE_SESSION_IDLE_TIMEOUT_MS',
+  12 * 60 * 60 * 1000,
+); // 12h — agent clients often keep conversations open between bursts
+const LEGACY_SESSION_IDLE_TIMEOUT_MS = readPositiveIntEnv(
+  'MCP_LEGACY_SESSION_IDLE_TIMEOUT_MS',
+  30 * 60 * 1000,
+); // 30 min — legacy SSE sessions are tied to an open response stream
+const SESSION_REAPER_INTERVAL_MS = readPositiveIntEnv('MCP_SESSION_REAPER_INTERVAL_MS', 60 * 1000);
+const HEALTH_DB_CACHE_MS = readPositiveIntEnv('MCP_HEALTH_DB_CACHE_MS', 5_000);
 const MAX_SESSIONS = 1000;
 const MAX_SESSIONS_PER_USER = 50;
+const MCP_ENDPOINTS = ['/mcp', '/mcp/sse'];
+
+function readPositiveIntEnv(name: string, fallback: number): number {
+  const raw = process.env[name];
+  if (!raw) return fallback;
+
+  const parsed = Number.parseInt(raw, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
 
 // Parse JSON body for all routes EXCEPT /mcp/messages.
 // SSEServerTransport.handlePostMessage reads the raw request stream,
@@ -38,30 +58,71 @@ interface McpSession {
   server: McpServer;
   userId: string;
   apiKeyId: string;
-  stopKeepalive: (() => void) | null;
+  stopKeepalives: Set<() => void>;
   createdAt: number;
   lastActivity: number;
 }
 
 /**
  * Attach an SSE keepalive timer to a response stream.
- * Returns a stop function. Also auto-clears on response close.
+ * Returns a stop function. The caller owns response close cleanup.
  * If `session` is provided, bumps `lastActivity` on each keepalive
  * so the reaper doesn't kill sessions with active SSE listeners.
  */
 function startSseKeepalive(res: express.Response, session?: McpSession): () => void {
-  const timer = setInterval(() => {
+  let timer: NodeJS.Timeout;
+  const stop = () => clearInterval(timer);
+
+  timer = setInterval(() => {
     if (!res.writableEnded) {
-      res.write(':keepalive\n\n');
-      if (session) session.lastActivity = Date.now();
+      try {
+        res.write(':keepalive\n\n');
+        if (session) session.lastActivity = Date.now();
+      } catch (err) {
+        console.warn('[MCP] SSE keepalive failed:', err);
+        stop();
+      }
     }
   }, SSE_KEEPALIVE_MS);
-  const stop = () => clearInterval(timer);
-  res.on('close', stop);
+
   return stop;
 }
 
 const sessions = new Map<string, McpSession>();
+
+function addKeepalive(session: McpSession, res: express.Response): void {
+  const stop = startSseKeepalive(res, session);
+  session.stopKeepalives.add(stop);
+  res.on('close', () => {
+    stop();
+    session.stopKeepalives.delete(stop);
+    if (session.transport instanceof StreamableHTTPServerTransport) {
+      // Streamable HTTP sessions intentionally survive SSE stream reconnects.
+      session.lastActivity = Date.now();
+    }
+  });
+}
+
+function idleTimeoutFor(session: McpSession): number {
+  return session.transport instanceof StreamableHTTPServerTransport
+    ? STREAMABLE_SESSION_IDLE_TIMEOUT_MS
+    : LEGACY_SESSION_IDLE_TIMEOUT_MS;
+}
+
+function sendSessionNotFound(
+  res: express.Response,
+  sessionId: string | undefined,
+  transport: 'streamable' | 'legacy SSE',
+): void {
+  console.warn(
+    `[MCP] stale ${transport} session id=${sessionId?.slice(0, 8) ?? 'missing'}…; client must reinitialize`,
+  );
+  res.status(404).json({
+    error: 'Session expired or not found',
+    code: 'SESSION_EXPIRED',
+    hint: 'Reinitialize the MCP connection and retry the request.',
+  });
+}
 
 /**
  * Close and remove a session. Idempotent — safe to call multiple times
@@ -71,7 +132,10 @@ async function destroySession(sessionId: string, reason: string): Promise<void> 
   const session = sessions.get(sessionId);
   if (!session) return;
 
-  session.stopKeepalive?.();
+  for (const stop of session.stopKeepalives) {
+    stop();
+  }
+  session.stopKeepalives.clear();
   sessions.delete(sessionId);
 
   const type = session.transport instanceof StreamableHTTPServerTransport ? 'streamable' : 'legacy SSE';
@@ -105,7 +169,7 @@ const reaperTimer = setInterval(() => {
   const expired: string[] = [];
 
   for (const [id, session] of sessions) {
-    if (now - session.lastActivity > SESSION_IDLE_TIMEOUT_MS) {
+    if (now - session.lastActivity > idleTimeoutFor(session)) {
       expired.push(id);
     }
   }
@@ -160,7 +224,39 @@ const legacySseLimiter = rateLimit({
 
 // --- Health check (public) ---
 
-app.get('/mcp/health', (_req, res) => {
+let healthDbCache: { expiresAt: number; ok: boolean; latencyMs: number | null } = {
+  expiresAt: 0,
+  ok: true,
+  latencyMs: null,
+};
+
+async function checkDbHealth(force: boolean): Promise<{ ok: boolean; latencyMs: number | null }> {
+  const now = Date.now();
+  if (!force && now < healthDbCache.expiresAt) {
+    return { ok: healthDbCache.ok, latencyMs: healthDbCache.latencyMs };
+  }
+
+  const dbStart = performance.now();
+  try {
+    await db.execute(sql`select 1`);
+    healthDbCache = {
+      expiresAt: now + HEALTH_DB_CACHE_MS,
+      ok: true,
+      latencyMs: Math.round(performance.now() - dbStart),
+    };
+  } catch (err) {
+    console.error('[MCP] health DB check failed:', err);
+    healthDbCache = {
+      expiresAt: now + HEALTH_DB_CACHE_MS,
+      ok: false,
+      latencyMs: null,
+    };
+  }
+
+  return { ok: healthDbCache.ok, latencyMs: healthDbCache.latencyMs };
+}
+
+app.get('/mcp/health', async (req, res) => {
   let streamable = 0;
   let legacy = 0;
   let oldestAgeSec = 0;
@@ -173,22 +269,31 @@ app.get('/mcp/health', (_req, res) => {
     if (age > oldestAgeSec) oldestAgeSec = age;
   }
 
-  res.json({
-    status: 'ok',
+  const dbHealth = await checkDbHealth(req.query.deep === '1');
+
+  res.status(dbHealth.ok ? 200 : 503).json({
+    status: dbHealth.ok ? 'ok' : 'degraded',
     service: 'mcp',
+    db: {
+      status: dbHealth.ok ? 'ok' : 'error',
+      latencyMs: dbHealth.latencyMs,
+      cacheTtlMs: Math.max(0, healthDbCache.expiresAt - Date.now()),
+    },
     sessions: {
       total: sessions.size,
       streamable,
       legacy,
       oldestAgeSec: Math.round(oldestAgeSec / 1000),
+      streamableIdleTimeoutSec: Math.round(STREAMABLE_SESSION_IDLE_TIMEOUT_MS / 1000),
+      legacyIdleTimeoutSec: Math.round(LEGACY_SESSION_IDLE_TIMEOUT_MS / 1000),
     },
     timestamp: new Date().toISOString(),
   });
 });
 
-// --- Streamable HTTP: POST /mcp/sse ---
+// --- Streamable HTTP: POST /mcp or /mcp/sse ---
 
-app.post('/mcp/sse', initLimiter, messageLimiter, async (req, res) => {
+app.post(MCP_ENDPOINTS, initLimiter, messageLimiter, async (req, res) => {
   try {
     const auth = await authenticateApiKey(req.headers.authorization ?? '');
     if (!auth) {
@@ -224,7 +329,7 @@ app.post('/mcp/sse', initLimiter, messageLimiter, async (req, res) => {
         server,
         userId: auth.userId,
         apiKeyId: auth.apiKeyId,
-        stopKeepalive: null,
+        stopKeepalives: new Set(),
         createdAt: now,
         lastActivity: now,
       };
@@ -252,7 +357,7 @@ app.post('/mcp/sse', initLimiter, messageLimiter, async (req, res) => {
 
     const session = sessions.get(sessionId);
     if (!session || !(session.transport instanceof StreamableHTTPServerTransport)) {
-      res.status(404).json({ error: 'Session not found' });
+      sendSessionNotFound(res, sessionId, 'streamable');
       return;
     }
 
@@ -271,9 +376,9 @@ app.post('/mcp/sse', initLimiter, messageLimiter, async (req, res) => {
   }
 });
 
-// --- GET /mcp/sse: Streamable HTTP SSE stream or Legacy SSE ---
+// --- GET /mcp or /mcp/sse: Streamable HTTP SSE stream or Legacy SSE ---
 
-app.get('/mcp/sse', legacySseLimiter, async (req, res) => {
+app.get(MCP_ENDPOINTS, legacySseLimiter, async (req, res) => {
   try {
     const auth = await authenticateApiKey(req.headers.authorization ?? '');
     if (!auth) {
@@ -287,12 +392,12 @@ app.get('/mcp/sse', legacySseLimiter, async (req, res) => {
     if (sessionId) {
       const session = sessions.get(sessionId);
       if (!session || !(session.transport instanceof StreamableHTTPServerTransport)) {
-        res.status(404).json({ error: 'Session not found' });
+        sendSessionNotFound(res, sessionId, 'streamable');
         return;
       }
 
       session.lastActivity = Date.now();
-      session.stopKeepalive = startSseKeepalive(res, session);
+      addKeepalive(session, res);
 
       // Streamable HTTP: SSE GET stream is a reconnectable notification channel.
       // Do NOT destroy the session on close — client can reconnect using the same
@@ -323,12 +428,12 @@ app.get('/mcp/sse', legacySseLimiter, async (req, res) => {
       server,
       userId: auth.userId,
       apiKeyId: auth.apiKeyId,
-      stopKeepalive: null,
+      stopKeepalives: new Set(),
       createdAt: now,
       lastActivity: now,
     };
     sessions.set(transport.sessionId, session);
-    session.stopKeepalive = startSseKeepalive(res, session);
+    addKeepalive(session, res);
 
     console.log(
       `[MCP] session created (legacy SSE) id=${transport.sessionId.slice(0, 8)}… user=${auth.userId.slice(0, 12)}… sessions=${sessions.size}`,
@@ -348,13 +453,30 @@ app.get('/mcp/sse', legacySseLimiter, async (req, res) => {
   }
 });
 
-// --- DELETE /mcp/sse: close Streamable HTTP session ---
+// --- DELETE /mcp or /mcp/sse: close Streamable HTTP session ---
 
-app.delete('/mcp/sse', async (req, res) => {
+app.delete(MCP_ENDPOINTS, async (req, res) => {
   try {
+    const auth = await authenticateApiKey(req.headers.authorization ?? '');
+    if (!auth) {
+      res.status(401).json({ error: 'Invalid or missing API key' });
+      return;
+    }
+
     const sessionId = req.headers['mcp-session-id'] as string | undefined;
     if (!sessionId) {
       res.status(400).json({ error: 'Missing mcp-session-id header' });
+      return;
+    }
+
+    const session = sessions.get(sessionId);
+    if (!session) {
+      sendSessionNotFound(res, sessionId, 'streamable');
+      return;
+    }
+
+    if (session.apiKeyId !== auth.apiKeyId) {
+      res.status(401).json({ error: 'API key does not match session owner' });
       return;
     }
 
@@ -376,8 +498,7 @@ app.post('/mcp/messages', messageLimiter, async (req, res) => {
     const session = sessionId ? sessions.get(sessionId) : undefined;
 
     if (!session || !(session.transport instanceof SSEServerTransport)) {
-      console.warn(`POST /mcp/messages: session not found (sessionId=${sessionId})`);
-      res.status(404).json({ error: 'Session not found' });
+      sendSessionNotFound(res, sessionId, 'legacy SSE');
       return;
     }
 
@@ -408,6 +529,8 @@ const httpServer = app.listen(PORT, () => {
   console.log(`  SSE:      http://localhost:${PORT}/mcp/sse`);
 });
 
+const stopIdempotencyCleanup = startIdempotencyCleanup();
+
 // --- Graceful Shutdown ---
 // Docker Swarm sends SIGTERM on rolling updates. Close all sessions cleanly
 // so agents get a proper disconnect instead of a broken pipe.
@@ -415,6 +538,7 @@ const httpServer = app.listen(PORT, () => {
 function gracefulShutdown(signal: string) {
   console.log(`[MCP] ${signal} received, shutting down…`);
   clearInterval(reaperTimer);
+  stopIdempotencyCleanup();
 
   httpServer.close(() => {
     console.log('[MCP] HTTP server closed');
